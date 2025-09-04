@@ -45,4 +45,4 @@ dados.<br>
     •	RNF09 - Clareza na Exibição: A interface deve ser capaz de apresentar os dados e a classificação de Manchester de forma clara e inequívoca, indicando o horário da última medição recebida.
     •	RNF10 - Compatibilidade de SO: O software desktop deve ser compatível com o sistema operacional Windows 10 ou superior.
 
-    •	Delimitando o escopo do projeto percebeu-se a inviabilidade de ECG no projeto como foi pensado, apesar da disponibilidade de sensores para IoT, uma vez que para a realidade hospitalar seriam necessários um mínimo de 5 sensores muito distantes entre si (no chamado "padrão ouro" são utilizados 10).
+Delimitando o escopo do projeto percebeu-se a inviabilidade de ECG no projeto como foi pensado, apesar da disponibilidade de sensores para IoT, uma vez que para a realidade hospitalar seriam necessários um mínimo de 5 sensores muito distantes entre si (no chamado "padrão ouro" são utilizados 10).
