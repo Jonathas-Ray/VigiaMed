@@ -11,10 +11,10 @@ dados.<br>
 
 ## Requisitos Funcionais:
 ### Módulo 1: Pulseira (Unidade Central de Processamento)
-    •	**RF01**: A pulseira deve medir diretamente os sinais de SpO2, Frequência Cardíaca e Temperatura Corporal.
+    •	**RF01**: A pulseira deve medir diretamente Frequência Cardíaca e Temperatura Corporal.
     •	**RF02**: A pulseira deve receber os dados dos sensores e do Anel.
-    •	**RF03**: A pulseira deve executar todos os cálculos para transformar os dados brutos em informações finais, incluindo o cálculo da Pressão Arterial (baseado no PTT), Frequência Cardíaca, SpO2 e Temperatura.
-    •	**RF04**: A pulseira deve ser capaz de receber e armazenar temporariamente uma referência de paciente (ex: nome ou código) enviada pelo software desktop bem como um primeiro valor para Pressão Arterial.
+    •	**RF03**: A pulseira deve executar todos os cálculos para transformar os dados brutos em informações finais, incluindo o cálculo da Frequência Cardíaca e Temperatura.
+    •	**RF04**: A pulseira deve ser capaz de receber e armazenar temporariamente uma referência de paciente (ex: nome ou código) enviada pelo software desktop bem como um primeiro valor para exemplos ou base dos cálculos.
     •	**RF05**: A pulseira deve enviar um pacote de dados consolidados (contendo todos os sinais vitais já calculados e a referência do paciente) para o software desktop em intervalos de tempo pré-definidos 
     ou em caso de significativa alteração.
 ### Módulo 2: Anel (Sensor Auxiliar)
