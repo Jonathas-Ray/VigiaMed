@@ -1,8 +1,7 @@
 # VigiaMed
-
 Projeto IoT voltado para saúde.<br><br>
 <font size ="3"> Modelo de negócio:<br>
-Hibrido (Cloud-assisted on-premise)</font><br>
+Hibrido (Cloud-assisted on-premise)</font><br><br>
 O Hardware não será pensado para mudar, mas 
 o software via Cloud receberá updates tanto com melhorias
 quanto com correções de bugs.<br>
