@@ -35,3 +35,5 @@ no projeto como foi pensado, apesar da disponibilidade de sensores
 para IoT, uma vez que para a realidade hospitalar seriam necessários
 um mínimo de 5 sensores muito distantes entre si (no chamado "padrão 
 ouro" são utilizados 10).
+ 
+ 
