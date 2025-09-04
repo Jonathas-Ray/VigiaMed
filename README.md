@@ -30,19 +30,8 @@ dados.<br>
     •	**RF14**: O software desktop não armazenará um histórico de dados dos pacientes.
 =======
 
-## Requisitos Não Funcionais:
-### Hardware (Pulseira e Anel)
-    •	RNF01 - Capacidade de Processamento Embarcado: A pulseira deve possuir um microcontrolador com capacidade de processamento e memória suficientes para executar todos os algoritmos de cálculo de forma eficiente.
-    •	RNF02 - Sincronização Pulseira-Anel: A comunicação entre a pulseira e o anel deve ter eficiente para garantir a precisão do cálculo de PTT.
-    •	RNF03 - Autonomia da Bateria: A bateria deve ser suficiente para cobrir turnos de monitoramento então se espera autonomia de algumas horas, possívelmente de 8 a 12 horas.
-    •	RNF04 - Ergonomia e Conforto: Os dispositivos devem ser leves, hipoalergênicos e confortáveis para uso durante o período de monitoramento.
-### Desempenho e Confiabilidade
-    •	RNF05 - Periodicidade do Monitoramento: O intervalo entre as transmissões de dados da pulseira para o software deve ser configurável ou fixado em um valor clinicamente relevante (ex: a cada 1, 5 ou 10 minutos).
-    •	RNF06 - Integridade do Pacote de Dados: O sistema de comunicação deve garantir que o pacote de dados enviado pela pulseira chegue ao software sem corrupção.
-    •	RNF07 - Robustez da Conexão: As conexões com e sem fio (Anel ↔ Pulseira ↔ Desktop) devem ser estáveis e capazes de se restabelecer automaticamente em caso de falha.
-### Software e Usabilidade
-    •	RNF08 - Responsividade da Interface: A interface do software deve permanecer responsiva aos comandos do operador a todo momento.
-    •	RNF09 - Clareza na Exibição: A interface deve ser capaz de apresentar os dados e a classificação de Manchester de forma clara e inequívoca, indicando o horário da última medição recebida.
-    •	RNF10 - Compatibilidade de SO: O software desktop deve ser compatível com o sistema operacional Windows 10 ou superior.
-
-Delimitando o escopo do projeto percebeu-se a inviabilidade de ECG no projeto como foi pensado, apesar da disponibilidade de sensores para IoT, uma vez que para a realidade hospitalar seriam necessários um mínimo de 5 sensores muito distantes entre si (no chamado "padrão ouro" são utilizados 10).
+Delimitando o escopo do projeto percebeu-se a inviabilidade de ECG
+no projeto como foi pensado, apesar da disponibilidade de sensores 
+para IoT, uma vez que para a realidade hospitalar seriam necessários
+um mínimo de 5 sensores muito distantes entre si (no chamado "padrão 
+ouro" são utilizados 10).
