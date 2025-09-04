@@ -9,35 +9,29 @@ A ideia é que o Hardware será o mesmo após o fim do
 projeto mudando apenas como os sistemas lidam com os 
 dados.<br>
 
-Requisitos Funcionais:<br>
-
-
-
-
-
-
-
-
-
-
-
-
-Requisitos Não Funcionais:<br>
-
-
-
-
-
-
-
-
-
-
-
+## Requisitos Funcionais:
+### Módulo 1: Pulseira (Unidade Central de Processamento)
+    •	**RF01**: A pulseira deve medir diretamente os sinais de SpO2, Frequência Cardíaca e Temperatura Corporal.
+    •	**RF02**: A pulseira deve receber os dados dos sensores e do Anel.
+    •	**RF03**: A pulseira deve executar todos os cálculos para transformar os dados brutos em informações finais, incluindo o cálculo da Pressão Arterial (baseado no PTT), Frequência Cardíaca, SpO2 e Temperatura.
+    •	**RF04**: A pulseira deve ser capaz de receber e armazenar temporariamente uma referência de paciente (ex: nome ou código) enviada pelo software desktop bem como um primeiro valor para Pressão Arterial.
+    •	**RF05**: A pulseira deve enviar um pacote de dados consolidados (contendo todos os sinais vitais já calculados e a referência do paciente) para o software desktop em intervalos de tempo pré-definidos 
+    ou em caso de significativa alteração.
+### Módulo 2: Anel (Sensor Auxiliar)
+    •	**RF06**: O anel deve medir os sinais de Fotopletismografia (PPG).
+    •	**RF07**: O anel deve detectar o tempo exato da chegada da onda de pulso no dedo (marcador temporal t2).
+    •	**RF08**: O anel deve transmitir os dados de PPG e seu marcador temporal (t2) diretamente para a Pulseira.
+### Módulo 3: Software Desktop (Terminal de Visualização e Controle)
+    •	**RF09**: O software desktop deve ter uma função para que o operador insira uma referência (nome/código) e a envie para um dispositivo (pulseira) específico junto com a primeira referência de Pressão Arterial.
+    •	**RF10**: O software desktop deve ser capaz de receber os pacotes de dados periódicos e já processados, enviados pela pulseira.
+    •	**RF11**: A interface do software desktop deve ser capaz de exibir os sinais vitais finais recebidos (SpO2, Frequência Cardíaca, Pressão Arterial, Temperatura) e a referência do paciente associado.
+    •	**RF12** O software desktop deve possuir ou permitir a configuração de faixas de sinais vitais que correspondem a cada cor do Protocolo de Manchester ou valor que indiquem de alguma forma anormalidades.
+    •	**RF13**: O software desktop deve permitir classificar o paciente de acordo com o protocolo, exibindo a cor correspondente, e gerar os alertas visuais e sonoros necessários.
+    •	**RF14**: O software desktop não armazenará um histórico de dados dos pacientes.
+=======
 
 Delimitando o escopo do projeto percebeu-se a inviabilidade de ECG
 no projeto como foi pensado, apesar da disponibilidade de sensores 
 para IoT, uma vez que para a realidade hospitalar seriam necessários
 um mínimo de 5 sensores muito distantes entre si (no chamado "padrão 
 ouro" são utilizados 10).
-
