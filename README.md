@@ -29,9 +29,19 @@ dados.<br>
     •	**RF13**: O software desktop deve permitir classificar o paciente de acordo com o protocolo, exibindo a cor correspondente, e gerar os alertas visuais e sonoros necessários.
     •	**RF14**: O software desktop não armazenará um histórico de dados dos pacientes.
 
-# Banco de Dados – VigiaMed
 
-O banco de dados do **VigiaMed** foi projetado para gerir as informações relacionadas ao monitoramento de sinais vitais de pacientes em ambientes hospitalares ou clínicos. Ele segue o modelo de negócio híbrido **Cloud-assisted on-premise**, em que o nosso hardware coleta os dados, o software exibe e permite a manipulação e a persistência em servidor, possivelmente também em nuvem, auxiliando na tomada de decisão.
+## Requisitos Não Funcionais:
+### Hardware (Esfigmomanômetro)
+    •	RNF01 - Capacidade de Processamento Embarcado: O Device deve usar a conectividade do microcontrolador para enviar os resultados dos cálculos e medições que fizer ao sistema desktop.
+    •	RNF02 - Ergonomia e Conforto: Os dispositivos devem ser leves, hipoalergênicos e confortáveis para uso durante o período de monitoramento.
+### Desempenho e Confiabilidade
+    •	RNF03 - Periodicidade do Monitoramento: O intervalo entre as transmissões de dados do microcontrolador para o software deve ser configurável ou fixado em um valor clinicamente relevante (ex: a cada 1, 5 ou 10 minutos).
+    •	RNF04 - Integridade do Pacote de Dados: O sistema de comunicação deve garantir que o pacote de dados enviado pelo device chegue ao software sem corrupção.
+    •	RNF05 - Robustez da Conexão: As conexões com e sem fio (Device ↔ Desktop ↔ Servidor Local) devem ser estáveis e capazes de se restabelecer automaticamente em caso de falha.
+### Software e Usabilidade
+    •	RNF06 - Responsividade da Interface: A interface do software deve permanecer responsiva aos comandos do operador a todo momento.
+    •	RNF07 - Clareza na Exibição: A interface deve ser capaz de apresentar os dados e a classificação de Manchester de forma clara e inequívoca indicando, ao menos, o horário da última medição recebida.
+    •	RNF08 - Compatibilidade de SO: O software desktop deve ser compatível com o sistema operacional Windows 10 ou superior.
 
 ## Estrutura Geral
 O modelo é composto por sete entidades principais:
