@@ -25,7 +25,6 @@ dados.<br>
     •	**RF09** O software desktop deve possuir ou permitir a configuração de faixas de sinais vitais que correspondem a cada cor do Protocolo de Manchester ou valor que indiquem de alguma forma anormalidades.
     •	**RF10**: O software desktop deve permitir classificar o paciente de acordo com o protocolo, exibindo a cor correspondente, e gerar os alertas visuais e sonoros necessários.
 =======
-
 ## Requisitos Não Funcionais:
 ### Hardware (Pulseira e Anel)
     •	RNF01 - Capacidade de Processamento Embarcado: A pulseira deve possuir um microcontrolador com capacidade de processamento e memória suficientes para executar todos os algoritmos de cálculo de forma eficiente.
@@ -41,3 +40,60 @@ dados.<br>
     •	RNF09 - Compatibilidade de SO: O software desktop deve ser compatível com o sistema operacional Windows 10 ou superior.
 
 Delimitando o escopo do projeto percebeu-se a inviabilidade de ECG no projeto como foi pensado, apesar da disponibilidade de sensores para IoT, uma vez que para a realidade hospitalar seriam necessários um mínimo de 5 sensores muito distantes entre si (no chamado "padrão ouro" são utilizados 10).
+=======
+Delimitando o escopo do projeto percebeu-se a inviabilidade de ECG
+no projeto como foi pensado, apesar da disponibilidade de sensores 
+para IoT, uma vez que para a realidade hospitalar seriam necessários
+um mínimo de 5 sensores muito distantes entre si (no chamado "padrão 
+ouro" são utilizados 10).
+ 
+# Banco de Dados – VigiaMed  
+
+O banco de dados do **VigiaMed** foi projetado para armazenar e organizar informações relacionadas ao monitoramento de sinais vitais de pacientes em ambientes hospitalares ou clínicos. Ele segue o modelo de negócio híbrido **Cloud-assisted on-premise**, em que o hardware (pulseira e sensores) coleta os dados e o software, via nuvem, processa e gera informações para tomada de decisão.  
+
+## Estrutura Geral  
+O modelo é composto por sete entidades principais:  
+
+### Unidade  
+Representa os hospitais, clínicas ou unidades de saúde que utilizam o sistema.  
+- Campos principais: nome, endereço, telefone, e-mail  
+- Relação: 1:N com **Dispositivo** (uma unidade pode ter vários dispositivos)  
+
+### Dispositivo  
+Refere-se aos equipamentos do projeto (pulseira, e demais dispositivos IoT).  
+- Campos principais: tipo, modelo, número de série  
+- Relações: pertence a uma **unidade** e registra várias **medições**  
+
+### Paciente  
+Armazena os dados pessoais dos pacientes monitorados.  
+- Campos principais: nome, idade, sexo, CPF, data de nascimento  
+- Relação: 1:N com **Medição** (um paciente pode ter várias medições)  
+
+### Sensor  
+Define os sensores utilizados (como SpO2, PPG e temperatura).  
+- Campos principais: nome, tipo do sensor  
+- Relação: 1:N com **Medição** (um sensor pode gerar várias medições)  
+
+### Medição  
+É a tabela central do sistema, responsável por registrar os dados coletados dos pacientes.  
+- Campos principais: batimento cardíaco, oxigenação (SpO2), pressão sistólica, pressão diastólica, temperatura, data e hora da medição  
+- Relações: vinculado a um **paciente**, um **dispositivo** e um **sensor**  
+
+### Log de Medicação  
+Armazena eventos relacionados a intervenções médicas.  
+- Campos principais: descrição, data/hora do evento, vínculo com a medição  
+- Relação: 1:N com **Medição** (uma medição pode ter múltiplos registros de medicação)  
+
+## Relações Principais  
+- Uma **Unidade** possui vários **Dispositivos**  
+- Um **Dispositivo** registra várias **Medições**  
+- Um **Paciente** pode ter diversas **Medições**  
+- Um **Sensor** pode gerar múltiplas **Medições**  
+- Uma **Medição** pode estar associada a diferentes registros no **Log de Medicação**  
+
+## Objetivo do Modelo  
+O modelo de dados do VigiaMed foi construído para:  
+- Garantir rastreabilidade das informações coletadas (quem, quando, onde e com qual dispositivo).  
+- Oferecer flexibilidade para inclusão de novos sensores sem necessidade de grandes mudanças na estrutura.  
+- Viabilizar o armazenamento histórico de sinais vitais e intervenções médicas.  
+- Preparar a base para análises futuras em **Business Intelligence (BI)** e monitoramento clínico em tempo real.  
