@@ -31,19 +31,16 @@ dados.<br>
 =======
 
 ## Requisitos Não Funcionais:
-### Hardware (Pulseira, Anel e Esfigmomanômetro)
-    •	RNF01 - Capacidade de Processamento Embarcado: A pulseira deve possuir um microcontrolador com capacidade de processamento e memória suficientes para executar todos os algoritmos de cálculo de forma eficiente.
-    •	RNF02 - Sincronização Pulseira-Anel: A comunicação entre a pulseira e o anel deve ter eficiente para garantir a precisão do cálculo de PTT.
-    •	RNF03 - Autonomia da Bateria: A bateria deve ser suficiente para cobrir turnos de monitoramento então se espera autonomia de algumas horas, possívelmente de 8 a 12 horas.
-    •	RNF04 - Ergonomia e Conforto: Os dispositivos devem ser leves, hipoalergênicos e confortáveis para uso durante o período de monitoramento.
-    •	RNF05 - Recebimento estável dos sinais do esfigmomanômetro pela pulseira.
+### Hardware (Esfigmomanômetro)
+    •	RNF01 - Capacidade de Processamento Embarcado: O Esfigmomanômetro deve enviar os sinais recebidos a um microcontrolador que fará os cálculos e envio de informações ao sistema desktop.
+    •	RNF02 - Ergonomia e Conforto: Os dispositivos devem ser leves, hipoalergênicos e confortáveis para uso durante o período de monitoramento.
 ### Desempenho e Confiabilidade
-    •	RNF06 - Periodicidade do Monitoramento: O intervalo entre as transmissões de dados da pulseira para o software deve ser configurável ou fixado em um valor clinicamente relevante (ex: a cada 1, 5 ou 10 minutos).
-    •	RNF07 - Integridade do Pacote de Dados: O sistema de comunicação deve garantir que o pacote de dados enviado pela pulseira chegue ao software sem corrupção.
-    •	RNF08 - Robustez da Conexão: As conexões com e sem fio (Anel ↔ Pulseira ↔ Desktop) devem ser estáveis e capazes de se restabelecer automaticamente em caso de falha.
+    •	RNF03 - Periodicidade do Monitoramento: O intervalo entre as transmissões de dados do microcontrolador para o software deve ser configurável ou fixado em um valor clinicamente relevante (ex: a cada 1, 5 ou 10 minutos).
+    •	RNF04 - Integridade do Pacote de Dados: O sistema de comunicação deve garantir que o pacote de dados enviado pela pulseira chegue ao software sem corrupção.
+    •	RNF05 - Robustez da Conexão: As conexões com e sem fio (Esfigmomanômetro ↔ Microcontrolador ↔ Desktop) devem ser estáveis e capazes de se restabelecer automaticamente em caso de falha.
 ### Software e Usabilidade
-    •	RNF09 - Responsividade da Interface: A interface do software deve permanecer responsiva aos comandos do operador a todo momento.
-    •	RNF10 - Clareza na Exibição: A interface deve ser capaz de apresentar os dados e a classificação de Manchester de forma clara e inequívoca, indicando o horário da última medição recebida.
-    •	RNF11 - Compatibilidade de SO: O software desktop deve ser compatível com o sistema operacional Windows 10 ou superior.
+    •	RNF06 - Responsividade da Interface: A interface do software deve permanecer responsiva aos comandos do operador a todo momento.
+    •	RNF07 - Clareza na Exibição: A interface deve ser capaz de apresentar os dados e a classificação de Manchester de forma clara e inequívoca, indicando o horário da última medição recebida.
+    •	RNF08 - Compatibilidade de SO: O software desktop deve ser compatível com o sistema operacional Windows 10 ou superior.
 
 Delimitando o escopo do projeto percebeu-se a inviabilidade de ECG no projeto como foi pensado, apesar da disponibilidade de sensores para IoT, uma vez que para a realidade hospitalar seriam necessários um mínimo de 5 sensores muito distantes entre si (no chamado "padrão ouro" são utilizados 10).
