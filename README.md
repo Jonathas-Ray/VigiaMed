@@ -10,29 +10,23 @@ projeto mudando apenas como os sistemas lidam com os
 dados.<br>
 
 ## Requisitos Funcionais:
-### Módulo 1: Pulseira (Unidade Central de Processamento)
-    •	**RF01**: A pulseira deve medir diretamente os sinais de SpO2, Frequência Cardíaca e Temperatura Corporal.
-    •	**RF02**: A pulseira deve receber os dados dos sensores e do Anel.
-    •	**RF03**: A pulseira deve executar todos os cálculos para transformar os dados brutos em informações finais, incluindo o cálculo da Pressão Arterial (baseado no PTT), Frequência Cardíaca, SpO2 e Temperatura.
-    •	**RF04**: A pulseira deve ser capaz de receber e armazenar temporariamente uma referência de paciente (ex: nome ou código) enviada pelo software desktop bem como um primeiro valor para Pressão Arterial.
-    •	**RF05**: A pulseira deve enviar um pacote de dados consolidados (contendo todos os sinais vitais já calculados e a referência do paciente) para o software desktop em intervalos de tempo pré-definidos 
-    ou em caso de significativa alteração.
-### Módulo 2: Anel (Sensor Auxiliar)
-    •	**RF06**: O anel deve medir os sinais de Fotopletismografia (PPG).
-    •	**RF07**: O anel deve detectar o tempo exato da chegada da onda de pulso no dedo (marcador temporal t2).
-    •	**RF08**: O anel deve transmitir os dados de PPG e seu marcador temporal (t2) diretamente para a Pulseira.
-### Módulo 3: Software Desktop (Terminal de Visualização e Controle)
-    •	**RF09**: O software desktop deve ter uma função para que o operador armazene uma referência (nome/código) bem como envie para um dispositivo (pulseira) específico a primeira referência de Pressão Arterial.
-    •	**RF10**: O software desktop deve ser capaz de receber os pacotes de dados, enviados pela pulseira.
-    •	**RF11**: A interface do software desktop deve ser capaz de exibir os sinais vitais finais recebidos (SpO2, Frequência Cardíaca, Pressão Arterial, Temperatura) e a referência do paciente associado.
-    •	**RF12** O software desktop deve possuir ou permitir a configuração de faixas de sinais vitais que correspondem a cada cor do Protocolo de Manchester ou valor que indiquem de alguma forma anormalidades.
-    •	**RF13**: O software desktop deve permitir classificar o paciente de acordo com o protocolo, exibindo a cor correspondente, e gerar os alertas visuais e sonoros necessários.
-    •	**RF14**: O software desktop não armazenará um histórico de dados dos pacientes.
-
+### Módulo 1: IoT (Hardware e seu Software)
+    •	**RF01**: O Wearable deve medir sinais vitais como: SpO2, Frequência Cardíaca e Temperatura Corporal.
+    •	**RF02**: O Wearable deve lidar com os dados dos sensores, realizando todas as etapas de cálculos e tratamento dos dados coletados possibilitados pelos limites do microcontrolador usado.
+    •	**RF03**: O Wearable deve ser capaz de receber e armazenar temporariamente uma referência de paciente (ex: nome ou código) enviada pelo software desktop para que possa enviar seus dados de maneira associada à essa referência.
+    •	**RF04**: O Wearable deve enviar um pacote de dados já minimamente tratados (contendo os sinais vitais mensurados e a referência do paciente) para o software desktop em intervalos de tempo pré-definidos.
+    •	**RF05**: Em caso de significativa anomalia (pré-estabelecida em contato com o P.O.) o device deve antecipar o envio de dados do paciente para o sistema como um alerta.
+### Módulo 2: Software Desktop (Terminal de Visualização e Controle)
+    •	**RF06**: O software desktop deve ter uma função para que o operador armazene uma referência (nome/código) bem como envie para um dispositivo específico, associando também nele o dispositivo ao paciente.
+    •	**RF07**: O software desktop deve ser capaz de receber os pacotes de dados, enviados pelo device.
+    •	**RF08**: A interface do software desktop deve ser capaz de exibir os sinais vitais finais recebidos (SpO2, Frequência Cardíaca, Pressão Arterial, Temperatura) e a referência do paciente associado.
+    •	**RF09**: O software desktop deve possuir ou permitir a configuração de faixas de sinais vitais que correspondem a cada cor do Protocolo de Manchester bem como estabelecer proporções de alteração que signifiquem uma anomalia em potencial.
+    •	**RF10**: O software desktop deve permitir classificar o paciente de acordo com o protocolo, exibindo a cor correspondente, e gerar os alertas visuais e sonoros necessários em caso de possivel anomalia.
+    •	**RF11**: O software desktop presará por não armazenará histórico de dados dos pacientes anteriores à sua entrada no hospital exceto para estabelecer as proporções que indicam anomalia ou outra necessidade indicada pelo Product Owner.
 
 ## Requisitos Não Funcionais:
 ### Hardware (Esfigmomanômetro)
-    •	RNF01 - Capacidade de Processamento Embarcado: O Device deve usar a conectividade do microcontrolador para enviar os resultados dos cálculos e medições que fizer ao sistema desktop.
+    •	RNF01 - Os sensores do device devem possuir precisão clínica suficiente para medição de sinais vitais em ambiente hospitalar, observando para isso as precisões especificas dos sensores e seus respectivos módulos.
     •	RNF02 - Ergonomia e Conforto: Os dispositivos devem ser leves, hipoalergênicos e confortáveis para uso durante o período de monitoramento.
 ### Desempenho e Confiabilidade
     •	RNF03 - Periodicidade do Monitoramento: O intervalo entre as transmissões de dados do microcontrolador para o software deve ser configurável ou fixado em um valor clinicamente relevante (ex: a cada 1, 5 ou 10 minutos).
@@ -42,6 +36,10 @@ dados.<br>
     •	RNF06 - Responsividade da Interface: A interface do software deve permanecer responsiva aos comandos do operador a todo momento.
     •	RNF07 - Clareza na Exibição: A interface deve ser capaz de apresentar os dados e a classificação de Manchester de forma clara e inequívoca indicando, ao menos, o horário da última medição recebida.
     •	RNF08 - Compatibilidade de SO: O software desktop deve ser compatível com o sistema operacional Windows 10 ou superior.
+
+# Banco de Dados – VigiaMed
+
+O banco de dados do **VigiaMed** foi projetado para gerir as informações relacionadas ao monitoramento de sinais vitais de pacientes em ambientes hospitalares ou clínicos. Ele segue o modelo de negócio híbrido **Cloud-assisted on-premise**, em que o nosso hardware coleta os dados, o software exibe e permite a manipulação e a persistência em servidor, possivelmente também em nuvem, auxiliando na tomada de decisão.
 
 ## Estrutura Geral
 O modelo é composto por sete entidades principais:
