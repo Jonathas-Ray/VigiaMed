@@ -2,11 +2,11 @@
 Projeto IoT voltado para saúde.<br><br>
 <font size ="3"> Modelo de negócio:<br>
 Hibrido (Cloud-assisted on-premise)</font><br><br>
-O Hardware não será pensado para mudar, mas 
+O Hardware não será pensado para mudar, mas
 o software via Cloud receberá updates tanto com melhorias
 quanto com correções de bugs.<br>
-A ideia é que o Hardware será o mesmo após o fim do 
-projeto mudando apenas como os sistemas lidam com os 
+A ideia é que o Hardware será o mesmo após o fim do
+projeto mudando apenas como os sistemas lidam com os
 dados.<br>
 
 ## Requisitos Funcionais:
@@ -22,25 +22,24 @@ dados.<br>
     •	**RF07**: O anel deve detectar o tempo exato da chegada da onda de pulso no dedo (marcador temporal t2).
     •	**RF08**: O anel deve transmitir os dados de PPG e seu marcador temporal (t2) diretamente para a Pulseira.
 ### Módulo 3: Software Desktop (Terminal de Visualização e Controle)
-    •	**RF09**: O software desktop deve ter uma função para que o operador insira uma referência (nome/código) e a envie para um dispositivo (pulseira) específico junto com a primeira referência de Pressão Arterial.
-    •	**RF10**: O software desktop deve ser capaz de receber os pacotes de dados periódicos e já processados, enviados pela pulseira.
+    •	**RF09**: O software desktop deve ter uma função para que o operador armazene uma referência (nome/código) bem como envie para um dispositivo (pulseira) específico a primeira referência de Pressão Arterial.
+    •	**RF10**: O software desktop deve ser capaz de receber os pacotes de dados, enviados pela pulseira.
     •	**RF11**: A interface do software desktop deve ser capaz de exibir os sinais vitais finais recebidos (SpO2, Frequência Cardíaca, Pressão Arterial, Temperatura) e a referência do paciente associado.
     •	**RF12** O software desktop deve possuir ou permitir a configuração de faixas de sinais vitais que correspondem a cada cor do Protocolo de Manchester ou valor que indiquem de alguma forma anormalidades.
     •	**RF13**: O software desktop deve permitir classificar o paciente de acordo com o protocolo, exibindo a cor correspondente, e gerar os alertas visuais e sonoros necessários.
     •	**RF14**: O software desktop não armazenará um histórico de dados dos pacientes.
-=======
+
 
 ## Requisitos Não Funcionais:
 ### Hardware (Esfigmomanômetro)
-    •	RNF01 - Capacidade de Processamento Embarcado: O Esfigmomanômetro deve enviar os sinais recebidos a um microcontrolador que fará os cálculos e envio de informações ao sistema desktop.
+    •	RNF01 - Capacidade de Processamento Embarcado: O Device deve usar a conectividade do microcontrolador para enviar os resultados dos cálculos e medições que fizer ao sistema desktop.
     •	RNF02 - Ergonomia e Conforto: Os dispositivos devem ser leves, hipoalergênicos e confortáveis para uso durante o período de monitoramento.
 ### Desempenho e Confiabilidade
     •	RNF03 - Periodicidade do Monitoramento: O intervalo entre as transmissões de dados do microcontrolador para o software deve ser configurável ou fixado em um valor clinicamente relevante (ex: a cada 1, 5 ou 10 minutos).
-    •	RNF04 - Integridade do Pacote de Dados: O sistema de comunicação deve garantir que o pacote de dados enviado pela pulseira chegue ao software sem corrupção.
-    •	RNF05 - Robustez da Conexão: As conexões com e sem fio (Esfigmomanômetro ↔ Microcontrolador ↔ Desktop) devem ser estáveis e capazes de se restabelecer automaticamente em caso de falha.
+    •	RNF04 - Integridade do Pacote de Dados: O sistema de comunicação deve garantir que o pacote de dados enviado pelo device chegue ao software sem corrupção.
+    •	RNF05 - Robustez da Conexão: As conexões com e sem fio (Device ↔ Desktop ↔ Servidor Local) devem ser estáveis e capazes de se restabelecer automaticamente em caso de falha.
 ### Software e Usabilidade
     •	RNF06 - Responsividade da Interface: A interface do software deve permanecer responsiva aos comandos do operador a todo momento.
-    •	RNF07 - Clareza na Exibição: A interface deve ser capaz de apresentar os dados e a classificação de Manchester de forma clara e inequívoca, indicando o horário da última medição recebida.
+    •	RNF07 - Clareza na Exibição: A interface deve ser capaz de apresentar os dados e a classificação de Manchester de forma clara e inequívoca indicando, ao menos, o horário da última medição recebida.
     •	RNF08 - Compatibilidade de SO: O software desktop deve ser compatível com o sistema operacional Windows 10 ou superior.
 
-Delimitando o escopo do projeto percebeu-se a inviabilidade de ECG no projeto como foi pensado, apesar da disponibilidade de sensores para IoT, uma vez que para a realidade hospitalar seriam necessários um mínimo de 5 sensores muito distantes entre si (no chamado "padrão ouro" são utilizados 10).
