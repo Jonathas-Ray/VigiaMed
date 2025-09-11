@@ -43,3 +43,49 @@ dados.<br>
     •	RNF07 - Clareza na Exibição: A interface deve ser capaz de apresentar os dados e a classificação de Manchester de forma clara e inequívoca indicando, ao menos, o horário da última medição recebida.
     •	RNF08 - Compatibilidade de SO: O software desktop deve ser compatível com o sistema operacional Windows 10 ou superior.
 
+## Estrutura Geral
+O modelo é composto por sete entidades principais:
+
+### Unidade
+Representa os hospitais, clínicas ou unidades de saúde que utilizam o sistema.
+- Campos principais: nome, endereço, telefone, e-mail
+- Relação: 1:N com **Dispositivo** (uma unidade pode ter vários dispositivos)
+
+### Dispositivo
+Refere-se aos equipamentos do projeto (pulseira, anel e demais dispositivos IoT).
+- Campos principais: tipo, modelo, número de série
+- Relações: pertence a uma **unidade** e registra várias **medições**
+
+### Paciente
+Armazena os dados pessoais dos pacientes monitorados.
+- Campos principais: nome, idade, sexo, CPF, data de nascimento
+- Relação: 1:N com **Medição** (um paciente pode ter várias medições)
+
+### Sensor
+Define os sensores utilizados (como SpO2, PPG e temperatura).
+- Campos principais: nome, tipo do sensor
+- Relação: 1:N com **Medição** (um sensor pode gerar várias medições)
+
+### Medição
+É a tabela central do sistema, responsável por registrar os dados coletados dos pacientes.
+- Campos principais: batimento cardíaco, oxigenação (SpO2), pressão sistólica, pressão diastólica, temperatura, data e hora da medição
+- Relações: vinculado a um **paciente**, um **dispositivo** e um **sensor**
+
+### Log de Medicação
+Armazena eventos relacionados a intervenções médicas.
+- Campos principais: descrição, data/hora do evento, vínculo com a medição
+- Relação: 1:N com **Medição** (uma medição pode ter múltiplos registros de medicação)
+
+## Relações Principais
+- Uma **Unidade** possui vários **Dispositivos**
+- Um **Dispositivo** registra várias **Medições**
+- Um **Paciente** pode ter diversas **Medições**
+- Um **Sensor** pode gerar múltiplas **Medições**
+- Uma **Medição** pode estar associada a diferentes registros no **Log de Medicação**
+
+## Objetivo do Modelo
+O modelo de dados do VigiaMed foi construído para:
+- Garantir rastreabilidade das informações coletadas (quem, quando, onde e com qual dispositivo).
+- Oferecer flexibilidade para inclusão de novos sensores sem necessidade de grandes mudanças na estrutura.
+- Viabilizar o armazenamento histórico de sinais vitais e intervenções médicas.
+- Preparar a base para análises futuras em **Business Intelligence (BI)** e monitoramento clínico em tempo real.  
