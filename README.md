@@ -39,51 +39,118 @@ dados.<br>
 
 # Banco de Dados – VigiaMed
 
-O banco de dados do **VigiaMed** foi projetado para gerir as informações relacionadas ao monitoramento de sinais vitais de pacientes em ambientes hospitalares ou clínicos. Ele segue o modelo de negócio híbrido **Cloud-assisted on-premise**, em que o nosso hardware coleta os dados, o software exibe e permite a manipulação e a persistência em servidor, possivelmente também em nuvem, auxiliando na tomada de decisão.
+## Estrutura Geral  
 
-## Estrutura Geral
-O modelo é composto por sete entidades principais:
+O banco de dados do **VigiaMed** foi projetado para gerir informações relacionadas ao monitoramento de sinais vitais de pacientes em ambientes hospitalares e clínicos realizado por nosso sistema embarcado de mesmo nome. Dentro do modelo de negócio híbrido **Cloud-assisted on-premise**, em que o nosso hardware coleta os dados e o software exibe e permite a manipulação, o banco entrará com a persistência em servidor local auxiliando na tomada de decisão. Ele é composto por **11 entidades principais**, organizadas para garantir rastreabilidade, segurança e flexibilidade.  
 
-### Unidade
-Representa os hospitais, clínicas ou unidades de saúde que utilizam o sistema.
-- Campos principais: nome, endereço, telefone, e-mail
-- Relação: 1:N com **Dispositivo** (uma unidade pode ter vários dispositivos)
+### Unidade  
+Representa hospitais, clínicas ou unidades de saúde da rede que utilizar o sistema.  
+- **Campos:** nome, endereço, telefone, e-mail, tipo  
+- **Relações:**  
+  - 1:N com **Dispositivo**  
+  - 1:N com **Usuário**  
 
-### Dispositivo
-Refere-se aos equipamentos do projeto (pulseira, anel e demais dispositivos IoT).
-- Campos principais: tipo, modelo, número de série
-- Relações: pertence a uma **unidade** e registra várias **medições**
+---
 
-### Paciente
-Armazena os dados pessoais dos pacientes monitorados.
-- Campos principais: nome, idade, sexo, CPF, data de nascimento
-- Relação: 1:N com **Medição** (um paciente pode ter várias medições)
+### StatusDispositivo  
+Define os possíveis estados em que um dispositivo pode se encontrar.  
+- **Campos:** estado (descrição do status)  
+- **Relações:**  
+  - 1:N com **Dispositivo**  
 
-### Sensor
-Define os sensores utilizados (como SpO2, PPG e temperatura).
-- Campos principais: nome, tipo do sensor
-- Relação: 1:N com **Medição** (um sensor pode gerar várias medições)
+---
 
-### Medição
-É a tabela central do sistema, responsável por registrar os dados coletados dos pacientes.
-- Campos principais: batimento cardíaco, oxigenação (SpO2), pressão sistólica, pressão diastólica, temperatura, data e hora da medição
-- Relações: vinculado a um **paciente**, um **dispositivo** e um **sensor**
+### Dispositivo  
+Refere-se ao nosso Hardware e ao Sistema nele embarcado.
+- **Campos:** modelo, número de série, data_aquisicao
+- **Relações:**  
+  - N:1 com **Unidade**  
+  - N:1 com **StatusDispositivo**  
+  - 1:N com **Medição**  
 
-### Log de Medicação
-Armazena eventos relacionados a intervenções médicas.
-- Campos principais: descrição, data/hora do evento, vínculo com a medição
-- Relação: 1:N com **Medição** (uma medição pode ter múltiplos registros de medicação)
+---
 
-## Relações Principais
-- Uma **Unidade** possui vários **Dispositivos**
-- Um **Dispositivo** registra várias **Medições**
-- Um **Paciente** pode ter diversas **Medições**
-- Um **Sensor** pode gerar múltiplas **Medições**
-- Uma **Medição** pode estar associada a diferentes registros no **Log de Medicação**
+### Usuário  
+Controla o acesso ao sistema (administradores, médicos, técnicos etc.).  
+- **Campos:** nome, tipo (papel do usuário), e-mail, senha (hash)  
+- **Relações:**  
+  - Pertence a uma **Unidade**  
+  - 1:N com **Log**  
 
-## Objetivo do Modelo
-O modelo de dados do VigiaMed foi construído para:
-- Garantir rastreabilidade das informações coletadas (quem, quando, onde e com qual dispositivo).
-- Oferecer flexibilidade para inclusão de novos sensores sem necessidade de grandes mudanças na estrutura.
-- Viabilizar o armazenamento histórico de sinais vitais e intervenções médicas.
-- Preparar a base para análises futuras em **Business Intelligence (BI)** e monitoramento clínico em tempo real.  
+---
+
+### Paciente  
+Armazena dados revelantes para identificação das anomalias (Mencionados nos RF 05, 09 e 11) e uma referência que permita identificar o paciente monitorado.
+- **Campos:** nome, referência (identificação interna)
+- **Relações:**  
+  - 1:1 com **Medição**  
+
+---
+
+### Sensor  
+Define os sensores utilizados no sistema (ex: SpO₂, PPG, temperatura).  
+- **Campos:** nome, unidade de medida  
+- **Relações:**  
+  - 1:N com **Medição Lista**  
+
+---
+
+### Medição  
+Tabela central que representa o evento de associação do paciente e dispositivo.  
+- **Campos:** data/hora da entrada
+- **Relações:**  
+  - N:1 com **Paciente**  
+  - N:1 com **Dispositivo**  
+  - 1:N com **Medição Lista** 
+
+---
+
+### Medição Lista  
+Registra os resultados individuais das medições feitas pelos sensores.  
+- **Campos:** resultado, tipo de medição, data/hora  
+- **Relações:**  
+  - N:1 com **Medição**  
+  - N:1 com **Sensor**  
+
+---
+
+### Log  
+Armazena eventos e ações realizadas no sistema.  
+- **Campos:** ação, descrição, data  
+- **Relações:**  
+  - N:1 com **Usuário**  
+  - Opcionalmente vinculado à **Tabela List**  
+
+---
+
+### Tabela List  
+Tabela auxiliar para armazenar categorias e listas de referência.  
+- **Campos:** nome  
+- **Relações:**  
+  - Pode ser associada a registros de **Log**  
+
+---
+
+## Relações Principais  
+
+- Uma **Unidade** possui vários **Dispositivos** e **Usuários**  
+- Um **Dispositivo** possui um **Status** e registra várias **Medições**  
+- Um **Paciente** dá entrada uma vez sendo associado à **Medição**  
+- Uma **Medição** pode gerar múltiplos registros em **Medição Lista**  
+- Um **Sensor** pode gerar múltiplos registros em **Medição Lista**  
+- Um **Usuário** pode gerar várias entradas no **Log**  
+- A **Tabela List** funciona como base de categorias auxiliares  
+
+---
+
+## Objetivos do Modelo  
+
+Garantir **rastreabilidade completa** (quem, quando, onde e com qual dispositivo).  
+Oferecer **flexibilidade** para inclusão de novos sensores/tipos de medição.  
+Armazenar **histórico** de sinais vitais, dispositivos e logs do sistema.  
+Controlar **usuários e ações** de forma auditável.  
+Preparar os dados para análises futuras em **Business Intelligence (BI)** e **monitoramento em tempo real**.  
+
+---
+
+Este modelo garante que o **VigiaMed** seja escalável, seguro e pronto para evoluções futuras.
