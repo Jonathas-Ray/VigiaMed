@@ -18,7 +18,12 @@ public class Dispositivo {
     }
 
     /*acho que nao precisa de nem um dos 'SET' nessa "tabela"
-     *por não ter a necessidade de mudar nem um deles.   */
+     *por não ter a necessidade de mudar nem um deles.
+     *
+     * get id por precisar ver qual o aparelho*/
+    public long getId() {
+        return id;
+    }
 
     public String getModelo() {
         return modelo;
