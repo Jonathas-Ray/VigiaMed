@@ -17,10 +17,6 @@ public class Dispositivo {
         this.dataAquisicao = dataAquisicao;
     }
 
-    /*acho que nao precisa de nem um dos 'SET' nessa "tabela"
-     *por não ter a necessidade de mudar nem um deles.
-     *
-     * get id por precisar ver qual o aparelho*/
     public long getId() {
         return id;
     }
@@ -28,21 +24,13 @@ public class Dispositivo {
     public String getModelo() {
         return modelo;
     }
-    public void setModelo(String modelo) {
-        this.modelo = modelo;
-    }
 
     public String getNumeroSerie() {
         return numeroSerie;
-    }
-    public void setNumeroSerie(String numeroSerie) {
-        this.numeroSerie = numeroSerie;
     }
 
     public Date getDataAquisicao() {
         return dataAquisicao;
     }
-    public void setDataAquisicao(Date dataAquisicao) {
-        this.dataAquisicao = dataAquisicao;
-    }
+
 }
