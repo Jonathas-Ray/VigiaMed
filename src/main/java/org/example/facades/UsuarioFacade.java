@@ -2,7 +2,6 @@ package org.example.facades;
 
 import org.example.applications.UsuarioApplication;
 import org.example.entities.Usuario;
-
 import java.util.List;
 
 public class UsuarioFacade {
