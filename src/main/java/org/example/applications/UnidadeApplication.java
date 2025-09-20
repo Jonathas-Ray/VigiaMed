@@ -2,11 +2,10 @@ package org.example.applications;
 
 import org.example.interfaces.UnidadeRepository;
 import org.example.entities.Unidade;
-
 import java.util.List;
 
 public class UnidadeApplication {
-    private UnidadeRepository unidadeRepository;
+    private final UnidadeRepository unidadeRepository;
 
     public UnidadeApplication(UnidadeRepository unidadeRepository) {
         this.unidadeRepository = unidadeRepository;

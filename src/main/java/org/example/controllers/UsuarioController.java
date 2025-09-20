@@ -1,55 +1,49 @@
 package org.example.controllers;
 
 import org.example.entities.Usuario;
+import org.example.facades.UsuarioFacade;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/usuario")
 public class UsuarioController {
-    private final List<Usuario> usuarioList = new ArrayList<>();
 
-    @GetMapping("/")
-    public List<Usuario> getUsuarios(){
-        return this.usuarioList;
+    private final UsuarioFacade usuarioFacade;
+
+    public UsuarioController(UsuarioFacade usuarioFacade) {
+        this.usuarioFacade = usuarioFacade;
+    }
+
+    @GetMapping
+    public List<Usuario> getUsuarios() {
+        return usuarioFacade.buscarTodos();
     }
 
     @GetMapping("/{id}")
-    public Usuario getUsuario(@PathVariable int id) {
-        return usuarioList
-                .stream()
-                .filter(c -> c.getId() == id)
-                .findFirst().get();
-    }
-
-    @PostMapping("/")
-    public void salvarUsuario(@RequestBody Usuario usuario) {
-        this.usuarioList.add(usuario);
-    }
-
-    @PutMapping("/{id}")
-    public void editarUsuario(@PathVariable int id,
-                              @RequestBody Usuario usuario) {
-        for (int i = 0; i < usuarioList.size(); i++) {
-            /*Comentários Desnecessários:
-            Honestamente, cabia aqui tentar implementar aquela lógica do Divide and Conquer do Merge Sort/Binary Search
-            já que Id é naturalmente crescente
-            */
-            if (usuarioList.get(i).getId() == id) {
-                // Especifica o ID do novo objeto Usuario para o ID que você queria procurar na List
-                usuario.setId(id);
-                // Para só então alterar a List colocando o novo objeto no lugar do anterior
-                usuarioList.set(i, usuario);
-                break;
-            }
+    public ResponseEntity<Usuario> getUsuario(@PathVariable int id) {
+        Usuario usuario = usuarioFacade.buscarPorId(id);
+        if (usuario != null) {
+            return ResponseEntity.ok(usuario);
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 
+    @PostMapping
+    public void criarUsuario(@RequestBody Usuario usuario) {
+        usuarioFacade.adicionar(usuario);
+    }
+
+    @PutMapping("/{id}")
+    public void atualizarUsuario(@PathVariable int id, @RequestBody Usuario usuario) {
+        usuarioFacade.atualizar(id, usuario);
+    }
+
     @DeleteMapping("/{id}")
-    public void removerPessoa(@PathVariable int Id) {
-        usuarioList.removeIf(c -> c.getId() == Id);
+    public void removerUsuario(@PathVariable int id) {
+        usuarioFacade.excluir(id);
     }
 }
-
