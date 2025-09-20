@@ -2,11 +2,10 @@ package org.example.applications;
 
 import org.example.interfaces.UsuarioRepository;
 import org.example.entities.Usuario;
-
 import java.util.List;
 
 public class UsuarioApplication {
-    private UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
 
     public UsuarioApplication(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;

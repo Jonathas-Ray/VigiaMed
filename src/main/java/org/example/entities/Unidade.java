@@ -1,4 +1,4 @@
-package org.example.entities; // repository, application, facade de cada classe
+package org.example.entities;
 
 public class Unidade {
     private int id;
@@ -22,7 +22,6 @@ public class Unidade {
     public void setId(int id) {
         this.id = id;
     }
-    //Verificar se deve haver "setId"
 
     public String getNome() {
         return nome;

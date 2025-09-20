@@ -2,7 +2,6 @@ package org.example.facades;
 
 import org.example.applications.UnidadeApplication;
 import org.example.entities.Unidade;
-
 import java.util.List;
 
 public class UnidadeFacade {
