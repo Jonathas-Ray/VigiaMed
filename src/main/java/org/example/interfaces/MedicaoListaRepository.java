@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface MedicaoListaRepository {
 
-        public List<MedicaoLista> buscarTodos();
-        public MedicaoLista buscarPorId(int id);
-        public void adicionar(MedicaoLista listaMedicao);
-        public void excluir(int id);
-        public void atualizar(int id, MedicaoLista listaMedicao);
+        List<MedicaoLista> buscarTodos();
+        MedicaoLista buscarPorId(int id);
+        void adicionar(MedicaoLista listaMedicao);
+        void excluir(int id);
+        void atualizar(int id, MedicaoLista listaMedicao);
 
 
 }
