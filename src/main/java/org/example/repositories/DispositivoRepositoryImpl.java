@@ -6,7 +6,7 @@ import org.example.interfaces.DispositivoRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DispositivoRepositorylmpl implements DispositivoRepository {
+public class DispositivoRepositoryImpl implements DispositivoRepository {
     private List<Dispositivo> dispositivos = new ArrayList<>();
 
     public List<Dispositivo> buscarTodos() {
