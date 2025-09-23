@@ -1,11 +1,11 @@
-package org.example.entities;
+package org.example.models;
 
-public class Paciente {
+public class PacienteModel {
     private int id;
     private String nome;
     private String referencia;
 
-    public Paciente(int id, String nome, String referencia) {
+    public PacienteModel(int id, String nome, String referencia) {
         this.id = id;
         this.nome = nome;
         this.referencia = referencia;
@@ -30,7 +30,7 @@ public class Paciente {
     public String getReferencia() {
         return referencia;
     }
-    
+
     public void setReferencia(String referencia) {
         this.referencia = referencia;
     }
