@@ -1,11 +1,11 @@
-package org.example.entities;
+package org.example.models;
 
-public class Sensor {
+public class SensorModel {
     private int id;
     private String nome;
     private String unidadeMedida;
 
-    public Sensor(int id, String nome, String unidadeMedida) {
+    public SensorModel(int id, String nome, String unidadeMedida) {
         this.id = id;
         this.nome = nome;
         this.unidadeMedida = unidadeMedida;
