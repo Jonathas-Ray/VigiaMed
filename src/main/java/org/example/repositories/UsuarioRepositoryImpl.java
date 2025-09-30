@@ -2,10 +2,13 @@ package org.example.repositories;
 
 import org.example.entities.Usuario;
 import org.example.interfaces.UsuarioRepository;
+import org.springframework.stereotype.Repository;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Repository
 public class UsuarioRepositoryImpl implements UsuarioRepository {
     private final List<Usuario> usuarios = new ArrayList<>();
     private final AtomicInteger idCounter = new AtomicInteger(1);

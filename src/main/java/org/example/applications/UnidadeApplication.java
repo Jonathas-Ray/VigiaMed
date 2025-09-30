@@ -2,8 +2,11 @@ package org.example.applications;
 
 import org.example.interfaces.UnidadeRepository;
 import org.example.entities.Unidade;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
+@Service
 public class UnidadeApplication {
     private final UnidadeRepository unidadeRepository;
 
