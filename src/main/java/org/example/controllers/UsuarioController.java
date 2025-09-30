@@ -2,6 +2,7 @@ package org.example.controllers;
 
 import org.example.entities.Usuario;
 import org.example.facades.UsuarioFacade;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
