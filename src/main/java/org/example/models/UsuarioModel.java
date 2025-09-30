@@ -1,12 +1,24 @@
-package org.example.models; // repository, application, facade de cada classe
+package org.example.models;
 
+import jakarta.persistence.*;
+import org.example.entities.Usuario;
+
+@Entity
+@Table(name = "Usuario")
 public class UsuarioModel {
-    private int id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+
     private String nome;
     private String tipo;
     private String email;
     private String senha;
     private int unidade;
+
+    public UsuarioModel(){}
 
     public UsuarioModel(int id, String nome, String tipo, String email, String senha, int unidade) {
         this.id = id;
@@ -17,14 +29,13 @@ public class UsuarioModel {
         this.unidade = unidade;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
-    //Verificar se deve haver "setId"
 
     public String getNome() {
         return nome;
@@ -64,5 +75,17 @@ public class UsuarioModel {
 
     public void setUnidade(int unidade) {
         this.unidade = unidade;
+    }
+
+    @Override
+    public String toString() {
+        return "UsuarioModel{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", tipo='" + tipo + '\'' +
+                ", email='" + email + '\'' +
+                ", senha='" + senha + '\'' +
+                ", unidade=" + unidade +
+                '}';
     }
 }
