@@ -2,10 +2,12 @@ package org.example.repositories;
 
 import org.example.entities.Dispositivo;
 import org.example.interfaces.DispositivoRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class DispositivoRepositoryImpl implements DispositivoRepository {
     private List<Dispositivo> dispositivos = new ArrayList<>();
 

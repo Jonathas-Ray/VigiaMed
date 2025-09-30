@@ -2,10 +2,12 @@ package org.example.repositories;
 
 import org.example.entities.StatusDispositivo;
 import org.example.interfaces.StatusDispositivoRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class StatusDispositivoImpl implements StatusDispositivoRepository {
     private List<StatusDispositivo> statusDispositivoList = new ArrayList<>();
 
