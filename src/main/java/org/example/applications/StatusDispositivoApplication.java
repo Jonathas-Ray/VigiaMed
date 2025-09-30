@@ -2,9 +2,11 @@ package org.example.applications;
 
 import org.example.entities.StatusDispositivo;
 import org.example.interfaces.StatusDispositivoRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class StatusDispositivoApplication {
     private StatusDispositivoRepository statusDispositivoRepository;
 

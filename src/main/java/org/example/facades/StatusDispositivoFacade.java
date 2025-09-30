@@ -3,9 +3,11 @@ package org.example.facades;
 import org.example.applications.StatusDispositivoApplication;
 import org.example.entities.StatusDispositivo;
 import org.example.entities.Unidade;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class StatusDispositivoFacade {
     private final StatusDispositivoApplication statusDispositivoApplication;
 

@@ -2,9 +2,11 @@ package org.example.facades;
 
 import org.example.applications.DispositivoApplication;
 import org.example.entities.Dispositivo;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class DispositivoFacade {
     private final DispositivoApplication dispositivoApplication;
 
