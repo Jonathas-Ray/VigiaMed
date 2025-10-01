@@ -2,6 +2,7 @@ package org.example.controllers;
 
 import org.example.entities.StatusDispositivo;
 import org.example.facades.StatusDispositivoFacade;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +13,7 @@ import java.util.List;
 public class StatusDispositivoController {
     private final StatusDispositivoFacade statusDispositivoFacade;
 
+    @Autowired
     public StatusDispositivoController(StatusDispositivoFacade statusDispositivoFacade){
         this.statusDispositivoFacade = statusDispositivoFacade;
     }

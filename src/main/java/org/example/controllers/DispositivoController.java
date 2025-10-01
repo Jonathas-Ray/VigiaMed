@@ -15,6 +15,7 @@ public class DispositivoController{
 
     private final DispositivoFacade dispositivoFacade;
 
+    @Autowired
     public DispositivoController(DispositivoFacade dispositivoFacade){
         this.dispositivoFacade = dispositivoFacade;
     }
