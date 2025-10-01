@@ -30,11 +30,6 @@ public class UsuarioRepositoryJpa implements UsuarioRepository {
     }
 
     @Override
-    public void adicionar(Usuario usuario) {
-
-    }
-
-    @Override
     public void adicionar(UsuarioModel usuarioModel) {
         this.usuarioModelRepositoryJpa.save(usuarioModel);
     }
@@ -42,11 +37,6 @@ public class UsuarioRepositoryJpa implements UsuarioRepository {
     @Override
     public void excluir(int id) {
         this.usuarioModelRepositoryJpa.deleteById(id);
-    }
-
-    @Override
-    public void atualizar(int id, Usuario usuario) {
-
     }
 
     @Override
