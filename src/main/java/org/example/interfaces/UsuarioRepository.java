@@ -1,12 +1,14 @@
 package org.example.interfaces;
 
 import org.example.entities.Usuario;
+import org.example.models.UsuarioModel;
+
 import java.util.List;
 
 public interface UsuarioRepository {
-    List<Usuario> buscarTodos();
-    Usuario buscarPorId(int id);
-    void adicionar(Usuario usuario);
+    List<UsuarioModel> buscarTodos();
+    UsuarioModel buscarPorId(int id);
+    void adicionar(UsuarioModel usuarioModel);
     void excluir(int id);
-    void atualizar(int id, Usuario usuario);
+    void atualizar(int id, UsuarioModel usuarioModel);
 }

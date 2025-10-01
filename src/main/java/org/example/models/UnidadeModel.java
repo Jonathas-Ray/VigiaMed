@@ -1,11 +1,21 @@
 package org.example.models; // repository, application, facade de cada classe
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "Unidade")
 public class UnidadeModel {
-    private int id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
     private String nome;
     private String endereço;
     private String telefone;
     private String email;
+
+    public UnidadeModel(){}
 
     public UnidadeModel(int id, String nome, String endereço, String telefone, String email) {
         this.id = id;
@@ -15,14 +25,13 @@ public class UnidadeModel {
         this.email = email;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
-    //Verificar se deve haver "setId"
 
     public String getNome() {
         return nome;
@@ -54,5 +63,16 @@ public class UnidadeModel {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "UnidadeModel{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", endereço='" + endereço + '\'' +
+                ", telefone='" + telefone + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

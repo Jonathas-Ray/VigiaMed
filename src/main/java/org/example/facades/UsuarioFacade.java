@@ -2,8 +2,11 @@ package org.example.facades;
 
 import org.example.applications.UsuarioApplication;
 import org.example.entities.Usuario;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
+@Service
 public class UsuarioFacade {
     private final UsuarioApplication usuarioApplication;
 
