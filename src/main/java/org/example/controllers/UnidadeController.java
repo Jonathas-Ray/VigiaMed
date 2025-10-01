@@ -14,6 +14,7 @@ public class UnidadeController {
 
     private final UnidadeFacade unidadeFacade;
 
+    @Autowired
     public UnidadeController(UnidadeFacade unidadeFacade) {
         this.unidadeFacade = unidadeFacade;
     }

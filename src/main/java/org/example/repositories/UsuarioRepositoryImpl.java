@@ -1,6 +1,6 @@
 package org.example.repositories;
 
-import org.example.entities.Usuario;
+import org.example.models.UsuarioModel;
 import org.example.interfaces.UsuarioRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,50 +10,50 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
 public class UsuarioRepositoryImpl implements UsuarioRepository {
-    private final List<Usuario> usuarios = new ArrayList<>();
+    private final List<UsuarioModel> UsuarioModels = new ArrayList<>();
     private final AtomicInteger idCounter = new AtomicInteger(1);
 
-    public List<Usuario> buscarTodos() {
-        return usuarios;
+    public List<UsuarioModel> buscarTodos() {
+        return UsuarioModels;
     }
 
-    public Usuario buscarPorId(int id) {
-        for (Usuario usuario : usuarios) {
-            if (usuario.getId() == id) {
-                return usuario;
+    public UsuarioModel buscarPorId(int id) {
+        for (UsuarioModel UsuarioModel : UsuarioModels) {
+            if (UsuarioModel.getId() == id) {
+                return UsuarioModel;
             }
         }
         return null;
     }
 
-    public void adicionar(Usuario usuario) {
-        if (usuario.getId() == 0) {
-            usuario.setId(idCounter.getAndIncrement());
+    public void adicionar(UsuarioModel UsuarioModel) {
+        if (UsuarioModel.getId() == 0) {
+            UsuarioModel.setId(idCounter.getAndIncrement());
         }
-        this.usuarios.add(usuario);
+        this.UsuarioModels.add(UsuarioModel);
     }
 
     public void excluir(int id) {
-        Usuario usuarioParaRemover = null;
-        for (Usuario usuario : usuarios) {
-            if (usuario.getId() == id) {
-                usuarioParaRemover = usuario;
+        UsuarioModel UsuarioParaRemover = null;
+        for (UsuarioModel Usuario : UsuarioModels) {
+            if (UsuarioModel.getId() == id) {
+                UsuarioParaRemover = Usuario;
                 break;
             }
         }
-        if (usuarioParaRemover != null) {
-            usuarios.remove(usuarioParaRemover);
+        if (UsuarioParaRemover != null) {
+            UsuarioModels.remove(UsuarioParaRemover);
         }
     }
 
-    public void atualizar(int id, Usuario usuario) {
-        Usuario usuarioExistente = buscarPorId(id);
-        if (usuarioExistente != null) {
-            usuarioExistente.setNome(usuario.getNome());
-            usuarioExistente.setTipo(usuario.getTipo());
-            usuarioExistente.setEmail(usuario.getEmail());
-            usuarioExistente.setSenha(usuario.getSenha());
-            usuarioExistente.setUnidade(usuario.getUnidade());
+    public void atualizar(int id, UsuarioModel usuarioModel) {
+        UsuarioModel usuarioModelExistente = buscarPorId(id);
+        if (usuarioModelExistente != null) {
+            usuarioModelExistente.setNome(usuarioModel.getNome());
+            usuarioModelExistente.setTipo(usuarioModel.getTipo());
+            usuarioModelExistente.setEmail(usuarioModel.getEmail());
+            usuarioModelExistente.setSenha(usuarioModel.getSenha());
+            usuarioModelExistente.setUnidade(UsuarioModel.getUnidade());
         }
     }
 }

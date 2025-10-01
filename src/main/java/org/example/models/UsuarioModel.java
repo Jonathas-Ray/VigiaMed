@@ -29,7 +29,7 @@ public class UsuarioModel {
         this.unidade = unidade;
     }
 
-    public long getId() {
+    public static long getId() {
         return id;
     }
 
@@ -69,7 +69,7 @@ public class UsuarioModel {
         this.senha = senha;
     }
 
-    public int getUnidade() {
+    public static int getUnidade() {
         return unidade;
     }
 

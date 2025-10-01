@@ -14,6 +14,7 @@ public class UsuarioController {
 
     private final UsuarioFacade usuarioFacade;
 
+    @Autowired
     public UsuarioController(UsuarioFacade usuarioFacade) {
         this.usuarioFacade = usuarioFacade;
     }
