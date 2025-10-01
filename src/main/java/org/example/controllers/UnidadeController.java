@@ -2,6 +2,7 @@ package org.example.controllers;
 
 import org.example.entities.Unidade;
 import org.example.facades.UnidadeFacade;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +14,7 @@ public class UnidadeController {
 
     private final UnidadeFacade unidadeFacade;
 
+    @Autowired
     public UnidadeController(UnidadeFacade unidadeFacade) {
         this.unidadeFacade = unidadeFacade;
     }
