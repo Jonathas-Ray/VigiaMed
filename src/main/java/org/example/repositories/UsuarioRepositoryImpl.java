@@ -36,7 +36,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
     public void excluir(int id) {
         UsuarioModel UsuarioParaRemover = null;
         for (UsuarioModel Usuario : UsuarioModels) {
-            if (UsuarioModel.getId() == id) {
+            if (Usuario.getId() == id) {
                 UsuarioParaRemover = Usuario;
                 break;
             }
@@ -53,7 +53,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
             usuarioModelExistente.setTipo(usuarioModel.getTipo());
             usuarioModelExistente.setEmail(usuarioModel.getEmail());
             usuarioModelExistente.setSenha(usuarioModel.getSenha());
-            usuarioModelExistente.setUnidade(UsuarioModel.getUnidade());
+            usuarioModelExistente.setUnidade(usuarioModel.getUnidade());
         }
     }
 }
