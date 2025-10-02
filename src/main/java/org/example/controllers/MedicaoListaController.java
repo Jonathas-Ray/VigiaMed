@@ -1,6 +1,6 @@
 package org.example.controllers;
 
-import org.example.entities.MedicaoLista;
+import org.example.models.MedicaoListaModel;
 import org.example.facades.MedicaoListaFacade;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,28 +16,28 @@ public class MedicaoListaController {
         }
 
         @GetMapping
-        public List<MedicaoLista> getMedicaoListas() {
+        public List<MedicaoListaModel> getMedicaoListas() {
             return medicaoListaFacade.buscarTodos();
         }
 
         @GetMapping("/{id}")
-        public ResponseEntity<MedicaoLista> getMedicao(@PathVariable int id) {
-            MedicaoLista medicaoLista = medicaoListaFacade.buscarPorId(id);
-            if (medicaoLista != null) {
-                return ResponseEntity.ok(medicaoLista);
+        public ResponseEntity<MedicaoListaModel> getMedicao(@PathVariable int id) {
+            MedicaoListaModel medicaoListaModel = medicaoListaFacade.buscarPorId(id);
+            if (medicaoListaModel != null) {
+                return ResponseEntity.ok(medicaoListaModel);
             } else {
                 return ResponseEntity.notFound().build();
             }
         }
 
         @PostMapping
-        public void criaMedicaoLista(@RequestBody MedicaoLista medicaoLista) {
-            medicaoListaFacade.adicionar(medicaoLista);
+        public void criaMedicaoLista(@RequestBody MedicaoListaModel medicaoListaModel) {
+            medicaoListaFacade.adicionar(medicaoListaModel);
         }
 
         @PutMapping("/{id}")
-        public void atualizarMedicaoLista(@PathVariable int id, @RequestBody MedicaoLista medicaoLista) {
-            medicaoListaFacade.atualizar(id, medicaoLista);
+        public void atualizarMedicaoLista(@PathVariable int id, @RequestBody MedicaoListaModel medicaoListaModel) {
+            medicaoListaFacade.atualizar(id, medicaoListaModel);
         }
 
         @DeleteMapping("/{id}")

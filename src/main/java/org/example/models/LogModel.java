@@ -1,21 +1,30 @@
 package org.example.models;
 
+import jakarta.persistence.*;
+
 import java.util.Date;
 
+@Entity
+@Table(name = "Log")
 public class LogModel {
-    private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
     private String acao;
     private String descricao;
     private Date data;
 
-    public LogModel(long id, String acao, String descricao, Date data) {
+    public LogModel(){}
+
+    public LogModel(int id, String acao, String descricao, Date data) {
         this.id = id;
         this.acao = acao;
         this.descricao = descricao;
         this.data = data;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -38,5 +47,15 @@ public class LogModel {
     }
     public void setData(Date data) {
         this.data = data;
+    }
+
+    @Override
+    public String toString() {
+        return "LogModel{" +
+                "id=" + id +
+                ", acao='" + acao + '\'' +
+                ", descricao='" + descricao + '\'' +
+                ", data=" + data +
+                '}';
     }
 }

@@ -1,7 +1,7 @@
 package org.example.applications;
 
 import org.example.interfaces.PacienteRepository;
-import org.example.entities.Paciente;
+import org.example.models.PacienteModel;
 
 import java.util.List;
 
@@ -12,23 +12,23 @@ public class PacienteApplication {
         this.pacienteRepository = pacienteRepository;
     }
 
-    public List<Paciente> buscarTodos() {
+    public List<PacienteModel> buscarTodos() {
         return this.pacienteRepository.buscarTodos();
     }
 
-    public Paciente buscarPorId(int id) {
+    public PacienteModel buscarPorId(int id) {
         return this.pacienteRepository.buscarPorId(id);
     }
 
-    public void adicionar(Paciente paciente) {
-        this.pacienteRepository.adicionar(paciente);
+    public void adicionar(PacienteModel pacienteModel) {
+        this.pacienteRepository.adicionar(pacienteModel);
     }
 
     public void excluir(int id) {
         this.pacienteRepository.excluir(id);
     }
 
-    public void atualizar(int id, Paciente paciente) {
-        this.pacienteRepository.atualizar(id, paciente);
+    public void atualizar(int id, PacienteModel pacienteModel) {
+        this.pacienteRepository.atualizar(id, pacienteModel);
     }
 }

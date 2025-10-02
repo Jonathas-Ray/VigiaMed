@@ -1,19 +1,21 @@
 package org.example.repositories;
 
-import org.example.entities.Log;
+import org.example.models.LogModel;
 import org.example.interfaces.LogRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class LogRepositoryImpl implements LogRepository {
-    private List<Log> log = new ArrayList<>();
+    private List<LogModel> log = new ArrayList<>();
 
-    public List<Log> buscarTodos(){
+    public List<LogModel> buscarTodos(){
         return log;
     }
 
-    public Log buscarPorId(int id){
+    public LogModel buscarPorId(int id){
         return log
                 .stream()
                 .filter(l->l.getId() == id)
@@ -21,7 +23,7 @@ public class LogRepositoryImpl implements LogRepository {
                 .get();
     }
 
-    public void adicionar(Log log){
+    public void adicionar(LogModel log){
         this.log.add(log);
     }
 
@@ -29,8 +31,8 @@ public class LogRepositoryImpl implements LogRepository {
         this.log.removeIf(l -> l.getId() == id);
     }
 
-    public void atualizar(int id, Log log){
-        Log logExist = buscarPorId(id);
+    public void atualizar(int id, LogModel log){
+        LogModel logExist = buscarPorId(id);
         if (logExist != null) {
             logExist.setAcao(logExist.getAcao());
             logExist.setDescricao(logExist.getDescricao());

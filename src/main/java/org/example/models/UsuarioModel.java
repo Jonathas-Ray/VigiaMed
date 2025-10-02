@@ -1,7 +1,6 @@
 package org.example.models;
 
 import jakarta.persistence.*;
-import org.example.entities.Usuario;
 
 @Entity
 @Table(name = "Usuario")
@@ -10,7 +9,6 @@ public class UsuarioModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
 
     private String nome;
     private String tipo;

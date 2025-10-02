@@ -2,7 +2,7 @@ package org.example.facades;
 
 
 import org.example.applications.MedicaoListaApplication;
-import org.example.entities.MedicaoLista;
+import org.example.models.MedicaoListaModel;
 
 import java.util.List;
 
@@ -13,23 +13,23 @@ public class MedicaoListaFacade {
         this.medicaoListaApplication = medicaoListaApplication;
     }
 
-    public List<MedicaoLista> buscarTodos() {
+    public List<MedicaoListaModel> buscarTodos() {
         return this.medicaoListaApplication.buscarTodos();
     }
 
-    public MedicaoLista buscarPorId(int id) {
+    public MedicaoListaModel buscarPorId(int id) {
         return this.medicaoListaApplication.buscarPorId(id);
     }
 
-    public void adicionar(MedicaoLista medicaoLista) {
-        this.medicaoListaApplication.inserir(medicaoLista);
+    public void adicionar(MedicaoListaModel medicaoListaModel) {
+        this.medicaoListaApplication.inserir(medicaoListaModel);
     }
 
     public void excluir(int id) {
         this.medicaoListaApplication.excluir(id);
     }
 
-    public void atualizar(int id, MedicaoLista medicaoLista) {
-        this.medicaoListaApplication.atualizar(id, medicaoLista);
+    public void atualizar(int id, MedicaoListaModel medicaoListaModel) {
+        this.medicaoListaApplication.atualizar(id, medicaoListaModel);
     }
 }

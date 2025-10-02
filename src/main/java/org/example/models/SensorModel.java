@@ -1,21 +1,32 @@
 package org.example.models;
 
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "Sensor")
 public class SensorModel {
-    private int id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
     private String nome;
     private String unidadeMedida;
 
-    public SensorModel(int id, String nome, String unidadeMedida) {
+    public SensorModel(long id, String nome, String unidadeMedida) {
         this.id = id;
         this.nome = nome;
         this.unidadeMedida = unidadeMedida;
     }
 
-    public int getId() {
+    public SensorModel(){}
+
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -33,5 +44,14 @@ public class SensorModel {
 
     public void setUnidadeMedida(String unidadeMedida) {
         this.unidadeMedida = unidadeMedida;
+    }
+
+    @Override
+    public String toString() {
+        return "SensorModel{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", unidadeMedida='" + unidadeMedida + '\'' +
+                '}';
     }
 }

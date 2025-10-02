@@ -1,13 +1,13 @@
 package org.example.interfaces;
 
-import org.example.entities.Medicao;
+import org.example.models.MedicaoModel;
 
 import java.util.List;
 
 public interface MedicaoRepository {
-        public List<Medicao> buscarTodos();
-        public Medicao buscarPorId(int id);
-        public void adicionar(Medicao medicao);
+        public List<MedicaoModel> buscarTodos();
+        public MedicaoModel buscarPorId(int id);
+        public void adicionar(MedicaoModel medicao);
         public void excluir(int id);
-        public void atualizar(int id, Medicao medicao);
+        public void atualizar(int id, MedicaoModel medicao);
 }
