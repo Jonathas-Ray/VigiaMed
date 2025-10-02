@@ -3,6 +3,7 @@ package org.example.facades;
 import org.example.applications.StatusDispositivoApplication;
 import org.example.entities.StatusDispositivo;
 import org.example.entities.Unidade;
+import org.example.models.StatusDispositivoModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,23 +16,23 @@ public class StatusDispositivoFacade {
         this.statusDispositivoApplication = statusDispositivoApplication;
     }
 
-    public List<StatusDispositivo> buscarTodos() {
+    public List<StatusDispositivoModel> buscarTodos() {
         return this.statusDispositivoApplication.buscarTodos();
     }
 
-    public StatusDispositivo buscarPorId(int id) {
+    public StatusDispositivoModel buscarPorId(int id) {
         return this.statusDispositivoApplication.buscarPorId(id);
     }
 
-    public void adicionar(StatusDispositivo statusDispositivo) {
-        this.statusDispositivoApplication.adicionar(statusDispositivo);
+    public void adicionar(StatusDispositivoModel statusDispositivoModel) {
+        this.statusDispositivoApplication.adicionar(statusDispositivoModel);
     }
 
     public void excluir(int id) {
         this.statusDispositivoApplication.excluir(id);
     }
 
-    public void atualizar(int id, StatusDispositivo statusDispositivo) {
-        this.statusDispositivoApplication.atualizar(id, statusDispositivo);
+    public void atualizar(int id, StatusDispositivoModel statusDispositivoModel) {
+        this.statusDispositivoApplication.atualizar(id, statusDispositivoModel);
     }
 }
