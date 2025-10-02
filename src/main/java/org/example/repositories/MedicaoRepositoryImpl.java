@@ -2,37 +2,45 @@ package org.example.repositories;
 
 import org.example.entities.Medicao;
 import org.example.interfaces.MedicaoRepository;
+import org.example.models.MedicaoModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MedicaoRepositoryImpl implements MedicaoRepository {
-        private List<Medicao> medicoes = new ArrayList<>();
+    private List<MedicaoModel> MedicaoModels = new ArrayList<>();
 
-        public List<Medicao> buscarTodos() {
-            return medicoes;
-        }
+    public List<MedicaoModel> buscarTodos() {
+        return MedicaoModels;
+    }
 
-        public Medicao buscarPorId(int id) {
-            return medicoes
-                    .stream()
-                    .filter(l -> l.getId() == id)
-                    .findFirst()
-                    .get();
-        }
+    public MedicaoModel buscarPorId(int id) {
+        return MedicaoModels
+                .stream()
+                .filter(l -> l.getId() == id)
+                .findFirst()
+                .get();
+    }
 
-        public void adicionar(Medicao medicao) {
-            this.medicoes.add(medicao);
-        }
+    @Override
+    public void adicionar(MedicaoModel medicao) {
+    }
 
-        public void excluir(int id) {
-            this.medicoes.removeIf(l -> l.getId() == id);
-        }
+    @Override
+    public void atualizar(int id, MedicaoModel medicao) {
+    }
 
-        public void atualizar(int id, Medicao medicao) {
-            Medicao medicaoInMemory = buscarPorId(id);
+    public void adicionar(Medicao medicao) {
+    }
 
-            medicaoInMemory.setData_hora(medicao.getData_hora());
-        }
+    public void excluir(int id) {
+        this.MedicaoModels.removeIf(l -> l.getId() == id);
+    }
+
+    public void atualizar(int id, Medicao medicao) {
+        MedicaoModel medicaoInMemory = buscarPorId(id);
+
+        medicaoInMemory.setData_hora(medicao.getData_hora());
+    }
 
 }

@@ -11,7 +11,6 @@ public class UsuarioModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-
     private String nome;
     private String tipo;
     private String email;

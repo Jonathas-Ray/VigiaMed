@@ -2,7 +2,6 @@ package org.example.applications;
 
 import org.example.interfaces.SensorRepository;
 import org.example.entities.Sensor;
-
 import java.util.List;
 
 public class SensorApplication {
