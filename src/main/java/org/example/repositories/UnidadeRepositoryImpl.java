@@ -2,6 +2,7 @@ package org.example.repositories;
 
 import org.example.entities.Unidade;
 import org.example.interfaces.UnidadeRepository;
+import org.example.models.UnidadeModel;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -10,15 +11,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
 public class UnidadeRepositoryImpl implements UnidadeRepository {
-    private final List<Unidade> unidades = new ArrayList<>();
+    private final List<UnidadeModel> unidadeModels = new ArrayList<>();
     private final AtomicInteger idCounter = new AtomicInteger(1);
 
-    public List<Unidade> buscarTodos() {
-        return unidades;
+    public List<UnidadeModel> buscarTodos() {
+        return unidadeModels;
     }
 
-    public Unidade buscarPorId(int id) {
-        for (Unidade unidade : unidades) {
+    public UnidadeModel buscarPorId(int id) {
+        for (UnidadeModel unidade : unidadeModels) {
             if (unidade.getId() == id) {
                 return unidade;
             }
@@ -26,33 +27,33 @@ public class UnidadeRepositoryImpl implements UnidadeRepository {
         return null;
     }
 
-    public void adicionar(Unidade unidade) {
-        if (unidade.getId() == 0) {
-            unidade.setId(idCounter.getAndIncrement());
+    public void adicionar(UnidadeModel unidadeModel) {
+        if (unidadeModel.getId() == 0) {
+            unidadeModel.setId(idCounter.getAndIncrement());
         }
-        this.unidades.add(unidade);
+        this.unidadeModels.add(unidadeModel);
     }
 
     public void excluir(int id) {
-        Unidade unidadeParaRemover = null;
-        for (Unidade unidade : unidades) {
-            if (unidade.getId() == id) {
-                unidadeParaRemover = unidade;
+        UnidadeModel unidadeParaRemover = null;
+        for (UnidadeModel unidadeModel : unidadeModels) {
+            if (unidadeModel.getId() == id) {
+                unidadeParaRemover = unidadeModel;
                 break;
             }
         }
         if (unidadeParaRemover != null) {
-            unidades.remove(unidadeParaRemover);
+            unidadeModels.remove(unidadeParaRemover);
         }
     }
 
-    public void atualizar(int id, Unidade unidade) {
-        Unidade unidadeExistente = buscarPorId(id);
+    public void atualizar(int id, UnidadeModel unidadeModel) {
+        UnidadeModel unidadeExistente = buscarPorId(id);
         if (unidadeExistente != null) {
-            unidadeExistente.setNome(unidade.getNome());
-            unidadeExistente.setEndereço(unidade.getEndereço());
-            unidadeExistente.setTelefone(unidade.getTelefone());
-            unidadeExistente.setEmail(unidade.getEmail());
+            unidadeExistente.setNome(unidadeModel.getNome());
+            unidadeExistente.setEndereço(unidadeModel.getEndereço());
+            unidadeExistente.setTelefone(unidadeModel.getTelefone());
+            unidadeExistente.setEmail(unidadeModel.getEmail());
         }
     }
 }

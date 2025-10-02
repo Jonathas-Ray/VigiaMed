@@ -1,12 +1,14 @@
 package org.example.interfaces;
 
 import org.example.entities.Unidade;
+import org.example.models.UnidadeModel;
+
 import java.util.List;
 
 public interface UnidadeRepository {
-    List<Unidade> buscarTodos();
-    Unidade buscarPorId(int id);
-    void adicionar(Unidade unidade);
+    List<UnidadeModel> buscarTodos();
+    UnidadeModel buscarPorId(int id);
+    void adicionar(UnidadeModel unidadeModel);
     void excluir(int id);
-    void atualizar(int id, Unidade unidade);
+    void atualizar(int id, UnidadeModel unidadeModel);
 }
