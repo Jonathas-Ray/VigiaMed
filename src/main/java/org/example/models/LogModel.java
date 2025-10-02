@@ -9,7 +9,7 @@ import java.util.Date;
 public class LogModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     private String acao;
     private String descricao;
@@ -17,14 +17,14 @@ public class LogModel {
 
     public LogModel(){}
 
-    public LogModel(long id, String acao, String descricao, Date data) {
+    public LogModel(int id, String acao, String descricao, Date data) {
         this.id = id;
         this.acao = acao;
         this.descricao = descricao;
         this.data = data;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 

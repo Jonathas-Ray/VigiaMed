@@ -9,7 +9,7 @@ public class MedicaoListaModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     private double resultado;
     private String tipoMedicao;
@@ -24,9 +24,9 @@ public class MedicaoListaModel {
 
     public MedicaoListaModel(){}
 
-    public long getId() { return id; }
+    public int getId() { return id; }
 
-    public void setId(long id) { this.id = id; }
+    public void setId(int id) { this.id = id; }
 
     public double getResultado() {
         return resultado;
