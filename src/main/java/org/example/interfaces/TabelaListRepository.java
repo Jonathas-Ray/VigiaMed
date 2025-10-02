@@ -1,13 +1,13 @@
 package org.example.interfaces;
 
-import org.example.entities.TabelaList;
+import org.example.models.TabelaListModel;
 
 import java.util.List;
 
 public interface TabelaListRepository {
-    List<TabelaList> buscarTodos();
-    TabelaList buscarPorId(int id);
-    void adicionar(TabelaList tabelaList);
+    List<TabelaListModel> buscarTodos();
+    TabelaListModel buscarPorId(int id);
+    void adicionar(TabelaListModel tabelaList);
     void excluir(int id);
-    void atualizar(int id, TabelaList usuario);
+    void atualizar(int id, TabelaListModel usuario);
 }

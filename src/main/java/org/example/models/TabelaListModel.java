@@ -1,6 +1,15 @@
 package org.example.models;
 
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "Tabela-Lista")
 public class TabelaListModel {
+
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String nome;
 
@@ -12,8 +21,12 @@ public class TabelaListModel {
         this.nome = nome;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -22,5 +35,13 @@ public class TabelaListModel {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    @Override
+    public String toString() {
+        return "TabelaListModel{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                '}';
     }
 }
