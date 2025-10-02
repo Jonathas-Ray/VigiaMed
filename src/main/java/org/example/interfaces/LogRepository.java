@@ -1,13 +1,13 @@
 package org.example.interfaces;
 
-import org.example.entities.Log;
+import org.example.models.LogModel;
 
 import java.util.List;
 
 public interface LogRepository {
-    List<Log> buscarTodos();
-    Log buscarPorId(int id);
-    void adicionar(Log log);
+    List<LogModel> buscarTodos();
+    LogModel buscarPorId(int id);
+    void adicionar(LogModel log);
     void excluir(int id);
-    void atualizar(int id, Log log);
+    void atualizar(int id, LogModel log);
 }

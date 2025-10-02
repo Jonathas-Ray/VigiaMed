@@ -1,6 +1,5 @@
 package org.example.repositories;
 
-import org.example.entities.Usuario;
 import org.example.interfaces.UsuarioModelRepositoryJpa;
 import org.example.interfaces.UsuarioRepository;
 import org.example.models.UsuarioModel;

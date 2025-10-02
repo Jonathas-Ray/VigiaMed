@@ -1,7 +1,15 @@
 package org.example.models;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "Paciente")
 public class PacienteModel {
-    private int id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
     private String nome;
     private String referencia;
 
@@ -11,13 +19,11 @@ public class PacienteModel {
         this.referencia = referencia;
     }
 
-    public int getId() {
-        return id;
-    }
+    public PacienteModel(){}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public long getId() { return id; }
+
+    public void setId(long id) { this.id = id; }
 
     public String getNome() {
         return nome;
@@ -33,5 +39,14 @@ public class PacienteModel {
 
     public void setReferencia(String referencia) {
         this.referencia = referencia;
+    }
+
+    @Override
+    public String toString() {
+        return "PacienteModel{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", referencia='" + referencia + '\'' +
+                '}';
     }
 }

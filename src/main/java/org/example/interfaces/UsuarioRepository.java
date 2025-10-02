@@ -1,6 +1,5 @@
 package org.example.interfaces;
 
-import org.example.entities.Usuario;
 import org.example.models.UsuarioModel;
 
 import java.util.List;
