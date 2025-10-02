@@ -1,7 +1,7 @@
 package org.example.applications;
 
 import org.example.interfaces.UnidadeRepository;
-import org.example.entities.Unidade;
+import org.example.models.UnidadeModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,23 +14,23 @@ public class UnidadeApplication {
         this.unidadeRepository = unidadeRepository;
     }
 
-    public List<Unidade> buscarTodos() {
+    public List<UnidadeModel> buscarTodos() {
         return this.unidadeRepository.buscarTodos();
     }
 
-    public Unidade buscarPorId(int id) {
+    public UnidadeModel buscarPorId(int id) {
         return this.unidadeRepository.buscarPorId(id);
     }
 
-    public void adicionar(Unidade unidade) {
-        this.unidadeRepository.adicionar(unidade);
+    public void adicionar(UnidadeModel unidadeModel) {
+        this.unidadeRepository.adicionar(unidadeModel);
     }
 
     public void excluir(int id) {
         this.unidadeRepository.excluir(id);
     }
 
-    public void atualizar(int id, Unidade unidade) {
-        this.unidadeRepository.atualizar(id, unidade);
+    public void atualizar(int id, UnidadeModel unidadeModel) {
+        this.unidadeRepository.atualizar(id, unidadeModel);
     }
 }

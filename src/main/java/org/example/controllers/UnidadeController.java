@@ -1,6 +1,6 @@
 package org.example.controllers;
 
-import org.example.entities.Unidade;
+import org.example.models.UnidadeModel;
 import org.example.facades.UnidadeFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,28 +20,28 @@ public class UnidadeController {
     }
 
     @GetMapping
-    public List<Unidade> getUnidades() {
+    public List<UnidadeModel> getUnidades() {
         return unidadeFacade.buscarTodos();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Unidade> getUnidade(@PathVariable int id) {
-        Unidade unidade = unidadeFacade.buscarPorId(id);
-        if (unidade != null) {
-            return ResponseEntity.ok(unidade);
+    public ResponseEntity<UnidadeModel> getUnidade(@PathVariable int id) {
+        UnidadeModel unidadeModel = unidadeFacade.buscarPorId(id);
+        if (unidadeModel != null) {
+            return ResponseEntity.ok(unidadeModel);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public void criarUnidade(@RequestBody Unidade unidade) {
-        unidadeFacade.adicionar(unidade);
+    public void criarUnidade(@RequestBody UnidadeModel unidadeModel) {
+        unidadeFacade.adicionar(unidadeModel);
     }
 
     @PutMapping("/{id}")
-    public void atualizarUnidade(@PathVariable int id, @RequestBody Unidade unidade) {
-        unidadeFacade.atualizar(id, unidade);
+    public void atualizarUnidade(@PathVariable int id, @RequestBody UnidadeModel unidadeModel) {
+        unidadeFacade.atualizar(id, unidadeModel);
     }
 
     @DeleteMapping("/{id}")
