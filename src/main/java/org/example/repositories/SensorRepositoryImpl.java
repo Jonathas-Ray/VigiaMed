@@ -1,38 +1,39 @@
 package org.example.repositories;
 
-import org.example.entities.Sensor;
 import org.example.interfaces.SensorRepository;
+import org.example.models.SensorModel;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.ArrayList;
 
+@Repository
 public class SensorRepositoryImpl implements SensorRepository {
-    private List<Sensor> sensores = new ArrayList<>();
+    private final List<SensorModel> sensorModels = new ArrayList<>();
 
-    public List<Sensor> buscarTodos() {
-        return sensores;
+    public List<SensorModel> buscarTodos() {
+        return sensorModels;
     }
 
-    public Sensor buscarPorId(int id) {
-        return sensores
+    public SensorModel buscarPorId(long id) {
+        return sensorModels
                 .stream()
                 .filter(l -> l.getId() == id)
                 .findFirst()
                 .get();
     }
 
-    public void adicionar(Sensor sensor) {
-        this.sensores.add(sensor);
+    public void adicionar(SensorModel sensor) {
+        this.sensorModels.add(sensor);
     }
 
-    public void excluir(int id) {
-        this.sensores.removeIf(l -> l.getId() == id);
+    public void excluir(long id) {
+        this.sensorModels.removeIf(l -> l.getId() == id);
     }
 
-    public void atualizar(int id, Sensor sensor) {
-        Sensor sensorInMemory = buscarPorId(id);
-
-        sensorInMemory.setNome(sensor.getNome());
-        sensorInMemory.setUnidadeMedida(sensor.getUnidadeMedida());
+    public void atualizar(long id, SensorModel sensorModel) {
+        SensorModel sensorInMemory = buscarPorId(id);
+        sensorInMemory.setNome(sensorModel.getNome());
+        sensorInMemory.setUnidadeMedida(sensorModel.getUnidadeMedida());
     }
 }
