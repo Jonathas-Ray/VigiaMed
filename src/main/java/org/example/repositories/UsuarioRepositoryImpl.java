@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+//
 public class UsuarioRepositoryImpl implements UsuarioRepository {
     private final List<UsuarioModel> UsuarioModels = new ArrayList<>();
     private final AtomicInteger idCounter = new AtomicInteger(1);

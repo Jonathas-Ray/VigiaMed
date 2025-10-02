@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+//
 public class DispositivoRepositoryImpl implements DispositivoRepository {
     private List<DispositivoModel> dispositivos = new ArrayList<>();
     private final AtomicInteger idCounter = new AtomicInteger(1);
