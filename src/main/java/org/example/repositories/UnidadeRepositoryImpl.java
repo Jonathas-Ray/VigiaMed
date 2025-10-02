@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Repository
 public class UnidadeRepositoryImpl implements UnidadeRepository {
     private final List<UnidadeModel> unidadeModels = new ArrayList<>();
     private final AtomicInteger idCounter = new AtomicInteger(1);

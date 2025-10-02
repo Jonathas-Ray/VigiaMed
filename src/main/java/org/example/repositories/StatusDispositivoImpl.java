@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Repository
 public class StatusDispositivoImpl implements StatusDispositivoRepository {
     private final List<StatusDispositivoModel> statusDispositivoList = new ArrayList<>();
     private final AtomicInteger idCounter = new AtomicInteger(1);

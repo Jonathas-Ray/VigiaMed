@@ -2,6 +2,7 @@ package org.example.applications;
 
 import org.example.interfaces.UnidadeRepository;
 import org.example.models.UnidadeModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 public class UnidadeApplication {
     private final UnidadeRepository unidadeRepository;
 
+    @Autowired
     public UnidadeApplication(UnidadeRepository unidadeRepository) {
         this.unidadeRepository = unidadeRepository;
     }
