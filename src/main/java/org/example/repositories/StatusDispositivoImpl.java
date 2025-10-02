@@ -1,39 +1,49 @@
 package org.example.repositories;
 
-import org.example.entities.StatusDispositivo;
 import org.example.interfaces.StatusDispositivoRepository;
+import org.example.models.StatusDispositivoModel;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
 public class StatusDispositivoImpl implements StatusDispositivoRepository {
-    private List<StatusDispositivo> statusDispositivoList = new ArrayList<>();
+    private final List<StatusDispositivoModel> statusDispositivoList = new ArrayList<>();
+    private final AtomicInteger idCounter = new AtomicInteger(1);
 
-    public List<StatusDispositivo> buscarTodos(){
+    public List<StatusDispositivoModel> buscarTodos(){
         return statusDispositivoList;
     }
 
-    public StatusDispositivo buscarPorId(int id) {
-        return statusDispositivoList
-                .stream()
-                .filter(l -> l.getId() == id)
-                .findFirst()
-                .get();
+    public StatusDispositivoModel buscarPorId(int id) {
+        for(StatusDispositivoModel statusDispositivoModel : statusDispositivoList){
+           if(statusDispositivoModel.getId() == id){
+               return statusDispositivoModel;
+           }
+        }
+        return null;
     }
 
-    public void adicionar(StatusDispositivo statusDispositivo) {
+    public void adicionar(StatusDispositivoModel statusDispositivo) {
+        if(statusDispositivo.getId() == 0){
+            statusDispositivo.setId(idCounter.getAndIncrement());
+        }
         this.statusDispositivoList.add(statusDispositivo);
     }
 
     public void excluir(int id) {
-        this.statusDispositivoList.removeIf(l -> l.getId() == id);
+        for(StatusDispositivoModel statusDispositivoModel : statusDispositivoList){
+            if (statusDispositivoModel.getId() == id){
+                statusDispositivoList.remove(statusDispositivoModel);
+            }
+        }
     }
 
-    public void atualizar(int id, StatusDispositivo statusDispositivo) {
-        StatusDispositivo statuInMemory = buscarPorId(id);
+    public void atualizar(int id, StatusDispositivoModel statusDispositivoModel) {
+        StatusDispositivoModel statuInMemory = buscarPorId(id);
 
-        statuInMemory.setEstado(statusDispositivo.getEstado());
+        statuInMemory.setEstado(statusDispositivoModel.getEstado());
     }
 }
