@@ -4,7 +4,6 @@ import org.example.models.MedicaoModel;
 
 import java.util.List;
 
-
 public interface MedicaoRepository {
         public List<MedicaoModel> buscarTodos();
         public MedicaoModel buscarPorId(int id);

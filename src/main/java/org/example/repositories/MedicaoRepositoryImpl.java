@@ -3,10 +3,12 @@ package org.example.repositories;
 import org.example.entities.Medicao;
 import org.example.interfaces.MedicaoRepository;
 import org.example.models.MedicaoModel;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class MedicaoRepositoryImpl implements MedicaoRepository {
     private List<MedicaoModel> MedicaoModels = new ArrayList<>();
 
