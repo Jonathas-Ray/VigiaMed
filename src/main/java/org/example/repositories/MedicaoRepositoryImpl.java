@@ -10,11 +10,9 @@ import java.util.List;
 
 @Repository
 public class MedicaoRepositoryImpl implements MedicaoRepository {
-    private List<MedicaoModel> MedicaoModels = new ArrayList<>();
+    private final List<MedicaoModel> MedicaoModels = new ArrayList<>();
 
-    public List<MedicaoModel> buscarTodos() {
-        return MedicaoModels;
-    }
+    public List<MedicaoModel> buscarTodos() { return MedicaoModels; }
 
     public MedicaoModel buscarPorId(int id) {
         return MedicaoModels
@@ -25,15 +23,12 @@ public class MedicaoRepositoryImpl implements MedicaoRepository {
     }
 
     @Override
-    public void adicionar(MedicaoModel medicao) {
-    }
+    public void adicionar(MedicaoModel medicao) { }
 
     @Override
-    public void atualizar(int id, MedicaoModel medicao) {
-    }
+    public void atualizar(int id, MedicaoModel medicao) { }
 
-    public void adicionar(Medicao medicao) {
-    }
+    public void adicionar(Medicao medicao) { }
 
     public void excluir(int id) {
         this.MedicaoModels.removeIf(l -> l.getId() == id);
@@ -41,7 +36,6 @@ public class MedicaoRepositoryImpl implements MedicaoRepository {
 
     public void atualizar(int id, Medicao medicao) {
         MedicaoModel medicaoInMemory = buscarPorId(id);
-
         medicaoInMemory.setData_hora(medicao.getData_hora());
     }
 
