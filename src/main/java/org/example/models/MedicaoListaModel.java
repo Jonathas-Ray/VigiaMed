@@ -1,7 +1,16 @@
 package org.example.models;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "Medição-Lista")
+
 public class MedicaoListaModel {
-    private int id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
     private double resultado;
     private String tipoMedicao;
     private String data_hora;
@@ -13,9 +22,11 @@ public class MedicaoListaModel {
         this.data_hora = data_hora;
     }
 
-    public int getId() {
-        return id;
-    }
+    public MedicaoListaModel(){}
+
+    public long getId() { return id; }
+
+    public void setId(long id) { this.id = id; }
 
     public double getResultado() {
         return resultado;
@@ -39,5 +50,15 @@ public class MedicaoListaModel {
 
     public void setData_hora(String data_hora) {
         this.data_hora = data_hora;
+    }
+
+    @Override
+    public String toString() {
+        return "MedicaoListaModel{" +
+                "id=" + id +
+                ", resultado=" + resultado +
+                ", tipoMedicao='" + tipoMedicao + '\'' +
+                ", data_hora='" + data_hora + '\'' +
+                '}';
     }
 }

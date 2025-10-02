@@ -4,13 +4,17 @@ import org.example.interfaces.MedicaoModelRepositoryJpa;
 import org.example.interfaces.MedicaoRepository;
 import org.example.interfaces.UsuarioModelRepositoryJpa;
 import org.example.models.MedicaoModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class MedicaoRepositoryJpa implements MedicaoRepository {
 
     private final UsuarioModelRepositoryJpa usuarioModelRepositoryJpa;
 
+    @Autowired
     public MedicaoRepositoryJpa(UsuarioModelRepositoryJpa usuarioModelRepositoryJpa) {
         this.usuarioModelRepositoryJpa = usuarioModelRepositoryJpa;
     }

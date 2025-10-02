@@ -2,6 +2,7 @@ package org.example.repositories;
 
 import org.example.interfaces.TabelaListRepository;
 import org.example.models.TabelaListModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public class TabelaListRepositoryJpa implements TabelaListRepository {
 
     private final TabelaListRepositoryJpa tabelaListRepositoryJpa;
 
-    //@Autowired
+    @Autowired
     public TabelaListRepositoryJpa(TabelaListRepositoryJpa tabelaListRepositoryJpa) {
         this.tabelaListRepositoryJpa = tabelaListRepositoryJpa;
     }
