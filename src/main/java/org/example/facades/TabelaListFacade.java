@@ -1,7 +1,7 @@
 package org.example.facades;
 
 import org.example.applications.TabelaListApplication;
-import org.example.entities.TabelaList;
+import org.example.models.TabelaListModel;
 
 import java.util.List;
 
@@ -12,23 +12,23 @@ public class TabelaListFacade {
         this.tabelaListApplication = tabelaListApplication;
     }
 
-    public List<TabelaList> buscarTodos() {
+    public List<TabelaListModel> buscarTodos() {
         return this.tabelaListApplication.buscarTodos();
     }
 
-    public TabelaList buscarPorId(int id) {
+    public TabelaListModel buscarPorId(int id) {
         return this.tabelaListApplication.buscarPorId(id);
     }
 
-    public void adicionar(TabelaList tabelaList) {
-        this.tabelaListApplication.adicionar(tabelaList);
+    public void adicionar(TabelaListModel tabelaListModel) {
+        this.tabelaListApplication.adicionar(tabelaListModel);
     }
 
     public void excluir(int id) {
         this.tabelaListApplication.excluir(id);
     }
 
-    public void atualizar(int id, TabelaList tabelaList) {
-        this.tabelaListApplication.atualizar(id, tabelaList);
+    public void atualizar(int id, TabelaListModel tabelaListModel) {
+        this.tabelaListApplication.atualizar(id, tabelaListModel);
     }
 }
