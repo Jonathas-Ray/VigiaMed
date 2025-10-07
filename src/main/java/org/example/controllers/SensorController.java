@@ -1,6 +1,6 @@
 package org.example.controllers;
 
-import org.example.entities.Sensor;
+import org.example.models.SensorModel;
 import org.example.facades.SensorFacade;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,28 +16,28 @@ public class SensorController {
     }
 
     @GetMapping
-    public List<Sensor> getSensores() {
+    public List<SensorModel> getSensores() {
         return sensorFacade.buscarTodos();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Sensor> getSensor(@PathVariable int id) {
-        Sensor sensor = sensorFacade.buscarPorId(id);
-        if (sensor != null) {
-            return ResponseEntity.ok(sensor);
+    public ResponseEntity<SensorModel> getSensor(@PathVariable int id) {
+        SensorModel sensorModel = sensorFacade.buscarPorId(id);
+        if (sensorModel != null) {
+            return ResponseEntity.ok(sensorModel);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public void criarSensor(@RequestBody Sensor sensor) {
-        sensorFacade.adicionar(sensor);
+    public void criarSensor(@RequestBody SensorModel sensorModel) {
+        sensorFacade.adicionar(sensorModel);
     }
 
     @PutMapping("/{id}")
-    public void atualizarSensor(@PathVariable int id, @RequestBody Sensor sensor) {
-        sensorFacade.atualizar(id, sensor);
+    public void atualizarSensor(@PathVariable int id, @RequestBody SensorModel sensorModel) {
+        sensorFacade.atualizar(id, sensorModel);
     }
 
     @DeleteMapping("/{id}")

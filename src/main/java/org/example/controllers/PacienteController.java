@@ -1,6 +1,6 @@
 package org.example.controllers;
 
-import org.example.entities.Paciente;
+import org.example.models.PacienteModel;
 import org.example.facades.PacienteFacade;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,28 +17,28 @@ public class PacienteController {
     }
 
     @GetMapping
-    public List<Paciente> getPacientes() {
+    public List<PacienteModel> getPacientes() {
         return pacienteFacade.buscarTodos();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Paciente> getPaciente(@PathVariable int id) {
-        Paciente paciente = pacienteFacade.buscarPorId(id);
-        if (paciente != null) {
-            return ResponseEntity.ok(paciente);
+    public ResponseEntity<PacienteModel> getPaciente(@PathVariable int id) {
+        PacienteModel pacienteModel = pacienteFacade.buscarPorId(id);
+        if (pacienteModel != null) {
+            return ResponseEntity.ok(pacienteModel);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public void criarPaciente(@RequestBody Paciente paciente) {
-        pacienteFacade.adicionar(paciente);
+    public void criarPaciente(@RequestBody PacienteModel pacienteModel) {
+        pacienteFacade.adicionar(pacienteModel);
     }
 
     @PutMapping("/{id}")
-    public void atualizarPaciente(@PathVariable int id, @RequestBody Paciente paciente) {
-        pacienteFacade.atualizar(id, paciente);
+    public void atualizarPaciente(@PathVariable int id, @RequestBody PacienteModel pacienteModel) {
+        pacienteFacade.atualizar(id, pacienteModel);
     }
 
     @DeleteMapping("/{id}")

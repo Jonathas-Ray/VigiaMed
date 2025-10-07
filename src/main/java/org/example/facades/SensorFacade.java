@@ -1,7 +1,7 @@
 package org.example.facades;
 
 import org.example.applications.SensorApplication;
-import org.example.entities.Sensor;
+import org.example.models.SensorModel;
 
 import java.util.List;
 
@@ -12,23 +12,23 @@ public class SensorFacade {
         this.sensorApplication = sensorApplication;
     }
 
-    public List<Sensor> buscarTodos() {
+    public List<SensorModel> buscarTodos() {
         return this.sensorApplication.buscarTodos();
     }
 
-    public Sensor buscarPorId(int id) {
+    public SensorModel buscarPorId(int id) {
         return this.sensorApplication.buscarPorId(id);
     }
 
-    public void adicionar(Sensor sensor) {
-        this.sensorApplication.adicionar(sensor);
+    public void adicionar(SensorModel sensorModel) {
+        this.sensorApplication.adicionar(sensorModel);
     }
 
     public void excluir(int id) {
         this.sensorApplication.excluir(id);
     }
 
-    public void atualizar(int id, Sensor sensor) {
-        this.sensorApplication.atualizar(id, sensor);
+    public void atualizar(int id, SensorModel sensorModel) {
+        this.sensorApplication.atualizar(id, sensorModel);
     }
 }
