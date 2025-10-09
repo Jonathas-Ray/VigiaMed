@@ -2,8 +2,11 @@ package org.example.applications;
 
 import org.example.interfaces.SensorRepository;
 import org.example.models.SensorModel;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
+@Service
 public class SensorApplication {
     private SensorRepository sensorRepository;
 

@@ -13,40 +13,40 @@ import java.util.List;
     @RequestMapping("/api/unidade")
 public class LogController {
 
-        private final LogFacade logFacade;
+    private final LogFacade logFacade;
 
-        @Autowired
-        public LogController(LogFacade logFacade) {
-            this.logFacade = logFacade;
+    @Autowired
+    public LogController(LogFacade logFacade) {
+        this.logFacade = logFacade;
+    }
+
+    @GetMapping
+    public List<LogModel> getLogs() {
+        return logFacade.buscarTodos();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<LogModel> getUnidade(@PathVariable int id) {
+        LogModel logModel = logFacade.buscarPorId(id);
+        if (logModel != null) {
+            return ResponseEntity.ok(logModel);
+        } else {
+            return ResponseEntity.notFound().build();
         }
+    }
 
-        @GetMapping
-        public List<LogModel> getLogs() {
-            return logFacade.buscarTodos();
-        }
+    @PostMapping
+    public void criarLog(@RequestBody LogModel logModel) {
+        logFacade.adicionar(logModel);
+    }
 
-        @GetMapping("/{id}")
-        public ResponseEntity<LogModel> getUnidade(@PathVariable int id) {
-            LogModel logModel = logFacade.buscarPorId(id);
-            if (logModel != null) {
-                return ResponseEntity.ok(logModel);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        }
+    @PutMapping("/{id}")
+    public void atualizarLog(@PathVariable int id, @RequestBody LogModel logModel) {
+        logFacade.atualizar(id, logModel);
+    }
 
-        @PostMapping
-        public void criarLog(@RequestBody LogModel logModel) {
-            logFacade.adicionar(logModel);
-        }
-
-        @PutMapping("/{id}")
-        public void atualizarLog(@PathVariable int id, @RequestBody LogModel logModel) {
-            logFacade.atualizar(id, logModel);
-        }
-
-        @DeleteMapping("/{id}")
-        public void removerLog(@PathVariable int id) {
+    @DeleteMapping("/{id}")
+    public void removerLog(@PathVariable int id) {
             logFacade.excluir(id);
         }
 }

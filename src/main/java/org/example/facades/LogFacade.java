@@ -5,6 +5,7 @@ import org.example.models.LogModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class LogFacade {
     private final LogApplication logApplication;

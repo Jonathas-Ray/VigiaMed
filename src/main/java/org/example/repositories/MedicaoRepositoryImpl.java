@@ -3,12 +3,10 @@ package org.example.repositories;
 import org.example.entities.Medicao;
 import org.example.interfaces.MedicaoRepository;
 import org.example.models.MedicaoModel;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
 public class MedicaoRepositoryImpl implements MedicaoRepository {
     private final List<MedicaoModel> MedicaoModels = new ArrayList<>();
 
@@ -22,13 +20,16 @@ public class MedicaoRepositoryImpl implements MedicaoRepository {
                 .get();
     }
 
-    @Override
-    public void adicionar(MedicaoModel medicao) { }
+    public void adicionar(MedicaoModel medicaoModel) {
+        this.MedicaoModels.add(medicaoModel);
+    }
 
-    @Override
-    public void atualizar(int id, MedicaoModel medicao) { }
-
-    public void adicionar(Medicao medicao) { }
+    public void atualizar(int id, MedicaoModel medicao) {
+        MedicaoModel medExist = buscarPorId(id);
+        if (medExist != null){
+            medExist.setData_hora(medExist.getData_hora());
+        }
+    }
 
     public void excluir(int id) {
         this.MedicaoModels.removeIf(l -> l.getId() == id);

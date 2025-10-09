@@ -2,9 +2,11 @@ package org.example.applications;
 
 import org.example.models.MedicaoModel;
 import org.example.interfaces.MedicaoRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class MedicaoApplication {
     private MedicaoRepository medicaoRepository;
 

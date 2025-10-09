@@ -2,7 +2,6 @@ package org.example.repositories;
 
 import org.example.models.UsuarioModel;
 import org.example.interfaces.UsuarioRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;

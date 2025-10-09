@@ -1,7 +1,5 @@
 package org.example.controllers;
 
-import ch.qos.logback.core.model.processor.PhaseIndicator;
-import org.example.entities.Dispositivo;
 import org.example.facades.DispositivoFacade;
 import org.example.models.DispositivoModel;
 import org.springframework.beans.factory.annotation.Autowired;

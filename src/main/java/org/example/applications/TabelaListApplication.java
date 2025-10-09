@@ -2,9 +2,11 @@ package org.example.applications;
 
 import org.example.models.TabelaListModel;
 import org.example.interfaces.TabelaListRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class TabelaListApplication {
     private final TabelaListRepository tabelaListRepository;
 

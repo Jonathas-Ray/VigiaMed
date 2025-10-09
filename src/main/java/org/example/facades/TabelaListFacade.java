@@ -2,9 +2,11 @@ package org.example.facades;
 
 import org.example.applications.TabelaListApplication;
 import org.example.models.TabelaListModel;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class TabelaListFacade {
     private final TabelaListApplication tabelaListApplication;
 

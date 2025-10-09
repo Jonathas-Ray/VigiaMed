@@ -3,9 +3,11 @@ package org.example.facades;
 
 import org.example.applications.MedicaoApplication;
 import org.example.models.MedicaoModel;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class MedicaoFacade {
         private final MedicaoApplication medicaoApplication;
 

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.ArrayList;
 
-@Repository
 public class SensorRepositoryImpl implements SensorRepository {
     private final List<SensorModel> sensorModels = new ArrayList<>();
 
