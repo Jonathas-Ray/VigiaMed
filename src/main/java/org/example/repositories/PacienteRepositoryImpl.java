@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Repository
+
 public class PacienteRepositoryImpl implements PacienteRepository {
     private final List<PacienteModel> pacientes = new ArrayList<>();
     private final AtomicInteger idCounter = new AtomicInteger(1);

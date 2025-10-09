@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Repository
+
 public class TabelaListRepositoryImpl implements TabelaListRepository {
     private final List<TabelaListModel> tabelas = new ArrayList<>();
     private final AtomicInteger idCounter = new AtomicInteger(1);
