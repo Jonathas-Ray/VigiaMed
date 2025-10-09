@@ -3,11 +3,12 @@ package org.example.repositories;
 import org.example.interfaces.DispositivoModelRepositoryJpa;
 import org.example.interfaces.DispositivoRepository;
 import org.example.models.DispositivoModel;
-import org.hibernate.internal.build.AllowNonPortable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class DispositivoRepositoryJpa implements DispositivoRepository {
 
     private final DispositivoModelRepositoryJpa dispositivoModelRepositoryJpa;

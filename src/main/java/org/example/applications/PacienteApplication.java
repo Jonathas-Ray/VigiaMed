@@ -2,9 +2,11 @@ package org.example.applications;
 
 import org.example.interfaces.PacienteRepository;
 import org.example.models.PacienteModel;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class PacienteApplication {
     private PacienteRepository pacienteRepository;
 

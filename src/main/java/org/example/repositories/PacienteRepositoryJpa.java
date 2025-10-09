@@ -1,5 +1,6 @@
 package org.example.repositories;
 
+import org.example.interfaces.PacienteModelRepositoryJpa;
 import org.example.interfaces.PacienteRepository;
 import org.example.models.PacienteModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,25 +11,36 @@ import java.util.List;
 @Repository
 public class PacienteRepositoryJpa implements PacienteRepository {
 
-    private final PacienteRepositoryJpa pacienteRepositoryJpa;
+    private final PacienteModelRepositoryJpa pacienteModelRepositoryJpa;
 
     @Autowired
-    public PacienteRepositoryJpa(PacienteRepositoryJpa pacienteRepositoryJpa) {
-        this.pacienteRepositoryJpa = pacienteRepositoryJpa;
+    public PacienteRepositoryJpa(PacienteModelRepositoryJpa pacienteModelRepositoryJpa, PacienteModelRepositoryJpa pacienteModelRepositoryJpa1){
+        this.pacienteModelRepositoryJpa = pacienteModelRepositoryJpa1;
     }
-    
-    @Override
-    public List<PacienteModel> buscarTodos() { return List.of(); }
 
     @Override
-    public PacienteModel buscarPorId(int id) { return null; }
+    public List<PacienteModel> buscarTodos() {
+        return this.pacienteModelRepositoryJpa.findAll();
+    }
 
     @Override
-    public void adicionar(PacienteModel Paciente) { }
+    public PacienteModel buscarPorId(int id) {
+        return this.pacienteModelRepositoryJpa.findById(id).get();
+    }
 
     @Override
-    public void excluir(int id) { }
+    public void adicionar(PacienteModel paciente) {
+        this.pacienteModelRepositoryJpa.save(paciente);
+    }
 
     @Override
-    public void atualizar(int id, PacienteModel Paciente) { }
+    public void excluir(int id) {
+        this.pacienteModelRepositoryJpa.deleteById(id);
+    }
+
+    @Override
+    public void atualizar(int id, PacienteModel paciente) {
+        paciente.setId(id);
+        this.pacienteModelRepositoryJpa.save(paciente);
+    }
 }

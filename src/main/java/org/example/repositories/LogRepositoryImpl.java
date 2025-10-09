@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
+
 public class LogRepositoryImpl implements LogRepository {
     private List<LogModel> log = new ArrayList<>();
 

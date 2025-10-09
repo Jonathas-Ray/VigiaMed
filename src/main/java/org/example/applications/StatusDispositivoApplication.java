@@ -1,6 +1,5 @@
 package org.example.applications;
 
-import org.example.entities.StatusDispositivo;
 import org.example.interfaces.StatusDispositivoRepository;
 import org.example.models.StatusDispositivoModel;
 import org.springframework.stereotype.Service;
