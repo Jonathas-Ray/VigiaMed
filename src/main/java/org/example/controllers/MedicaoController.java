@@ -1,6 +1,5 @@
 package org.example.controllers;
 
-
 import org.example.models.MedicaoModel;
 import org.example.facades.MedicaoFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +35,7 @@ public class MedicaoController {
     }
 
     @PostMapping
-    public void criaMedicao(@RequestBody MedicaoModel medicaoModel) {
+    public void criarMedicao(@RequestBody MedicaoModel medicaoModel) {
         medicaoFacade.adicionar(medicaoModel);
     }
 
@@ -47,7 +46,6 @@ public class MedicaoController {
 
     @DeleteMapping("/{id}")
     public void removerMedicao(@PathVariable int id) {
-            medicaoFacade.excluir(id);
-        }
-
+        medicaoFacade.excluir(id);
+    }
 }

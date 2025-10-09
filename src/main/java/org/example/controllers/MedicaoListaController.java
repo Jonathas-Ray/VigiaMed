@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RestController
+@RequestMapping("/api/medicao-lista")
 public class MedicaoListaController {
 
     private final MedicaoListaFacade medicaoListaFacade;
@@ -23,7 +25,7 @@ public class MedicaoListaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MedicaoListaModel> getMedicao(@PathVariable int id) {
+    public ResponseEntity<MedicaoListaModel> getMedicaoLista(@PathVariable int id) {
         MedicaoListaModel medicaoListaModel = medicaoListaFacade.buscarPorId(id);
         if (medicaoListaModel != null) {
             return ResponseEntity.ok(medicaoListaModel);
@@ -33,7 +35,7 @@ public class MedicaoListaController {
     }
 
     @PostMapping
-    public void criaMedicaoLista(@RequestBody MedicaoListaModel medicaoListaModel) {
+    public void criarMedicaoLista(@RequestBody MedicaoListaModel medicaoListaModel) {
         medicaoListaFacade.adicionar(medicaoListaModel);
     }
 
@@ -44,8 +46,6 @@ public class MedicaoListaController {
 
     @DeleteMapping("/{id}")
     public void removerMedicaoLista(@PathVariable int id) {
-            medicaoListaFacade.excluir(id);
-        }
-
-
+        medicaoListaFacade.excluir(id);
+    }
 }

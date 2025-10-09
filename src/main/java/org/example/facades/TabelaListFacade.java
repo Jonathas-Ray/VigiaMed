@@ -10,7 +10,7 @@ import java.util.List;
 public class TabelaListFacade {
     private final TabelaListApplication tabelaListApplication;
 
-    public TabelaListFacade(TabelaListApplication tabelaListApplication){
+    public TabelaListFacade(TabelaListApplication tabelaListApplication) {
         this.tabelaListApplication = tabelaListApplication;
     }
 

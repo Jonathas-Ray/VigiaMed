@@ -1,5 +1,6 @@
 package org.example.repositories;
 
+import org.example.interfaces.SensorModelRepositoryJpa;
 import org.example.interfaces.SensorRepository;
 import org.example.models.SensorModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,25 +11,36 @@ import java.util.List;
 @Repository
 public class SensorRepositoryJpa implements SensorRepository {
 
-    private final SensorRepositoryJpa sensorRepositoryJpa;
+    private final SensorModelRepositoryJpa sensorModelRepositoryJpa;
 
-    @Autowired
-    public SensorRepositoryJpa(SensorRepositoryJpa sensorRepositoryJpa) {
-        this.sensorRepositoryJpa = sensorRepositoryJpa;
+
+    public SensorRepositoryJpa(SensorModelRepositoryJpa sensorModelRepositoryJpa) {
+        this.sensorModelRepositoryJpa = sensorModelRepositoryJpa;
     }
 
     @Override
-    public List<SensorModel> buscarTodos() { return List.of(); }
+    public List<SensorModel> buscarTodos() {
+        return this.sensorModelRepositoryJpa.findAll();
+    }
 
     @Override
-    public SensorModel buscarPorId(long id) { return null; }
+    public SensorModel buscarPorId(int id) {
+        return this.sensorModelRepositoryJpa.findById(id).orElse(null);
+    }
 
     @Override
-    public void adicionar(SensorModel sensorModel) { }
+    public void adicionar(SensorModel sensorModel) {
+        this.sensorModelRepositoryJpa.save(sensorModel);
+    }
 
     @Override
-    public void excluir(long id) { }
+    public void excluir(int id) {
+        this.sensorModelRepositoryJpa.deleteById(id);
+    }
 
     @Override
-    public void atualizar(long id, SensorModel sensorModel) { }
+    public void atualizar(int id, SensorModel sensorModel) {
+        sensorModel.setId(id);
+        this.sensorModelRepositoryJpa.save(sensorModel);
+    }
 }

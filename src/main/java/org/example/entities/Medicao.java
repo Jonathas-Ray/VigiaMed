@@ -9,6 +9,12 @@ public class Medicao {
         this.data_hora = data_hora;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id){ this.id = id;}
+
     public String getData_hora() {
         return data_hora;
     }
@@ -17,8 +23,6 @@ public class Medicao {
         this.data_hora = data_hora;
     }
 
-    public int getId() {
-        return id;
-    }
+
 
 }

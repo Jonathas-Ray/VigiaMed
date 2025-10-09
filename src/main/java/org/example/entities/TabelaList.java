@@ -1,20 +1,22 @@
 package org.example.entities;
 
 public class TabelaList {
-    private long id;
+    private int id;
     private String nome;
 
     public TabelaList() {
     }
 
-    public TabelaList(long id, String nome) {
+    public TabelaList(int id, String nome) {
         this.id = id;
         this.nome = nome;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
+
+    public void setId(int id){this.id = id;}
 
     public String getNome() {
         return nome;

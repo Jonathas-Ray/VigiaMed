@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/paciente")
 public class PacienteController {
+
     private final PacienteFacade pacienteFacade;
 
     @Autowired

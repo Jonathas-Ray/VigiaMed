@@ -8,7 +8,7 @@ import java.util.List;
 
 @Service
 public class SensorApplication {
-    private SensorRepository sensorRepository;
+    private final SensorRepository sensorRepository;
 
     public SensorApplication(SensorRepository sensorRepository) {
         this.sensorRepository = sensorRepository;

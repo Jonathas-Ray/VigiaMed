@@ -14,8 +14,8 @@ public class PacienteRepositoryJpa implements PacienteRepository {
     private final PacienteModelRepositoryJpa pacienteModelRepositoryJpa;
 
     @Autowired
-    public PacienteRepositoryJpa(PacienteModelRepositoryJpa pacienteModelRepositoryJpa, PacienteModelRepositoryJpa pacienteModelRepositoryJpa1){
-        this.pacienteModelRepositoryJpa = pacienteModelRepositoryJpa1;
+    public PacienteRepositoryJpa(PacienteModelRepositoryJpa pacienteModelRepositoryJpa) {
+        this.pacienteModelRepositoryJpa = pacienteModelRepositoryJpa;
     }
 
     @Override
@@ -25,7 +25,7 @@ public class PacienteRepositoryJpa implements PacienteRepository {
 
     @Override
     public PacienteModel buscarPorId(int id) {
-        return this.pacienteModelRepositoryJpa.findById(id).get();
+        return this.pacienteModelRepositoryJpa.findById(id).orElse(null);
     }
 
     @Override

@@ -2,7 +2,6 @@ package org.example.repositories;
 
 import org.example.interfaces.MedicaoListaModelRepositoryJpa;
 import org.example.interfaces.MedicaoListaRepository;
-import org.example.interfaces.MedicaoModelRepositoryJpa;
 import org.example.models.MedicaoListaModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -26,7 +25,7 @@ public class MedicaoListaRepositoryJpa implements MedicaoListaRepository {
 
     @Override
     public MedicaoListaModel buscarPorId(int id) {
-        return this.medicaoListaModelRepositoryJpa.findById(id).get();
+        return this.medicaoListaModelRepositoryJpa.findById(id).orElse(null);
     }
 
     @Override

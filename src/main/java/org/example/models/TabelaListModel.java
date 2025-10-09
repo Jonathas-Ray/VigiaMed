@@ -10,22 +10,22 @@ public class TabelaListModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
     private String nome;
 
     public TabelaListModel() {
     }
 
-    public TabelaListModel(long id, String nome) {
+    public TabelaListModel(int id, String nome) {
         this.id = id;
         this.nome = nome;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

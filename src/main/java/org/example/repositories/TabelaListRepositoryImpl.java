@@ -1,46 +1,49 @@
 package org.example.repositories;
 
-import org.example.entities.TabelaList;
 import org.example.interfaces.TabelaListRepository;
 import org.example.models.TabelaListModel;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
 public class TabelaListRepositoryImpl implements TabelaListRepository {
-    private List<TabelaListModel> tabelaListsModels = new ArrayList<>();
+    private final List<TabelaListModel> tabelas = new ArrayList<>();
+    private final AtomicInteger idCounter = new AtomicInteger(1);
 
     public List<TabelaListModel> buscarTodos() {
-        return tabelaListsModels;
+        return tabelas;
     }
 
     public TabelaListModel buscarPorId(int id) {
-        return tabelaListsModels
-                .stream()
-                .filter(tb -> tb.getId() == id)
-                .findFirst()
-                .get();
+        for (TabelaListModel tabela : tabelas) {
+            if (tabela.getId() == id) {
+                return tabela;
+            }
+        }
+        return null;
     }
 
-
-    public void adicionar(TabelaListModel tabelaListModel) {
-        this.tabelaListsModels.add(tabelaListModel);
+    public void adicionar(TabelaListModel tabela) {
+        if (tabela.getId() == 0) {
+            tabela.setId(idCounter.getAndIncrement());
+        }
+        tabelas.add(tabela);
     }
 
     public void excluir(int id) {
-        this.tabelaListsModels.removeIf(tb -> tb.getId() == id);
+        TabelaListModel tabelaRemover = buscarPorId(id);
+        if (tabelaRemover != null) {
+            tabelas.remove(tabelaRemover);
+        }
     }
 
-    public void atualizar(int id, TabelaListModel usuario) {
-
-    }
-
-    public void atualizar(int id, TabelaList tabelaList) {
-        TabelaListModel tabelaListExist = buscarPorId(id);
-        if (tabelaListExist != null) {
-            tabelaListExist.setNome(tabelaListExist.getNome());
+    public void atualizar(int id, TabelaListModel tabela) {
+        TabelaListModel existente = buscarPorId(id);
+        if (existente != null) {
+            existente.setNome(tabela.getNome());
         }
     }
 }
