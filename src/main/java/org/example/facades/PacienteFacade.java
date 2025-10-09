@@ -2,9 +2,11 @@ package org.example.facades;
 
 import org.example.applications.PacienteApplication;
 import org.example.models.PacienteModel;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class PacienteFacade {
     private final PacienteApplication pacienteApplication;
 

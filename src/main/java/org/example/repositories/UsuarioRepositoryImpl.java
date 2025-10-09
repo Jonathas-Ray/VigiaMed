@@ -2,7 +2,6 @@ package org.example.repositories;
 
 import org.example.models.UsuarioModel;
 import org.example.interfaces.UsuarioRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,39 +9,39 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 //
 public class UsuarioRepositoryImpl implements UsuarioRepository {
-    private final List<UsuarioModel> UsuarioModels = new ArrayList<>();
+    private final List<UsuarioModel> usuarioModels = new ArrayList<>();
     private final AtomicInteger idCounter = new AtomicInteger(1);
 
     public List<UsuarioModel> buscarTodos() {
-        return UsuarioModels;
+        return usuarioModels;
     }
 
     public UsuarioModel buscarPorId(int id) {
-        for (UsuarioModel UsuarioModel : UsuarioModels) {
-            if (UsuarioModel.getId() == id) {
-                return UsuarioModel;
+        for (UsuarioModel usuarioModel : usuarioModels) {
+            if (usuarioModel.getId() == id) {
+                return usuarioModel;
             }
         }
         return null;
     }
 
-    public void adicionar(UsuarioModel UsuarioModel) {
-        if (UsuarioModel.getId() == 0) {
-            UsuarioModel.setId(idCounter.getAndIncrement());
+    public void adicionar(UsuarioModel usuarioModel) {
+        if (usuarioModel.getId() == 0) {
+            usuarioModel.setId(idCounter.getAndIncrement());
         }
-        this.UsuarioModels.add(UsuarioModel);
+        this.usuarioModels.add(usuarioModel);
     }
 
     public void excluir(int id) {
-        UsuarioModel UsuarioParaRemover = null;
-        for (UsuarioModel Usuario : UsuarioModels) {
-            if (Usuario.getId() == id) {
-                UsuarioParaRemover = Usuario;
+        UsuarioModel usuarioParaRemover = null;
+        for (UsuarioModel usuario : usuarioModels) {
+            if (usuario.getId() == id) {
+                usuarioParaRemover = usuario;
                 break;
             }
         }
-        if (UsuarioParaRemover != null) {
-            UsuarioModels.remove(UsuarioParaRemover);
+        if (usuarioParaRemover != null) {
+            usuarioModels.remove(usuarioParaRemover);
         }
     }
 

@@ -1,16 +1,7 @@
 package org.example;
 
-import org.example.applications.UnidadeApplication;
-import org.example.applications.UsuarioApplication;
-import org.example.facades.UnidadeFacade;
-import org.example.facades.UsuarioFacade;
-import org.example.interfaces.UnidadeRepository;
-import org.example.interfaces.UsuarioRepository;
-import org.example.repositories.UnidadeRepositoryImpl;
-import org.example.repositories.UsuarioRepositoryImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class MainSpringBoot {

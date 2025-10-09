@@ -28,6 +28,8 @@ public class LogModel {
         return id;
     }
 
+    public void setId(int id){this.id = id;}
+
     public String getAcao() {
         return acao;
     }

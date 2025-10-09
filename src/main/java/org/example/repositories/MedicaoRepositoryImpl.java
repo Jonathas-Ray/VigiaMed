@@ -1,42 +1,49 @@
 package org.example.repositories;
 
-import org.example.entities.Medicao;
 import org.example.interfaces.MedicaoRepository;
 import org.example.models.MedicaoModel;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
 public class MedicaoRepositoryImpl implements MedicaoRepository {
-    private final List<MedicaoModel> MedicaoModels = new ArrayList<>();
+    private final List<MedicaoModel> medicoes = new ArrayList<>();
+    private final AtomicInteger idCounter = new AtomicInteger(1);
 
-    public List<MedicaoModel> buscarTodos() { return MedicaoModels; }
+    public List<MedicaoModel> buscarTodos() {
+        return medicoes;
+    }
 
     public MedicaoModel buscarPorId(int id) {
-        return MedicaoModels
-                .stream()
-                .filter(l -> l.getId() == id)
-                .findFirst()
-                .get();
+        for (MedicaoModel med : medicoes) {
+            if (med.getId() == id) {
+                return med;
+            }
+        }
+        return null;
     }
 
-    @Override
-    public void adicionar(MedicaoModel medicao) { }
-
-    @Override
-    public void atualizar(int id, MedicaoModel medicao) { }
-
-    public void adicionar(Medicao medicao) { }
+    public void adicionar(MedicaoModel medicao) {
+        if (medicao.getId() == 0) {
+            medicao.setId(idCounter.getAndIncrement());
+        }
+        medicoes.add(medicao);
+    }
 
     public void excluir(int id) {
-        this.MedicaoModels.removeIf(l -> l.getId() == id);
+        MedicaoModel medRemover = buscarPorId(id);
+        if (medRemover != null) {
+            medicoes.remove(medRemover);
+        }
     }
 
-    public void atualizar(int id, Medicao medicao) {
-        MedicaoModel medicaoInMemory = buscarPorId(id);
-        medicaoInMemory.setData_hora(medicao.getData_hora());
+    public void atualizar(int id, MedicaoModel medicao) {
+        MedicaoModel medExistente = buscarPorId(id);
+        if (medExistente != null) {
+            medExistente.setData_hora(medicao.getData_hora());
+        }
     }
-
 }

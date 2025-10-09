@@ -2,6 +2,7 @@ package org.example.controllers;
 
 import org.example.models.PacienteModel;
 import org.example.facades.PacienteFacade;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,8 +11,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/paciente")
 public class PacienteController {
+
     private final PacienteFacade pacienteFacade;
 
+    @Autowired
     public PacienteController(PacienteFacade pacienteFacade) {
         this.pacienteFacade = pacienteFacade;
     }

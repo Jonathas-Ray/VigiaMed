@@ -2,9 +2,11 @@ package org.example.facades;
 
 import org.example.applications.SensorApplication;
 import org.example.models.SensorModel;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class SensorFacade {
     private final SensorApplication sensorApplication;
 

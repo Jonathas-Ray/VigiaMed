@@ -9,12 +9,12 @@ public class SensorModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     private String nome;
     private String unidadeMedida;
 
-    public SensorModel(long id, String nome, String unidadeMedida) {
+    public SensorModel(int id, String nome, String unidadeMedida) {
         this.id = id;
         this.nome = nome;
         this.unidadeMedida = unidadeMedida;
@@ -22,11 +22,11 @@ public class SensorModel {
 
     public SensorModel(){}
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

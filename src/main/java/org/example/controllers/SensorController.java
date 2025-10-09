@@ -2,15 +2,19 @@ package org.example.controllers;
 
 import org.example.models.SensorModel;
 import org.example.facades.SensorFacade;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/sensor")
 public class SensorController {
+
     private final SensorFacade sensorFacade;
 
+    @Autowired
     public SensorController(SensorFacade sensorFacade) {
         this.sensorFacade = sensorFacade;
     }

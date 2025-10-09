@@ -11,7 +11,6 @@ import java.util.List;
 public class UnidadeApplication {
     private final UnidadeRepository unidadeRepository;
 
-    @Autowired
     public UnidadeApplication(UnidadeRepository unidadeRepository) {
         this.unidadeRepository = unidadeRepository;
     }

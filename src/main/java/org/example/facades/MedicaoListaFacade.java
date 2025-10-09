@@ -1,11 +1,12 @@
 package org.example.facades;
 
-
 import org.example.applications.MedicaoListaApplication;
 import org.example.models.MedicaoListaModel;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class MedicaoListaFacade {
     private final MedicaoListaApplication medicaoListaApplication;
 
@@ -22,7 +23,7 @@ public class MedicaoListaFacade {
     }
 
     public void adicionar(MedicaoListaModel medicaoListaModel) {
-        this.medicaoListaApplication.inserir(medicaoListaModel);
+        this.medicaoListaApplication.adicionar(medicaoListaModel);
     }
 
     public void excluir(int id) {

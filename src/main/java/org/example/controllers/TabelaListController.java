@@ -2,51 +2,50 @@ package org.example.controllers;
 
 import org.example.models.TabelaListModel;
 import org.example.facades.TabelaListFacade;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
-    @RestController
-    @RequestMapping("/api/unidade")
+@RestController
+@RequestMapping("/api/tabela-list")
 public class TabelaListController {
 
+    private final TabelaListFacade tabelaListFacade;
 
-        private final TabelaListFacade TabelaListFacade;
+    @Autowired
+    public TabelaListController(TabelaListFacade tabelaListFacade) {
+        this.tabelaListFacade = tabelaListFacade;
+    }
 
-        public TabelaListController(TabelaListFacade tabelaListFacade) {
-            this.TabelaListFacade = tabelaListFacade;
+    @GetMapping
+    public List<TabelaListModel> getTabelaLists() {
+        return tabelaListFacade.buscarTodos();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TabelaListModel> getTabelaList(@PathVariable int id) {
+        TabelaListModel tabelaListModel = tabelaListFacade.buscarPorId(id);
+        if (tabelaListModel != null) {
+            return ResponseEntity.ok(tabelaListModel);
+        } else {
+            return ResponseEntity.notFound().build();
         }
+    }
 
-        @GetMapping
-        public List<TabelaListModel> getTabelaLists() {
-            return TabelaListFacade.buscarTodos();
-        }
+    @PostMapping
+    public void criarTabelaList(@RequestBody TabelaListModel tabelaListModel) {
+        tabelaListFacade.adicionar(tabelaListModel);
+    }
 
-        @GetMapping("/{id}")
-        public ResponseEntity<TabelaListModel> getUnidade(@PathVariable int id) {
-            TabelaListModel tabelaListModel = TabelaListFacade.buscarPorId(id);
-            if (tabelaListModel != null) {
-                return ResponseEntity.ok(tabelaListModel);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        }
+    @PutMapping("/{id}")
+    public void atualizarTabelaList(@PathVariable int id, @RequestBody TabelaListModel tabelaListModel) {
+        tabelaListFacade.atualizar(id, tabelaListModel);
+    }
 
-        @PostMapping
-        public void criarTabelaList(@RequestBody TabelaListModel tabelaListModel) {
-            TabelaListFacade.adicionar(tabelaListModel);
-        }
-
-        @PutMapping("/{id}")
-        public void atualizarTabelaList(@PathVariable int id, @RequestBody TabelaListModel tabelaListModel) {
-            TabelaListFacade.atualizar(id, tabelaListModel);
-        }
-
-        @DeleteMapping("/{id}")
-        public void removerTabelaList(@PathVariable int id) {
-            TabelaListFacade.excluir(id);
-        }
-
+    @DeleteMapping("/{id}")
+    public void removerTabelaList(@PathVariable int id) {
+        tabelaListFacade.excluir(id);
+    }
 }

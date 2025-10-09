@@ -17,6 +17,8 @@ public class MedicaoLista {
         return id;
     }
 
+    public void setId(int id){ this.id = id;}
+
     public double getResultado() {
         return resultado;
     }
