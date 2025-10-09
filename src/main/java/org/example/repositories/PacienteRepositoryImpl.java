@@ -4,35 +4,47 @@ import org.example.interfaces.PacienteRepository;
 import org.example.models.PacienteModel;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
+@Repository
 public class PacienteRepositoryImpl implements PacienteRepository {
-    private List<PacienteModel> pacienteModels = new ArrayList<>();
+    private final List<PacienteModel> pacientes = new ArrayList<>();
+    private final AtomicInteger idCounter = new AtomicInteger(1);
 
     public List<PacienteModel> buscarTodos() {
-        return pacienteModels;
+        return pacientes;
     }
 
     public PacienteModel buscarPorId(int id) {
-        return pacienteModels
-                .stream()
-                .filter(l -> l.getId() == id)
-                .findFirst()
-                .get();
+        for (PacienteModel paciente : pacientes) {
+            if (paciente.getId() == id) {
+                return paciente;
+            }
+        }
+        return null;
     }
 
-    public void adicionar(PacienteModel pacienteModel) {
-        this.pacienteModels.add(pacienteModel);
+    public void adicionar(PacienteModel paciente) {
+        if (paciente.getId() == 0) {
+            paciente.setId(idCounter.getAndIncrement());
+        }
+        pacientes.add(paciente);
     }
 
     public void excluir(int id) {
-        this.pacienteModels.removeIf(l -> l.getId() == id);
+        PacienteModel pacienteRemover = buscarPorId(id);
+        if (pacienteRemover != null) {
+            pacientes.remove(pacienteRemover);
+        }
     }
 
-    public void atualizar(int id, PacienteModel pacienteModel) {
-        PacienteModel pacienteInMemory = buscarPorId(id);
-        pacienteInMemory.setNome(pacienteModel.getNome());
-        pacienteInMemory.setReferencia(pacienteModel.getReferencia());
+    public void atualizar(int id, PacienteModel paciente) {
+        PacienteModel existente = buscarPorId(id);
+        if (existente != null) {
+            existente.setNome(paciente.getNome());
+            existente.setReferencia(paciente.getReferencia());
+        }
     }
 }

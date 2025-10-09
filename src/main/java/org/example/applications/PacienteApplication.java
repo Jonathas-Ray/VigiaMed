@@ -8,7 +8,7 @@ import java.util.List;
 
 @Service
 public class PacienteApplication {
-    private PacienteRepository pacienteRepository;
+    private final PacienteRepository pacienteRepository;
 
     public PacienteApplication(PacienteRepository pacienteRepository) {
         this.pacienteRepository = pacienteRepository;

@@ -1,6 +1,5 @@
 package org.example.controllers;
 
-
 import org.example.models.LogModel;
 import org.example.facades.LogFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-    @RestController
-    @RequestMapping("/api/unidade")
+@RestController
+@RequestMapping("/api/log")
 public class LogController {
 
     private final LogFacade logFacade;
@@ -26,7 +25,7 @@ public class LogController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<LogModel> getUnidade(@PathVariable int id) {
+    public ResponseEntity<LogModel> getLog(@PathVariable int id) {
         LogModel logModel = logFacade.buscarPorId(id);
         if (logModel != null) {
             return ResponseEntity.ok(logModel);
@@ -47,6 +46,6 @@ public class LogController {
 
     @DeleteMapping("/{id}")
     public void removerLog(@PathVariable int id) {
-            logFacade.excluir(id);
-        }
+        logFacade.excluir(id);
+    }
 }

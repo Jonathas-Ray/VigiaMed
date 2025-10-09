@@ -20,26 +20,27 @@ public class LogRepositoryJpa implements LogRepository {
 
     @Override
     public List<LogModel> buscarTodos() {
-        return List.of();
+        return this.logModelRepositoryJpa.findAll();
     }
 
     @Override
     public LogModel buscarPorId(int id) {
-        return null;
+        return this.logModelRepositoryJpa.findById(id).orElse(null);
     }
 
     @Override
     public void adicionar(LogModel log) {
-
+        this.logModelRepositoryJpa.save(log);
     }
 
     @Override
     public void excluir(int id) {
-
+        this.logModelRepositoryJpa.deleteById(id);
     }
 
     @Override
     public void atualizar(int id, LogModel log) {
-
+        log.setId(id);
+        this.logModelRepositoryJpa.save(log);
     }
 }

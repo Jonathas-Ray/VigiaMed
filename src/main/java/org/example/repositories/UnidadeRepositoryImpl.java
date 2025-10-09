@@ -1,6 +1,5 @@
 package org.example.repositories;
 
-import org.example.entities.Unidade;
 import org.example.interfaces.UnidadeRepository;
 import org.example.models.UnidadeModel;
 import org.springframework.stereotype.Repository;

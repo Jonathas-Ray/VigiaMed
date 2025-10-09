@@ -1,6 +1,5 @@
 package org.example.interfaces;
 
-import org.example.entities.Unidade;
 import org.example.models.UnidadeModel;
 
 import java.util.List;

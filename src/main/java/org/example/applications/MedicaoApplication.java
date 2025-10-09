@@ -1,37 +1,36 @@
 package org.example.applications;
 
-import org.example.models.MedicaoModel;
 import org.example.interfaces.MedicaoRepository;
+import org.example.models.MedicaoModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class MedicaoApplication {
-    private MedicaoRepository medicaoRepository;
+    private final MedicaoRepository medicaoRepository;
 
     public MedicaoApplication(MedicaoRepository medicaoRepository) {
         this.medicaoRepository = medicaoRepository;
     }
 
-    public List<MedicaoModel> buscarTodos(){
-        return medicaoRepository.buscarTodos();
+    public List<MedicaoModel> buscarTodos() {
+        return this.medicaoRepository.buscarTodos();
     }
 
-    public MedicaoModel buscarPorId(int id){
-        return medicaoRepository.buscarPorId(id);
+    public MedicaoModel buscarPorId(int id) {
+        return this.medicaoRepository.buscarPorId(id);
     }
 
-    public void inserir(MedicaoModel medicaoModel){
-        medicaoRepository.adicionar(medicaoModel);
+    public void adicionar(MedicaoModel medicaoModel) {
+        this.medicaoRepository.adicionar(medicaoModel);
     }
 
-    public void excluir(int id){
-        medicaoRepository.excluir(id);
+    public void excluir(int id) {
+        this.medicaoRepository.excluir(id);
     }
 
-    public void atualizar(int id, MedicaoModel medicaoModel){
-        medicaoRepository.atualizar(medicaoModel.getId(), medicaoModel);
+    public void atualizar(int id, MedicaoModel medicaoModel) {
+        this.medicaoRepository.atualizar(id, medicaoModel);
     }
-
 }

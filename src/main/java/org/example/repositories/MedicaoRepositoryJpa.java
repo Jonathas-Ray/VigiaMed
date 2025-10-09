@@ -2,7 +2,6 @@ package org.example.repositories;
 
 import org.example.interfaces.MedicaoModelRepositoryJpa;
 import org.example.interfaces.MedicaoRepository;
-import org.example.interfaces.UsuarioModelRepositoryJpa;
 import org.example.models.MedicaoModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -12,35 +11,36 @@ import java.util.List;
 @Repository
 public class MedicaoRepositoryJpa implements MedicaoRepository {
 
-    private final UsuarioModelRepositoryJpa usuarioModelRepositoryJpa;
+    private final MedicaoModelRepositoryJpa medicaoModelRepositoryJpa;
 
     @Autowired
-    public MedicaoRepositoryJpa(UsuarioModelRepositoryJpa usuarioModelRepositoryJpa) {
-        this.usuarioModelRepositoryJpa = usuarioModelRepositoryJpa;
+    public MedicaoRepositoryJpa(MedicaoModelRepositoryJpa medicaoModelRepositoryJpa) {
+        this.medicaoModelRepositoryJpa = medicaoModelRepositoryJpa;
     }
 
     @Override
     public List<MedicaoModel> buscarTodos() {
-        return List.of();
+        return this.medicaoModelRepositoryJpa.findAll();
     }
 
     @Override
     public MedicaoModel buscarPorId(int id) {
-        return null;
+        return this.medicaoModelRepositoryJpa.findById(id).orElse(null);
     }
 
     @Override
     public void adicionar(MedicaoModel medicao) {
-
+        this.medicaoModelRepositoryJpa.save(medicao);
     }
 
     @Override
     public void excluir(int id) {
-
+        this.medicaoModelRepositoryJpa.deleteById(id);
     }
 
     @Override
     public void atualizar(int id, MedicaoModel medicao) {
-
+        medicao.setId(id);
+        this.medicaoModelRepositoryJpa.save(medicao);
     }
 }
