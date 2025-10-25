@@ -2,6 +2,10 @@ package org.example.models;
 
 
 import jakarta.persistence.*;
+import org.example.entities.MedicaoLista;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Sensor")
@@ -54,4 +58,7 @@ public class SensorModel {
                 ", unidadeMedida='" + unidadeMedida + '\'' +
                 '}';
     }
+
+    @OneToMany(mappedBy = "sensor")
+    private List<MedicaoLista> medicaoLista = new ArrayList<>();
 }

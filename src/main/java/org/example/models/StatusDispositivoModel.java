@@ -41,4 +41,6 @@ public class StatusDispositivoModel {
                 ", estado='" + estado + '\'' +
                 '}';
     }
+
+
 }

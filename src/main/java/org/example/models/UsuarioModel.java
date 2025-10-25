@@ -1,6 +1,11 @@
 package org.example.models;
 
 import jakarta.persistence.*;
+import org.example.entities.Dispositivo;
+import org.example.entities.Log;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Usuario")
@@ -14,7 +19,12 @@ public class UsuarioModel {
     private String tipo;
     private String email;
     private String senha;
+
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "Unidade_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "unidade_id"))
     private int unidade;
+
+
 
     public UsuarioModel(){}
 
@@ -86,4 +96,9 @@ public class UsuarioModel {
                 ", unidade=" + unidade +
                 '}';
     }
+
+    @OneToMany(mappedBy = "usuario")
+    private List<Log> log = new ArrayList<>();
+
+
 }

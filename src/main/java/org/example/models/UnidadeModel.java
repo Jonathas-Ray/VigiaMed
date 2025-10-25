@@ -1,6 +1,12 @@
 package org.example.models; // repository, application, facade de cada classe
 
 import jakarta.persistence.*;
+import org.example.entities.Dispositivo;
+import org.example.entities.MedicaoLista;
+import org.example.entities.Usuario;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Unidade")
@@ -75,4 +81,10 @@ public class UnidadeModel {
                 ", email='" + email + '\'' +
                 '}';
     }
+
+    @OneToMany(mappedBy = "unidade")
+    private List<Dispositivo> dispositivo = new ArrayList<>();
+
+    @OneToMany(mappedBy = "unidade")
+    private List<Usuario> usuario = new ArrayList<>();
 }
