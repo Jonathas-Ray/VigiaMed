@@ -3,6 +3,7 @@ package org.example.models;
 import jakarta.persistence.*;
 import org.example.entities.Dispositivo;
 import org.example.entities.Log;
+import org.example.entities.Unidade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,20 +22,19 @@ public class UsuarioModel {
     private String senha;
 
     @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "Unidade_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "unidade_id"))
-    private int unidade;
+    @JoinColumn(name = "unidade_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "unidade_id"))
+    private Unidade unidade;
 
 
 
     public UsuarioModel(){}
 
-    public UsuarioModel(int id, String nome, String tipo, String email, String senha, int unidade) {
+    public UsuarioModel(int id, String nome, String tipo, String email, String senha) {
         this.id = id;
         this.nome = nome;
         this.tipo = tipo;
         this.email = email;
         this.senha = senha;
-        this.unidade = unidade;
     }
 
     public long getId() {
@@ -78,10 +78,10 @@ public class UsuarioModel {
     }
 
     public int getUnidade() {
-        return unidade;
+        return unidade.getId();
     }
 
-    public void setUnidade(int unidade) {
+    public void setUnidade(Unidade unidade) {
         this.unidade = unidade;
     }
 

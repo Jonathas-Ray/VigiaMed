@@ -58,7 +58,4 @@ public class SensorModel {
                 ", unidadeMedida='" + unidadeMedida + '\'' +
                 '}';
     }
-
-    @OneToMany(mappedBy = "sensor")
-    private List<MedicaoLista> medicaoLista = new ArrayList<>();
 }

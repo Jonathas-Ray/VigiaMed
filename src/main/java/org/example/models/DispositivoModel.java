@@ -1,6 +1,9 @@
 package org.example.models;
 
 import jakarta.persistence.*;
+import org.example.entities.Dispositivo;
+import org.example.entities.StatusDispositivo;
+import org.example.entities.Unidade;
 
 import java.util.Date;
 
@@ -17,6 +20,14 @@ public class DispositivoModel {
     private String numeroSerie;
 
     private Date dataAquisicao;
+
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "unidade_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "unidade_id"))
+    private Unidade unidade;
+
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "dispositivo_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "statusDispositivo_id"))
+    private StatusDispositivo statusDispositivo;
 
     public DispositivoModel(){}
 

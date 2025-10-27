@@ -84,7 +84,4 @@ public class UnidadeModel {
 
     @OneToMany(mappedBy = "unidade")
     private List<Dispositivo> dispositivo = new ArrayList<>();
-
-    @OneToMany(mappedBy = "unidade")
-    private List<Usuario> usuario = new ArrayList<>();
 }

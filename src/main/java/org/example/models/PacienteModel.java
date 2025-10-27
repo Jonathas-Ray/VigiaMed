@@ -1,6 +1,11 @@
 package org.example.models;
 
 import jakarta.persistence.*;
+import org.example.entities.Log;
+import org.example.entities.Medicao;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Paciente")

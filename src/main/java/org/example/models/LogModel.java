@@ -1,8 +1,14 @@
 package org.example.models;
 
 import jakarta.persistence.*;
+import org.example.entities.Medicao;
+import org.example.entities.MedicaoLista;
+import org.example.entities.TabelaList;
+import org.example.entities.Usuario;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "Log")
@@ -14,6 +20,14 @@ public class LogModel {
     private String acao;
     private String descricao;
     private Date data;
+
+    @ManyToOne
+    @JoinColumn(name = "tabelaList_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "mtabelaList_id"), insertable = false, updatable = false)
+    private TabelaList tabelaList;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "usuario_id"), insertable = false, updatable = false)
+    private Usuario usuario;
 
     public LogModel(){}
 
@@ -60,4 +74,5 @@ public class LogModel {
                 ", data=" + data +
                 '}';
     }
+
 }
