@@ -50,6 +50,6 @@ public class TabelaListModel {
                 '}';
     }
 
-    @OneToMany(mappedBy = "tabelaList")
+    @OneToMany(mappedBy = "tabelaListModel")
     private List<LogModel> logModels = new ArrayList<>();
 }

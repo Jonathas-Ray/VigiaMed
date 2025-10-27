@@ -1,8 +1,6 @@
 package org.example.models;
 
 import jakarta.persistence.*;
-import org.example.entities.Dispositivo;
-import org.example.entities.Log;
 import org.example.entities.Unidade;
 
 import java.util.ArrayList;
@@ -22,8 +20,8 @@ public class UsuarioModel {
     private String senha;
 
     @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "unidade_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "unidade_id"))
-    private Unidade unidade;
+    @JoinColumn(name = "unidade_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "unidade_id_fk"))
+    private UnidadeModel unidadeModel;
 
 
 
@@ -77,12 +75,12 @@ public class UsuarioModel {
         this.senha = senha;
     }
 
-    public Unidade getUnidade() {
-        return unidade;
+    public UnidadeModel getUnidadeModel() {
+        return unidadeModel;
     }
 
-    public void setUnidade(Unidade unidade) {
-        this.unidade = unidade;
+    public void setUnidadeModel(UnidadeModel unidadeModel) {
+        this.unidadeModel = unidadeModel;
     }
 
     @Override
@@ -93,11 +91,11 @@ public class UsuarioModel {
                 ", tipo='" + tipo + '\'' +
                 ", email='" + email + '\'' +
                 ", senha='" + senha + '\'' +
-                ", unidade=" + unidade +
+                ", unidade=" + unidadeModel +
                 '}';
     }
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuarioModel")
     private List<LogModel> logModel = new ArrayList<>();
 
 

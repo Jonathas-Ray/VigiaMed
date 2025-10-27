@@ -19,11 +19,11 @@ public class MedicaoModel {
     private String data_hora;
 
     @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "dispositivo_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "dispositivo_id"))
+    @JoinColumn(name = "dispositivo_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "dispositivo_id_fk"))
     private DispositivoModel dispositivoModel;
 
     @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "paciente_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "paciente_id"))
+    @JoinColumn(name = "paciente_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "paciente_id_fk"))
     private PacienteModel pacienteModel;
 
 
@@ -55,6 +55,6 @@ public class MedicaoModel {
                 '}';
     }
 
-    @OneToMany(mappedBy = "medicaoLista")
-    private List<MedicaoLista> medicaoLista = new ArrayList<>();
+    @OneToMany(mappedBy = "medicaoModel")
+    private List<MedicaoListaModel> medicaoListaModel = new ArrayList<>();
 }

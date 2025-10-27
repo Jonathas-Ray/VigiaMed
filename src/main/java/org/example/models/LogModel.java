@@ -22,11 +22,11 @@ public class LogModel {
     private Date data;
 
     @ManyToOne
-    @JoinColumn(name = "tabelaList_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "mtabelaList_id"), insertable = false, updatable = false)
+    @JoinColumn(name = "tabelaList_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "mtabelaList_id_fk"), insertable = false, updatable = false)
     private TabelaListModel tabelaListModel;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "usuario_id"), insertable = false, updatable = false)
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "usuario_id_fk"), insertable = false, updatable = false)
     private UsuarioModel usuarioModel;
 
     public LogModel(){}

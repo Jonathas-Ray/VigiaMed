@@ -52,7 +52,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
             usuarioModelExistente.setTipo(usuarioModel.getTipo());
             usuarioModelExistente.setEmail(usuarioModel.getEmail());
             usuarioModelExistente.setSenha(usuarioModel.getSenha());
-            usuarioModelExistente.setUnidade(usuarioModel.getUnidade());
+            usuarioModelExistente.setUnidadeModel(usuarioModel.getUnidadeModel());
         }
     }
 }

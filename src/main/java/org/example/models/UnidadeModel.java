@@ -82,6 +82,6 @@ public class UnidadeModel {
                 '}';
     }
 
-    @OneToMany(mappedBy = "unidade")
+    @OneToMany(mappedBy = "unidadeModel")
     private List<DispositivoModel> dispositivoModels = new ArrayList<>();
 }

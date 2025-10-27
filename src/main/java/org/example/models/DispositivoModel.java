@@ -22,11 +22,11 @@ public class DispositivoModel {
     private Date dataAquisicao;
 
     @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "unidade_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "unidade_id"))
+    @JoinColumn(name = "unidade_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "unidade_id_fk"))
     private UnidadeModel unidadeModel;
 
     @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "dispositivo_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "statusDispositivo_id"))
+    @JoinColumn(name = "statusDispositivo_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "statusDispositivo_id_fk"))
     private StatusDispositivoModel statusDispositivoModel;
 
     public DispositivoModel(){}
