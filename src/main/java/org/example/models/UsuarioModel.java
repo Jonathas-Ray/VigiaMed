@@ -77,8 +77,8 @@ public class UsuarioModel {
         this.senha = senha;
     }
 
-    public int getUnidade() {
-        return unidade.getId();
+    public Unidade getUnidade() {
+        return unidade;
     }
 
     public void setUnidade(Unidade unidade) {
