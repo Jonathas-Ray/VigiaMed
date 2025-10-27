@@ -22,11 +22,11 @@ public class MedicaoListaModel {
 
     @ManyToOne
     @JoinColumn(name = "medicao_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "medicao_id"), insertable = false, updatable = false)
-    private Medicao medicao;
+    private MedicaoModel medicaoModel;
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "sensor_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "sensor_id"))
-    private Sensor sensor;
+    private SensorModel sensorModel;
 
     public MedicaoListaModel(int id, double resultado, String tipoMedicao, String data_hora) {
         this.id = id;

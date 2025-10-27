@@ -51,5 +51,5 @@ public class TabelaListModel {
     }
 
     @OneToMany(mappedBy = "tabelaList")
-    private List<Log> log = new ArrayList<>();
+    private List<LogModel> logModels = new ArrayList<>();
 }

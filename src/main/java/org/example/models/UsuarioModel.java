@@ -98,7 +98,7 @@ public class UsuarioModel {
     }
 
     @OneToMany(mappedBy = "usuario")
-    private List<Log> log = new ArrayList<>();
+    private List<LogModel> logModel = new ArrayList<>();
 
 
 }

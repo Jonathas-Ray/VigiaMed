@@ -20,11 +20,11 @@ public class MedicaoModel {
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "dispositivo_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "dispositivo_id"))
-    private Dispositivo dispositivo;
+    private DispositivoModel dispositivoModel;
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "paciente_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "paciente_id"))
-    private Paciente paciente;
+    private PacienteModel pacienteModel;
 
 
     public MedicaoModel(int id, String data_hora) {
