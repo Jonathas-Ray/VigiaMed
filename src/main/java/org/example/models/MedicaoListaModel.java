@@ -1,11 +1,6 @@
 package org.example.models;
 
 import jakarta.persistence.*;
-import org.example.entities.Medicao;
-import org.example.entities.Sensor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "Medicao-Lista")
@@ -25,7 +20,7 @@ public class MedicaoListaModel {
     private MedicaoModel medicaoModel;
 
     @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "sensor_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "sensor_id_fk"))
+    @JoinColumn(name = "sensor_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "sensor_id_fk"), insertable = false, updatable = false)
     private SensorModel sensorModel;
 
     public MedicaoListaModel(int id, double resultado, String tipoMedicao, String data_hora) {

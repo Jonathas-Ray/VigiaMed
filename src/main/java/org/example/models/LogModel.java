@@ -1,14 +1,10 @@
 package org.example.models;
 
 import jakarta.persistence.*;
-import org.example.entities.Medicao;
-import org.example.entities.MedicaoLista;
-import org.example.entities.TabelaList;
-import org.example.entities.Usuario;
 
-import java.util.ArrayList;
+
 import java.util.Date;
-import java.util.List;
+
 
 @Entity
 @Table(name = "Log")

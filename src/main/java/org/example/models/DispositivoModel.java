@@ -1,9 +1,6 @@
 package org.example.models;
 
 import jakarta.persistence.*;
-import org.example.entities.Dispositivo;
-import org.example.entities.StatusDispositivo;
-import org.example.entities.Unidade;
 
 import java.util.Date;
 
@@ -22,11 +19,11 @@ public class DispositivoModel {
     private Date dataAquisicao;
 
     @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "unidade_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "unidade_id_fk"))
+    @JoinColumn(name = "unidade_id", referencedColumnName = "id", insertable = false, updatable = false)
     private UnidadeModel unidadeModel;
 
     @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "statusDispositivo_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "statusDispositivo_id_fk"))
+    @JoinColumn(name = "statusDispositivo_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "statusDispositivo_id_fk"), insertable = false, updatable = false)
     private StatusDispositivoModel statusDispositivoModel;
 
     public DispositivoModel(){}

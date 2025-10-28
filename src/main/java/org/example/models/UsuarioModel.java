@@ -1,7 +1,6 @@
 package org.example.models;
 
 import jakarta.persistence.*;
-import org.example.entities.Unidade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,7 @@ public class UsuarioModel {
     private String senha;
 
     @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "unidade_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "unidade_id_fk"))
+    @JoinColumn(name = "unidade_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "usu_unidade_id_fk"), insertable = false, updatable = false)
     private UnidadeModel unidadeModel;
 
 
