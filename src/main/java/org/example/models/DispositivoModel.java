@@ -18,6 +18,14 @@ public class DispositivoModel {
 
     private Date dataAquisicao;
 
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "unidade_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private UnidadeModel unidadeModel;
+
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "statusDispositivo_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "statusDispositivo_id_fk"), insertable = false, updatable = false)
+    private StatusDispositivoModel statusDispositivoModel;
+
     public DispositivoModel(){}
 
     public DispositivoModel (String modelo, String numeroSerie, Date dataAquisicao){
