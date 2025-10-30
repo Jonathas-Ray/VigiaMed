@@ -11,21 +11,28 @@ public class UsuarioModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     private String nome;
     private String tipo;
     private String email;
     private String senha;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "unidade_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "unidade_id"), insertable = false, updatable = false)
+    @Column(name = "unidade_id")
+    public int unidadeId;
+
+    @ManyToOne
+    @JoinColumn(name = "unidade_id", referencedColumnName = "id", insertable = false, updatable = false)
     private UnidadeModel unidadeModel;
+//
+//    @OneToMany(mappedBy = "usuarioModel")
+//    private List<LogModel> logModels = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "usuarioModel")
+//    private List<LogModel> logModel = new ArrayList<>();
 
-    @OneToMany(mappedBy = "usuarioModel")
-    private List<LogModel> logModels = new ArrayList<>();
-
-    public UsuarioModel(){}
+    public UsuarioModel() {
+    }
 
     public UsuarioModel(int id, String nome, String tipo, String email, String senha) {
         this.id = id;
@@ -39,7 +46,7 @@ public class UsuarioModel {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -75,28 +82,11 @@ public class UsuarioModel {
         this.senha = senha;
     }
 
-    public UnidadeModel getUnidadeModel() {
-        return unidadeModel;
-    }
-
-    public void setUnidadeModel(UnidadeModel unidadeModel) {
-        this.unidadeModel = unidadeModel;
-    }
-
-    @Override
-    public String toString() {
-        return "UsuarioModel{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", tipo='" + tipo + '\'' +
-                ", email='" + email + '\'' +
-                ", senha='" + senha + '\'' +
-                ", unidade=" + unidadeModel +
-                '}';
-    }
-
-    @OneToMany(mappedBy = "usuarioModel")
-    private List<LogModel> logModel = new ArrayList<>();
-
-
+//    public UnidadeModel getUnidadeModel() {
+//        return unidadeModel;
+//    }
+//
+//    public void setUnidadeModel(UnidadeModel unidadeModel) {
+//        this.unidadeModel = unidadeModel;
+//    }
 }

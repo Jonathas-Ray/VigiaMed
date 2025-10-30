@@ -16,6 +16,9 @@ public class TabelaListModel {
     private int id;
     private String nome;
 
+    @OneToMany(mappedBy = "tabelaListModel")
+    private List<LogModel> logModels = new ArrayList<>();
+
     public TabelaListModel() {
     }
 
@@ -47,7 +50,4 @@ public class TabelaListModel {
                 ", nome='" + nome + '\'' +
                 '}';
     }
-
-    @OneToMany(mappedBy = "tabelaListModel")
-    private List<LogModel> logModels = new ArrayList<>();
 }

@@ -6,20 +6,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "Medição")
+@Table(name = "Medicao")
 public class MedicaoModel {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String data_hora;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "dispositivo_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "dispositivo_id_fk"), insertable = false, updatable = false)
+    @Column(name = "dispositivo_id")
+    private int dispositivoId;
+
+    @Column(name = "paciente_id")
+    private int pacienteId;
+
+    @OneToOne
+    @JoinColumn(name = "dispositivo_id", referencedColumnName = "id", insertable = false, updatable = false)
     private DispositivoModel dispositivoModel;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "paciente_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "paciente_id_fk"), insertable = false, updatable = false)
+    @OneToOne
+    @JoinColumn(name = "paciente_id", referencedColumnName = "id", insertable = false, updatable = false)
     private PacienteModel pacienteModel;
 
 

@@ -21,14 +21,14 @@ public class LogModel {
     private int tabelaListId;
 
     @ManyToOne
-    @JoinColumn(name = "tabelaList_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "mtabelaList_id_fk"), insertable = false, updatable = false)
+    @JoinColumn(name = "tabelaList_id", referencedColumnName = "id", insertable = false, updatable = false)
     private TabelaListModel tabelaListModel;
 
     @Column(name = "usuario_id")
     private int usuarioId;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "usuario_id_fk"), insertable = false, updatable = false)
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id", insertable = false, updatable = false)
     private UsuarioModel usuarioModel;
 
     public LogModel(){}
