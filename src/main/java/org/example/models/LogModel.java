@@ -17,9 +17,15 @@ public class LogModel {
     private String descricao;
     private Date data;
 
+    @Column(name = "tabelaList_id")
+    private int tabelaListId;
+
     @ManyToOne
     @JoinColumn(name = "tabelaList_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "mtabelaList_id_fk"), insertable = false, updatable = false)
     private TabelaListModel tabelaListModel;
+
+    @Column(name = "usuario_id")
+    private int usuarioId;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "usuario_id_fk"), insertable = false, updatable = false)

@@ -18,11 +18,12 @@ public class UsuarioModel {
     private String email;
     private String senha;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "unidade_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "usu_unidade_id_fk"), insertable = false, updatable = false)
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "unidade_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "unidade_id"), insertable = false, updatable = false)
     private UnidadeModel unidadeModel;
 
-
+    @OneToMany(mappedBy = "usuarioModel")
+    private List<LogModel> logModels = new ArrayList<>();
 
     public UsuarioModel(){}
 
