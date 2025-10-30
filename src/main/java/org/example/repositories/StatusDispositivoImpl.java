@@ -2,7 +2,6 @@ package org.example.repositories;
 
 import org.example.interfaces.StatusDispositivoRepository;
 import org.example.models.StatusDispositivoModel;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;

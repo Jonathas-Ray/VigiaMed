@@ -3,7 +3,7 @@ package org.example.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Medição-Lista")
+@Table(name = "Medicao-Lista")
 
 public class MedicaoListaModel {
 
@@ -14,6 +14,14 @@ public class MedicaoListaModel {
     private double resultado;
     private String tipoMedicao;
     private String data_hora;
+
+    @ManyToOne
+    @JoinColumn(name = "medicao_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "medicao_id_fk"), insertable = false, updatable = false)
+    private MedicaoModel medicaoModel;
+
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "sensor_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "sensor_id_fk"), insertable = false, updatable = false)
+    private SensorModel sensorModel;
 
     public MedicaoListaModel(int id, double resultado, String tipoMedicao, String data_hora) {
         this.id = id;

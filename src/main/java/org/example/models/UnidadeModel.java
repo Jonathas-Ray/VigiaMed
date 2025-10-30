@@ -2,6 +2,9 @@ package org.example.models; // repository, application, facade de cada classe
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "Unidade")
 public class UnidadeModel {
@@ -11,16 +14,16 @@ public class UnidadeModel {
     private long id;
 
     private String nome;
-    private String endereço;
+    private String endereco;
     private String telefone;
     private String email;
 
     public UnidadeModel(){}
 
-    public UnidadeModel(int id, String nome, String endereço, String telefone, String email) {
+    public UnidadeModel(int id, String nome, String endereco, String telefone, String email) {
         this.id = id;
         this.nome = nome;
-        this.endereço = endereço;
+        this.endereco = endereco;
         this.telefone = telefone;
         this.email = email;
     }
@@ -41,12 +44,12 @@ public class UnidadeModel {
         this.nome = nome;
     }
 
-    public String getEndereço() {
-        return endereço;
+    public String getEndereco() {
+        return endereco;
     }
 
-    public void setEndereço(String endereço) {
-        this.endereço = endereço;
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
     }
 
     public String getTelefone() {
@@ -70,9 +73,12 @@ public class UnidadeModel {
         return "UnidadeModel{" +
                 "id=" + id +
                 ", nome='" + nome + '\'' +
-                ", endereço='" + endereço + '\'' +
+                ", endereco='" + endereco + '\'' +
                 ", telefone='" + telefone + '\'' +
                 ", email='" + email + '\'' +
                 '}';
     }
+
+    @OneToMany(mappedBy = "unidadeModel")
+    private List<DispositivoModel> dispositivoModels = new ArrayList<>();
 }

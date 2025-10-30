@@ -2,6 +2,9 @@ package org.example.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "Usuario")
 public class UsuarioModel {
@@ -14,17 +17,21 @@ public class UsuarioModel {
     private String tipo;
     private String email;
     private String senha;
-    private int unidade;
+
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "unidade_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "usu_unidade_id_fk"), insertable = false, updatable = false)
+    private UnidadeModel unidadeModel;
+
+
 
     public UsuarioModel(){}
 
-    public UsuarioModel(int id, String nome, String tipo, String email, String senha, int unidade) {
+    public UsuarioModel(int id, String nome, String tipo, String email, String senha) {
         this.id = id;
         this.nome = nome;
         this.tipo = tipo;
         this.email = email;
         this.senha = senha;
-        this.unidade = unidade;
     }
 
     public long getId() {
@@ -67,12 +74,12 @@ public class UsuarioModel {
         this.senha = senha;
     }
 
-    public int getUnidade() {
-        return unidade;
+    public UnidadeModel getUnidadeModel() {
+        return unidadeModel;
     }
 
-    public void setUnidade(int unidade) {
-        this.unidade = unidade;
+    public void setUnidadeModel(UnidadeModel unidadeModel) {
+        this.unidadeModel = unidadeModel;
     }
 
     @Override
@@ -83,7 +90,12 @@ public class UsuarioModel {
                 ", tipo='" + tipo + '\'' +
                 ", email='" + email + '\'' +
                 ", senha='" + senha + '\'' +
-                ", unidade=" + unidade +
+                ", unidade=" + unidadeModel +
                 '}';
     }
+
+    @OneToMany(mappedBy = "usuarioModel")
+    private List<LogModel> logModel = new ArrayList<>();
+
+
 }
