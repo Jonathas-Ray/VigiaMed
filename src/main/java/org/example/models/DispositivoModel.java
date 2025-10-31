@@ -16,18 +16,14 @@ public class DispositivoModel {
     private String numeroSerie;
     private Date dataAquisicao;
 
-    // 🔹 Unidade (muitos dispositivos pertencem a uma unidade)
     @ManyToOne
     @JoinColumn(name = "unidade_id", referencedColumnName = "id", insertable = false, updatable = false)
     private UnidadeModel unidade;
 
-    // 🔹 Status (1:1)
     @OneToOne
     @JoinColumn(name = "status_dispositivo_id", referencedColumnName = "id", insertable = false, updatable = false)
     private StatusDispositivoModel status;
 
-    // 🔹 Medições (1 dispositivo tem várias medições)
-    @OneToMany(mappedBy = "dispositivo", cascade = CascadeType.ALL)
     private List<MedicaoModel> medicoes;
 
     public DispositivoModel() {}

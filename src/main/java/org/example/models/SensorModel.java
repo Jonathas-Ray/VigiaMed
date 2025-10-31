@@ -14,7 +14,6 @@ public class SensorModel {
     private String nome;
     private String unidadeMedida;
 
-    // Um sensor pode ter várias medições
     @OneToMany(mappedBy = "sensorModel", cascade = CascadeType.ALL)
     private List<MedicaoListaModel> medicoes;
 
