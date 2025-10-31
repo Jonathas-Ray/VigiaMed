@@ -1,8 +1,6 @@
-package org.example.models; // repository, application, facade de cada classe
+package org.example.models;
 
 import jakarta.persistence.*;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,13 +16,13 @@ public class UnidadeModel {
     private String telefone;
     private String email;
 
-    @OneToMany(mappedBy = "unidadeModel")
-    private List<DispositivoModel> dispositivoModels = new ArrayList<>();
+    @OneToMany(mappedBy = "unidade", cascade = CascadeType.ALL)
+    private List<DispositivoModel> dispositivos;
 
-    @OneToMany(mappedBy = "unidadeModel")
-    private List<UsuarioModel> usuarioModels = new ArrayList<>();
+    @OneToMany(mappedBy = "unidade", cascade = CascadeType.ALL) // 🔹 agora compatível com UsuarioModel
+    private List<UsuarioModel> usuarios;
 
-    public UnidadeModel(){}
+    public UnidadeModel() {}
 
     public UnidadeModel(int id, String nome, String endereco, String telefone, String email) {
         this.id = id;
@@ -34,7 +32,7 @@ public class UnidadeModel {
         this.email = email;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -72,5 +70,21 @@ public class UnidadeModel {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<UsuarioModel> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<UsuarioModel> usuarios) {
+        this.usuarios = usuarios;
+    }
+
+    public List<DispositivoModel> getDispositivos() {
+        return dispositivos;
+    }
+
+    public void setDispositivos(List<DispositivoModel> dispositivos) {
+        this.dispositivos = dispositivos;
     }
 }

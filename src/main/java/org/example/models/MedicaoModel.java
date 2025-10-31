@@ -1,52 +1,57 @@
 package org.example.models;
 
 import jakarta.persistence.*;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "Medicao")
 public class MedicaoModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String data_hora;
 
-    @Column(name = "dispositivo_id")
-    private int dispositivoId;
+    private String descricao;
+    private String dataHora;
 
-    @Column(name = "paciente_id")
-    private int pacienteId;
+    // 🔹 Relação com PacienteModel (muitas medições podem ser de um paciente)
+    @ManyToOne
+    @JoinColumn(name = "paciente_id")
+    private PacienteModel paciente;
 
-    @OneToOne
-    @JoinColumn(name = "dispositivo_id", referencedColumnName = "id", insertable = false, updatable = false)
-    private DispositivoModel dispositivoModel;
+    // 🔹 Relação com DispositivoModel (muitas medições podem vir de um dispositivo)
+    @ManyToOne
+    @JoinColumn(name = "dispositivo_id")
+    private DispositivoModel dispositivo;
 
-    @OneToOne
-    @JoinColumn(name = "paciente_id", referencedColumnName = "id", insertable = false, updatable = false)
-    private PacienteModel pacienteModel;
+    // 🔹 Relação com MedicaoListaModel (1 medição pode ter várias medições detalhadas)
+    @OneToMany(mappedBy = "medicaoModel", cascade = CascadeType.ALL)
+    private List<MedicaoListaModel> medicoesLista;
 
+    public MedicaoModel() {}
 
-    public MedicaoModel(int id, String data_hora) {
+    public MedicaoModel(int id, String descricao, String dataHora) {
         this.id = id;
-        this.data_hora = data_hora;
+        this.descricao = descricao;
+        this.dataHora = dataHora;
     }
 
-    public MedicaoModel(){}
-
+    // Getters e setters
     public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    public void setId(int id){this.id = id;}
+    public String getDescricao() { return descricao; }
+    public void setDescricao(String descricao) { this.descricao = descricao; }
 
-    public String getData_hora() {
-        return this.data_hora;
-    }
+    public String getDataHora() { return dataHora; }
+    public void setDataHora(String dataHora) { this.dataHora = dataHora; }
 
-    public void setData_hora(String data_hora) {
-        this.data_hora = data_hora;
-    }
+    public PacienteModel getPaciente() { return paciente; }
+    public void setPaciente(PacienteModel paciente) { this.paciente = paciente; }
 
-    @OneToMany(mappedBy = "medicaoModel")
-    private List<MedicaoListaModel> medicaoListaModel = new ArrayList<>();
+    public DispositivoModel getDispositivo() { return dispositivo; }
+    public void setDispositivo(DispositivoModel dispositivo) { this.dispositivo = dispositivo; }
+
+    public List<MedicaoListaModel> getMedicoesLista() { return medicoesLista; }
+    public void setMedicoesLista(List<MedicaoListaModel> medicoesLista) { this.medicoesLista = medicoesLista; }
 }

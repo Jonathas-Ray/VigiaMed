@@ -3,8 +3,7 @@ package org.example.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Medicao-Lista")
-
+@Table(name = "MedicaoLista")
 public class MedicaoListaModel {
 
     @Id
@@ -15,20 +14,15 @@ public class MedicaoListaModel {
     private String tipoMedicao;
     private String data_hora;
 
-    @Column(name = "medicao_id")
-    private int medicoId;
-
-    @Column(name = "sensor_id")
-    private int sensorId;
-
-
     @ManyToOne
-    @JoinColumn(name = "medicao_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "medicao_id")
     private MedicaoModel medicaoModel;
 
-    @OneToOne
-    @JoinColumn(name = "sensor_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @ManyToOne
+    @JoinColumn(name = "sensor_id")
     private SensorModel sensorModel;
+
+    public MedicaoListaModel() {}
 
     public MedicaoListaModel(int id, double resultado, String tipoMedicao, String data_hora) {
         this.id = id;
@@ -37,38 +31,22 @@ public class MedicaoListaModel {
         this.data_hora = data_hora;
     }
 
-    public MedicaoListaModel() {
-    }
+    // Getters e Setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    public int getId() {
-        return id;
-    }
+    public double getResultado() { return resultado; }
+    public void setResultado(double resultado) { this.resultado = resultado; }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public String getTipoMedicao() { return tipoMedicao; }
+    public void setTipoMedicao(String tipoMedicao) { this.tipoMedicao = tipoMedicao; }
 
-    public double getResultado() {
-        return resultado;
-    }
+    public String getData_hora() { return data_hora; }
+    public void setData_hora(String data_hora) { this.data_hora = data_hora; }
 
-    public void setResultado(double resultado) {
-        this.resultado = resultado;
-    }
+    public MedicaoModel getMedicaoModel() { return medicaoModel; }
+    public void setMedicaoModel(MedicaoModel medicaoModel) { this.medicaoModel = medicaoModel; }
 
-    public String getTipoMedicao() {
-        return tipoMedicao;
-    }
-
-    public void setTipoMedicao(String tipoMedicao) {
-        this.tipoMedicao = tipoMedicao;
-    }
-
-    public String getData_hora() {
-        return data_hora;
-    }
-
-    public void setData_hora(String data_hora) {
-        this.data_hora = data_hora;
-    }
+    public SensorModel getSensorModel() { return sensorModel; }
+    public void setSensorModel(SensorModel sensorModel) { this.sensorModel = sensorModel; }
 }

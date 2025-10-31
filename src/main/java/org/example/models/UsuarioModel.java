@@ -1,8 +1,6 @@
 package org.example.models;
 
 import jakarta.persistence.*;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,14 +17,16 @@ public class UsuarioModel {
     private String senha;
 
     @Column(name = "unidade_id")
-    public int unidadeId;
+    private int unidadeId;
 
     @ManyToOne
     @JoinColumn(name = "unidade_id", referencedColumnName = "id", insertable = false, updatable = false)
-    private UnidadeModel unidadeModel;
+    private UnidadeModel unidade; // 🔹 nome ajustado de unidadeModel → unidade
 
-    public UsuarioModel() {
-    }
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private List<LogModel> logs;
+
+    public UsuarioModel() {}
 
     public UsuarioModel(int id, String nome, String tipo, String email, String senha) {
         this.id = id;
@@ -36,7 +36,7 @@ public class UsuarioModel {
         this.senha = senha;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -74,5 +74,13 @@ public class UsuarioModel {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public UnidadeModel getUnidade() {
+        return unidade;
+    }
+
+    public void setUnidade(UnidadeModel unidade) {
+        this.unidade = unidade;
     }
 }

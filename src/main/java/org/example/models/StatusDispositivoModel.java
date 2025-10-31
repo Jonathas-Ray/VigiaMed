@@ -17,7 +17,7 @@ public class StatusDispositivoModel {
         this.estado = estado;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
