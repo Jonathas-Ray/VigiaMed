@@ -3,7 +3,7 @@ package org.example.entities;
 import java.util.Date;
 
 public class Dispositivo {
-    private long id;
+    private int id;
     private String modelo;
     private String numeroSerie;
     private Date dataAquisicao;
@@ -25,7 +25,7 @@ public class Dispositivo {
         return modelo;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

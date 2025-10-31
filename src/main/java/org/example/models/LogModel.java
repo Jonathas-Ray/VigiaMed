@@ -2,7 +2,9 @@ package org.example.models;
 
 import jakarta.persistence.*;
 
+
 import java.util.Date;
+
 
 @Entity
 @Table(name = "Log")
@@ -14,6 +16,20 @@ public class LogModel {
     private String acao;
     private String descricao;
     private Date data;
+
+    @Column(name = "tabelaList_id")
+    private int tabelaListId;
+
+    @ManyToOne
+    @JoinColumn(name = "tabelaList_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private TabelaListModel tabelaListModel;
+
+    @Column(name = "usuario_id")
+    private int usuarioId;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private UsuarioModel usuarioModel;
 
     public LogModel(){}
 
@@ -60,4 +76,5 @@ public class LogModel {
                 ", data=" + data +
                 '}';
     }
+
 }

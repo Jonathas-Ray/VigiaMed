@@ -3,6 +3,9 @@ package org.example.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "Tabela-Lista")
 public class TabelaListModel {
@@ -12,6 +15,9 @@ public class TabelaListModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String nome;
+
+    @OneToMany(mappedBy = "tabelaListModel")
+    private List<LogModel> logModels = new ArrayList<>();
 
     public TabelaListModel() {
     }

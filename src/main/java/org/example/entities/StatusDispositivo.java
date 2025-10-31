@@ -1,7 +1,7 @@
 package org.example.entities;
 
 public class StatusDispositivo {
-    private long id;
+    private int id;
     private String estado;
 
     public StatusDispositivo(){}
