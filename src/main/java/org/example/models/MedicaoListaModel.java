@@ -71,14 +71,4 @@ public class MedicaoListaModel {
     public void setData_hora(String data_hora) {
         this.data_hora = data_hora;
     }
-
-    @Override
-    public String toString() {
-        return "MedicaoListaModel{" +
-                "id=" + id +
-                ", resultado=" + resultado +
-                ", tipoMedicao='" + tipoMedicao + '\'' +
-                ", data_hora='" + data_hora + '\'' +
-                '}';
-    }
 }

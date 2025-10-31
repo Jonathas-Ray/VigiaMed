@@ -19,14 +19,12 @@ public class LogModel {
 
     @Column(name = "tabelaList_id")
     private int tabelaListId;
-
     @ManyToOne
     @JoinColumn(name = "tabelaList_id", referencedColumnName = "id", insertable = false, updatable = false)
     private TabelaListModel tabelaListModel;
 
     @Column(name = "usuario_id")
     private int usuarioId;
-
     @ManyToOne
     @JoinColumn(name = "usuario_id", referencedColumnName = "id", insertable = false, updatable = false)
     private UsuarioModel usuarioModel;
@@ -66,15 +64,4 @@ public class LogModel {
     public void setData(Date data) {
         this.data = data;
     }
-
-    @Override
-    public String toString() {
-        return "LogModel{" +
-                "id=" + id +
-                ", acao='" + acao + '\'' +
-                ", descricao='" + descricao + '\'' +
-                ", data=" + data +
-                '}';
-    }
-
 }

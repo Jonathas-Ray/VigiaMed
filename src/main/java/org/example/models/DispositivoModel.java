@@ -65,14 +65,4 @@ public class DispositivoModel {
     public void setDataAquisicao(Date dataAquisicao) {
         this.dataAquisicao = dataAquisicao;
     }
-
-    @Override
-    public String toString() {
-        return "DispositivoModel{" +
-                "id=" + id +
-                ", modelo='" + modelo + '\'' +
-                ", numeroSerie='" + numeroSerie + '\'' +
-                ", dataAquisicao=" + dataAquisicao +
-                '}';
-    }
 }

@@ -47,15 +47,6 @@ public class MedicaoModel {
         this.data_hora = data_hora;
     }
 
-
-    @Override
-    public String toString() {
-        return "MedicaoModel{" +
-                "id=" + id +
-                ", data_hora='"  + data_hora + '\'' +
-                '}';
-    }
-
     @OneToMany(mappedBy = "medicaoModel")
     private List<MedicaoListaModel> medicaoListaModel = new ArrayList<>();
 }

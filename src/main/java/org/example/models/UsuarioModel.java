@@ -24,12 +24,6 @@ public class UsuarioModel {
     @ManyToOne
     @JoinColumn(name = "unidade_id", referencedColumnName = "id", insertable = false, updatable = false)
     private UnidadeModel unidadeModel;
-//
-//    @OneToMany(mappedBy = "usuarioModel")
-//    private List<LogModel> logModels = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "usuarioModel")
-//    private List<LogModel> logModel = new ArrayList<>();
 
     public UsuarioModel() {
     }
@@ -81,12 +75,4 @@ public class UsuarioModel {
     public void setSenha(String senha) {
         this.senha = senha;
     }
-
-//    public UnidadeModel getUnidadeModel() {
-//        return unidadeModel;
-//    }
-//
-//    public void setUnidadeModel(UnidadeModel unidadeModel) {
-//        this.unidadeModel = unidadeModel;
-//    }
 }

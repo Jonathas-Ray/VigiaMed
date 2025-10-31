@@ -39,13 +39,4 @@ public class PacienteModel {
     public void setReferencia(String referencia) {
         this.referencia = referencia;
     }
-
-    @Override
-    public String toString() {
-        return "PacienteModel{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", referencia='" + referencia + '\'' +
-                '}';
-    }
 }

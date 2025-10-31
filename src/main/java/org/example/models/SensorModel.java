@@ -44,13 +44,4 @@ public class SensorModel {
     public void setUnidadeMedida(String unidadeMedida) {
         this.unidadeMedida = unidadeMedida;
     }
-
-    @Override
-    public String toString() {
-        return "SensorModel{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", unidadeMedida='" + unidadeMedida + '\'' +
-                '}';
-    }
 }
