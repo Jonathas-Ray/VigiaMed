@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "Sensor")
 public class SensorModel {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

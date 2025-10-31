@@ -11,12 +11,18 @@ public class UnidadeModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     private String nome;
     private String endereco;
     private String telefone;
     private String email;
+
+    @OneToMany(mappedBy = "unidadeModel")
+    private List<DispositivoModel> dispositivoModels = new ArrayList<>();
+
+    @OneToMany(mappedBy = "unidadeModel")
+    private List<UsuarioModel> usuarioModels = new ArrayList<>();
 
     public UnidadeModel(){}
 
@@ -32,7 +38,7 @@ public class UnidadeModel {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -78,7 +84,4 @@ public class UnidadeModel {
                 ", email='" + email + '\'' +
                 '}';
     }
-
-    @OneToMany(mappedBy = "unidadeModel")
-    private List<DispositivoModel> dispositivoModels = new ArrayList<>();
 }
