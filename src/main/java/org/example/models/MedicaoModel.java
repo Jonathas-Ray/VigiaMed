@@ -2,14 +2,31 @@ package org.example.models;
 
 import jakarta.persistence.*;
 
-@Entity
-@Table(name = "Medição")
-public class MedicaoModel {
+import java.util.ArrayList;
+import java.util.List;
 
+@Entity
+@Table(name = "Medicao")
+public class MedicaoModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String data_hora;
+
+    @Column(name = "dispositivo_id")
+    private int dispositivoId;
+
+    @Column(name = "paciente_id")
+    private int pacienteId;
+
+    @OneToOne
+    @JoinColumn(name = "dispositivo_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private DispositivoModel dispositivoModel;
+
+    @OneToOne
+    @JoinColumn(name = "paciente_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private PacienteModel pacienteModel;
+
 
     public MedicaoModel(int id, String data_hora) {
         this.id = id;
@@ -35,7 +52,10 @@ public class MedicaoModel {
     public String toString() {
         return "MedicaoModel{" +
                 "id=" + id +
-                ", data_hora='" + data_hora + '\'' +
+                ", data_hora='"  + data_hora + '\'' +
                 '}';
     }
+
+    @OneToMany(mappedBy = "medicaoModel")
+    private List<MedicaoListaModel> medicaoListaModel = new ArrayList<>();
 }

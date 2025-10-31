@@ -50,7 +50,7 @@ public class UnidadeRepositoryImpl implements UnidadeRepository {
         UnidadeModel unidadeExistente = buscarPorId(id);
         if (unidadeExistente != null) {
             unidadeExistente.setNome(unidadeModel.getNome());
-            unidadeExistente.setEndereço(unidadeModel.getEndereço());
+            unidadeExistente.setEndereco(unidadeModel.getEndereco());
             unidadeExistente.setTelefone(unidadeModel.getTelefone());
             unidadeExistente.setEmail(unidadeModel.getEmail());
         }

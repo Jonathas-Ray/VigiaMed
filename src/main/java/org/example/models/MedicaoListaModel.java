@@ -3,7 +3,7 @@ package org.example.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Medição-Lista")
+@Table(name = "Medicao-Lista")
 
 public class MedicaoListaModel {
 
@@ -15,6 +15,21 @@ public class MedicaoListaModel {
     private String tipoMedicao;
     private String data_hora;
 
+    @Column(name = "medicao_id")
+    private int medicoId;
+
+    @Column(name = "sensor_id")
+    private int sensorId;
+
+
+    @ManyToOne
+    @JoinColumn(name = "medicao_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private MedicaoModel medicaoModel;
+
+    @OneToOne
+    @JoinColumn(name = "sensor_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private SensorModel sensorModel;
+
     public MedicaoListaModel(int id, double resultado, String tipoMedicao, String data_hora) {
         this.id = id;
         this.resultado = resultado;
@@ -22,11 +37,16 @@ public class MedicaoListaModel {
         this.data_hora = data_hora;
     }
 
-    public MedicaoListaModel(){}
+    public MedicaoListaModel() {
+    }
 
-    public int getId() { return id; }
+    public int getId() {
+        return id;
+    }
 
-    public void setId(int id) { this.id = id; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public double getResultado() {
         return resultado;

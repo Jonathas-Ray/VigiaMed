@@ -10,13 +10,21 @@ public class DispositivoModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     private String modelo;
 
     private String numeroSerie;
 
     private Date dataAquisicao;
+
+    @OneToOne
+    @JoinColumn(name = "unidade_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private UnidadeModel unidadeModel;
+
+    @OneToOne
+    @JoinColumn(name = "statusDispositivo_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private StatusDispositivoModel statusDispositivoModel;
 
     public DispositivoModel(){}
 
@@ -42,7 +50,7 @@ public class DispositivoModel {
         return dataAquisicao;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -2,36 +2,51 @@ package org.example.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "Usuario")
 public class UsuarioModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     private String nome;
     private String tipo;
     private String email;
     private String senha;
-    private int unidade;
 
-    public UsuarioModel(){}
+    @Column(name = "unidade_id")
+    public int unidadeId;
 
-    public UsuarioModel(int id, String nome, String tipo, String email, String senha, int unidade) {
+    @ManyToOne
+    @JoinColumn(name = "unidade_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private UnidadeModel unidadeModel;
+//
+//    @OneToMany(mappedBy = "usuarioModel")
+//    private List<LogModel> logModels = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "usuarioModel")
+//    private List<LogModel> logModel = new ArrayList<>();
+
+    public UsuarioModel() {
+    }
+
+    public UsuarioModel(int id, String nome, String tipo, String email, String senha) {
         this.id = id;
         this.nome = nome;
         this.tipo = tipo;
         this.email = email;
         this.senha = senha;
-        this.unidade = unidade;
     }
 
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -67,23 +82,11 @@ public class UsuarioModel {
         this.senha = senha;
     }
 
-    public int getUnidade() {
-        return unidade;
-    }
-
-    public void setUnidade(int unidade) {
-        this.unidade = unidade;
-    }
-
-    @Override
-    public String toString() {
-        return "UsuarioModel{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", tipo='" + tipo + '\'' +
-                ", email='" + email + '\'' +
-                ", senha='" + senha + '\'' +
-                ", unidade=" + unidade +
-                '}';
-    }
+//    public UnidadeModel getUnidadeModel() {
+//        return unidadeModel;
+//    }
+//
+//    public void setUnidadeModel(UnidadeModel unidadeModel) {
+//        this.unidadeModel = unidadeModel;
+//    }
 }
