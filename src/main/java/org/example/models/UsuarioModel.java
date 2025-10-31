@@ -21,7 +21,7 @@ public class UsuarioModel {
 
     @ManyToOne
     @JoinColumn(name = "unidade_id", referencedColumnName = "id", insertable = false, updatable = false)
-    private UnidadeModel unidade; // 🔹 nome ajustado de unidadeModel → unidade
+    private UnidadeModel unidade;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<LogModel> logs;
@@ -76,11 +76,27 @@ public class UsuarioModel {
         this.senha = senha;
     }
 
+    public int getUnidadeId() {
+        return unidadeId;
+    }
+
+    public void setUnidadeId(int unidadeId) {
+        this.unidadeId = unidadeId;
+    }
+
     public UnidadeModel getUnidade() {
         return unidade;
     }
 
     public void setUnidade(UnidadeModel unidade) {
         this.unidade = unidade;
+    }
+
+    public List<LogModel> getLogs() {
+        return logs;
+    }
+
+    public void setLogs(List<LogModel> logs) {
+        this.logs = logs;
     }
 }

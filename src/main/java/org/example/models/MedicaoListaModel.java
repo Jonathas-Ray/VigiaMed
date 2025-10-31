@@ -15,11 +15,11 @@ public class MedicaoListaModel {
     private String data_hora;
 
     @ManyToOne
-    @JoinColumn(name = "medicao_id")
+    @JoinColumn(name = "medicao_id", referencedColumnName = "id", insertable = false, updatable = false)
     private MedicaoModel medicaoModel;
 
     @ManyToOne
-    @JoinColumn(name = "sensor_id")
+    @JoinColumn(name = "sensor_id", referencedColumnName = "id", insertable = false, updatable = false)
     private SensorModel sensorModel;
 
     public MedicaoListaModel() {}
@@ -31,22 +31,51 @@ public class MedicaoListaModel {
         this.data_hora = data_hora;
     }
 
-    // Getters e Setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public int getId() {
+        return id;
+    }
 
-    public double getResultado() { return resultado; }
-    public void setResultado(double resultado) { this.resultado = resultado; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public String getTipoMedicao() { return tipoMedicao; }
-    public void setTipoMedicao(String tipoMedicao) { this.tipoMedicao = tipoMedicao; }
+    public double getResultado() {
+        return resultado;
+    }
 
-    public String getData_hora() { return data_hora; }
-    public void setData_hora(String data_hora) { this.data_hora = data_hora; }
+    public void setResultado(double resultado) {
+        this.resultado = resultado;
+    }
 
-    public MedicaoModel getMedicaoModel() { return medicaoModel; }
-    public void setMedicaoModel(MedicaoModel medicaoModel) { this.medicaoModel = medicaoModel; }
+    public String getTipoMedicao() {
+        return tipoMedicao;
+    }
 
-    public SensorModel getSensorModel() { return sensorModel; }
-    public void setSensorModel(SensorModel sensorModel) { this.sensorModel = sensorModel; }
+    public void setTipoMedicao(String tipoMedicao) {
+        this.tipoMedicao = tipoMedicao;
+    }
+
+    public String getData_hora() {
+        return data_hora;
+    }
+
+    public void setData_hora(String data_hora) {
+        this.data_hora = data_hora;
+    }
+
+    public MedicaoModel getMedicaoModel() {
+        return medicaoModel;
+    }
+
+    public void setMedicaoModel(MedicaoModel medicaoModel) {
+        this.medicaoModel = medicaoModel;
+    }
+
+    public SensorModel getSensorModel() {
+        return sensorModel;
+    }
+
+    public void setSensorModel(SensorModel sensorModel) {
+        this.sensorModel = sensorModel;
+    }
 }

@@ -26,7 +26,7 @@ public class LogModel {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", referencedColumnName = "id", insertable = false, updatable = false)
-    private UsuarioModel usuario; // ✅ renomeado de usuarioModel → usuario
+    private UsuarioModel usuario;
 
     public LogModel() {}
 
@@ -37,27 +37,67 @@ public class LogModel {
         this.data = data;
     }
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public int getId() {
+        return id;
+    }
 
-    public String getAcao() { return acao; }
-    public void setAcao(String acao) { this.acao = acao; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public String getDescricao() { return descricao; }
-    public void setDescricao(String descricao) { this.descricao = descricao; }
+    public String getAcao() {
+        return acao;
+    }
 
-    public Date getData() { return data; }
-    public void setData(Date data) { this.data = data; }
+    public void setAcao(String acao) {
+        this.acao = acao;
+    }
 
-    public int getTabelaListId() { return tabelaListId; }
-    public void setTabelaListId(int tabelaListId) { this.tabelaListId = tabelaListId; }
+    public String getDescricao() {
+        return descricao;
+    }
 
-    public TabelaListModel getTabelaListModel() { return tabelaListModel; }
-    public void setTabelaListModel(TabelaListModel tabelaListModel) { this.tabelaListModel = tabelaListModel; }
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
 
-    public int getUsuarioId() { return usuarioId; }
-    public void setUsuarioId(int usuarioId) { this.usuarioId = usuarioId; }
+    public Date getData() {
+        return data;
+    }
 
-    public UsuarioModel getUsuario() { return usuario; } // ✅ getter ajustado
-    public void setUsuario(UsuarioModel usuario) { this.usuario = usuario; } // ✅ setter ajustado
+    public void setData(Date data) {
+        this.data = data;
+    }
+
+    public int getTabelaListId() {
+        return tabelaListId;
+    }
+
+    public void setTabelaListId(int tabelaListId) {
+        this.tabelaListId = tabelaListId;
+    }
+
+    public TabelaListModel getTabelaListModel() {
+        return tabelaListModel;
+    }
+
+    public void setTabelaListModel(TabelaListModel tabelaListModel) {
+        this.tabelaListModel = tabelaListModel;
+    }
+
+    public int getUsuarioId() {
+        return usuarioId;
+    }
+
+    public void setUsuarioId(int usuarioId) {
+        this.usuarioId = usuarioId;
+    }
+
+    public UsuarioModel getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(UsuarioModel usuario) {
+        this.usuario = usuario;
+    }
 }

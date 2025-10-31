@@ -26,16 +26,35 @@ public class SensorModel {
         this.unidadeMedida = unidadeMedida;
     }
 
-    // Getters e Setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public int getId() {
+        return id;
+    }
 
-    public String getNome() { return nome; }
-    public void setNome(String nome) { this.nome = nome; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public String getUnidadeMedida() { return unidadeMedida; }
-    public void setUnidadeMedida(String unidadeMedida) { this.unidadeMedida = unidadeMedida; }
+    public String getNome() {
+        return nome;
+    }
 
-    public List<MedicaoListaModel> getMedicoes() { return medicoes; }
-    public void setMedicoes(List<MedicaoListaModel> medicoes) { this.medicoes = medicoes; }
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getUnidadeMedida() {
+        return unidadeMedida;
+    }
+
+    public void setUnidadeMedida(String unidadeMedida) {
+        this.unidadeMedida = unidadeMedida;
+    }
+
+    public List<MedicaoListaModel> getMedicoes() {
+        return medicoes;
+    }
+
+    public void setMedicoes(List<MedicaoListaModel> medicoes) {
+        this.medicoes = medicoes;
+    }
 }

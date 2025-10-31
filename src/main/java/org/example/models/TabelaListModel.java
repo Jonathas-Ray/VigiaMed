@@ -42,4 +42,12 @@ public class TabelaListModel {
     public void setNome(String nome) {
         this.nome = nome;
     }
+
+    public List<LogModel> getLog() {
+        return log;
+    }
+
+    public void setLog(List<LogModel> log) {
+        this.log = log;
+    }
 }
