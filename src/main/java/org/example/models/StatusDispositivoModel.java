@@ -3,7 +3,7 @@ package org.example.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table (name = "StatusDispositivo")
+@Table (name = "statusDispositivo")
 public class StatusDispositivoModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +17,7 @@ public class StatusDispositivoModel {
         this.estado = estado;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -31,13 +31,5 @@ public class StatusDispositivoModel {
 
     public void setEstado(String estado) {
         this.estado = estado;
-    }
-
-    @Override
-    public String toString() {
-        return "StatusDispositivoModel{" +
-                "id=" + id +
-                ", estado='" + estado + '\'' +
-                '}';
     }
 }

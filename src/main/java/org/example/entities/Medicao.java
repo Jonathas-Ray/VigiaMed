@@ -22,7 +22,4 @@ public class Medicao {
     public void setData_hora(String data_hora) {
         this.data_hora = data_hora;
     }
-
-
-
 }

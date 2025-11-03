@@ -1,11 +1,11 @@
 package org.example.models;
 
 import jakarta.persistence.*;
-
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "Dispositivo")
+@Table(name = "dispositivo")
 public class DispositivoModel {
 
     @Id
@@ -13,66 +13,85 @@ public class DispositivoModel {
     private int id;
 
     private String modelo;
-
     private String numeroSerie;
-
     private Date dataAquisicao;
 
-    @OneToOne
+    @Column(name = "unidade_id")
+    private int unidadeId;
+    @ManyToOne
     @JoinColumn(name = "unidade_id", referencedColumnName = "id", insertable = false, updatable = false)
-    private UnidadeModel unidadeModel;
+    private UnidadeModel unidade;
 
+    @Column(name = "status_dispositivo_id")
+    private int statusDispositivoId;
     @OneToOne
-    @JoinColumn(name = "statusDispositivo_id", referencedColumnName = "id", insertable = false, updatable = false)
-    private StatusDispositivoModel statusDispositivoModel;
+    @JoinColumn(name = "status_dispositivo_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private StatusDispositivoModel status;
 
-    public DispositivoModel(){}
+    @OneToMany(mappedBy = "dispositivo", cascade = CascadeType.ALL)
+    private List<MedicaoModel> medicoes;
 
-    public DispositivoModel (String modelo, String numeroSerie, Date dataAquisicao){
+    public DispositivoModel() {}
+
+    public DispositivoModel(String modelo, String numeroSerie, Date dataAquisicao) {
         this.modelo = modelo;
         this.numeroSerie = numeroSerie;
         this.dataAquisicao = dataAquisicao;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
-    }
-
-    public String getModelo() {
-        return modelo;
-    }
-
-    public String getNumeroSerie() {
-        return numeroSerie;
-    }
-
-    public Date getDataAquisicao() {
-        return dataAquisicao;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
+    public String getModelo() {
+        return modelo;
+    }
+
     public void setModelo(String modelo) {
         this.modelo = modelo;
+    }
+
+    public String getNumeroSerie() {
+        return numeroSerie;
     }
 
     public void setNumeroSerie(String numeroSerie) {
         this.numeroSerie = numeroSerie;
     }
 
+    public Date getDataAquisicao() {
+        return dataAquisicao;
+    }
+
     public void setDataAquisicao(Date dataAquisicao) {
         this.dataAquisicao = dataAquisicao;
     }
 
-    @Override
-    public String toString() {
-        return "DispositivoModel{" +
-                "id=" + id +
-                ", modelo='" + modelo + '\'' +
-                ", numeroSerie='" + numeroSerie + '\'' +
-                ", dataAquisicao=" + dataAquisicao +
-                '}';
+    public UnidadeModel getUnidade() {
+        return unidade;
+    }
+
+    public void setUnidade(UnidadeModel unidade) {
+        this.unidade = unidade;
+    }
+
+    public StatusDispositivoModel getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusDispositivoModel status) {
+        this.status = status;
+    }
+
+    public List<MedicaoModel> getMedicoes() {
+        return medicoes;
+    }
+
+    public void setMedicoes(List<MedicaoModel> medicoes) {
+        this.medicoes = medicoes;
     }
 }
