@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "Tabela-Lista")
+@Table(name = "tabelaLista")
 public class TabelaListModel {
 
 

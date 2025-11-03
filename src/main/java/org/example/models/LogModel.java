@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "Log")
+@Table(name = "log")
 public class LogModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,14 +16,12 @@ public class LogModel {
 
     @Column(name = "tabelaList_id")
     private int tabelaListId;
-
     @ManyToOne
     @JoinColumn(name = "tabelaList_id", referencedColumnName = "id", insertable = false, updatable = false)
     private TabelaListModel tabelaListModel;
 
     @Column(name = "usuario_id")
     private int usuarioId;
-
     @ManyToOne
     @JoinColumn(name = "usuario_id", referencedColumnName = "id", insertable = false, updatable = false)
     private UsuarioModel usuario;

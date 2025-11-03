@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "Dispositivo")
+@Table(name = "dispositivo")
 public class DispositivoModel {
 
     @Id
@@ -16,14 +16,19 @@ public class DispositivoModel {
     private String numeroSerie;
     private Date dataAquisicao;
 
+    @Column(name = "unidade_id")
+    private int unidadeId;
     @ManyToOne
     @JoinColumn(name = "unidade_id", referencedColumnName = "id", insertable = false, updatable = false)
     private UnidadeModel unidade;
 
+    @Column(name = "status_dispositivo_id")
+    private int statusDispositivoId;
     @OneToOne
     @JoinColumn(name = "status_dispositivo_id", referencedColumnName = "id", insertable = false, updatable = false)
     private StatusDispositivoModel status;
 
+    @OneToMany(mappedBy = "dispositivo", cascade = CascadeType.ALL)
     private List<MedicaoModel> medicoes;
 
     public DispositivoModel() {}

@@ -3,7 +3,7 @@ package org.example.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "MedicaoLista")
+@Table(name = "medicaoLista")
 public class MedicaoListaModel {
 
     @Id
@@ -14,10 +14,14 @@ public class MedicaoListaModel {
     private String tipoMedicao;
     private String data_hora;
 
+    @Column(name = "medicao_id")
+    private int medicaoId;
     @ManyToOne
     @JoinColumn(name = "medicao_id", referencedColumnName = "id", insertable = false, updatable = false)
     private MedicaoModel medicaoModel;
 
+    @Column(name = "sensor_id")
+    private int sensorId;
     @ManyToOne
     @JoinColumn(name = "sensor_id", referencedColumnName = "id", insertable = false, updatable = false)
     private SensorModel sensorModel;

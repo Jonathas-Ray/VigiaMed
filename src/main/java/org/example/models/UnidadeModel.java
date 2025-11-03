@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "Unidade")
+@Table(name = "unidade")
 public class UnidadeModel {
 
     @Id

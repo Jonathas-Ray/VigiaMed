@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "Medicao")
+@Table(name = "medicao")
 public class MedicaoModel {
 
     @Id
@@ -14,10 +14,14 @@ public class MedicaoModel {
     private String descricao;
     private String dataHora;
 
+    @Column(name = "paciente_id")
+    private int pacienteId;
     @ManyToOne
-    @JoinColumn(name = "paciente_id")
+    @JoinColumn(name = "paciente_id", referencedColumnName = "id", insertable = false, updatable = false)
     private PacienteModel paciente;
 
+    @Column(name = "dispositivo_id")
+    private int dispositivoId;
     @ManyToOne
     @JoinColumn(name = "dispositivo_id", referencedColumnName = "id", insertable = false, updatable = false)
     private DispositivoModel dispositivo;
