@@ -43,7 +43,7 @@ public class MedicaoRepositoryImpl implements MedicaoRepository {
     public void atualizar(int id, MedicaoModel medicao) {
         MedicaoModel medExistente = buscarPorId(id);
         if (medExistente != null) {
-            medExistente.setData_hora(medicao.getData_hora());
+            medExistente.setDataHora(medicao.getDataHora());
         }
     }
 }

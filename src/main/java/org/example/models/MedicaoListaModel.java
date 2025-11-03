@@ -3,8 +3,7 @@ package org.example.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Medicao-Lista")
-
+@Table(name = "medicaoLista")
 public class MedicaoListaModel {
 
     @Id
@@ -16,28 +15,24 @@ public class MedicaoListaModel {
     private String data_hora;
 
     @Column(name = "medicao_id")
-    private int medicoId;
-
-    @Column(name = "sensor_id")
-    private int sensorId;
-
-
+    private int medicaoId;
     @ManyToOne
     @JoinColumn(name = "medicao_id", referencedColumnName = "id", insertable = false, updatable = false)
     private MedicaoModel medicaoModel;
 
-    @OneToOne
+    @Column(name = "sensor_id")
+    private int sensorId;
+    @ManyToOne
     @JoinColumn(name = "sensor_id", referencedColumnName = "id", insertable = false, updatable = false)
     private SensorModel sensorModel;
+
+    public MedicaoListaModel() {}
 
     public MedicaoListaModel(int id, double resultado, String tipoMedicao, String data_hora) {
         this.id = id;
         this.resultado = resultado;
         this.tipoMedicao = tipoMedicao;
         this.data_hora = data_hora;
-    }
-
-    public MedicaoListaModel() {
     }
 
     public int getId() {
@@ -72,13 +67,19 @@ public class MedicaoListaModel {
         this.data_hora = data_hora;
     }
 
-    @Override
-    public String toString() {
-        return "MedicaoListaModel{" +
-                "id=" + id +
-                ", resultado=" + resultado +
-                ", tipoMedicao='" + tipoMedicao + '\'' +
-                ", data_hora='" + data_hora + '\'' +
-                '}';
+    public MedicaoModel getMedicaoModel() {
+        return medicaoModel;
+    }
+
+    public void setMedicaoModel(MedicaoModel medicaoModel) {
+        this.medicaoModel = medicaoModel;
+    }
+
+    public SensorModel getSensorModel() {
+        return sensorModel;
+    }
+
+    public void setSensorModel(SensorModel sensorModel) {
+        this.sensorModel = sensorModel;
     }
 }
