@@ -20,7 +20,8 @@ public class DispositivoModel {
 
     public DispositivoModel(){}
 
-    public DispositivoModel (String modelo, String numeroSerie, Date dataAquisicao){
+    public DispositivoModel (long id, String modelo, String numeroSerie, Date dataAquisicao){
+        this.id = id;
         this.modelo = modelo;
         this.numeroSerie = numeroSerie;
         this.dataAquisicao = dataAquisicao;

@@ -1,7 +1,7 @@
 package org.example.facades;
 
 import org.example.applications.LogApplication;
-import org.example.entities.Log;
+import org.example.models.LogModel;
 
 import java.util.List;
 
@@ -12,15 +12,15 @@ public class LogFacade {
         this.logApplication = logApplication;
     }
 
-    public List<Log> buscarTodos(){
+    public List<LogModel> buscarTodos(){
         return this.logApplication.buscarTodos();
     }
 
-    public Log buscarPorId(int id){
+    public LogModel buscarPorId(int id){
         return this.logApplication.buscarPorId(id);
     }
 
-    public void adicionar(Log log){
+    public void adicionar(LogModel log){
         this.logApplication.adicionar(log);
     }
 
@@ -28,7 +28,7 @@ public class LogFacade {
         this.logApplication.excluir(id);
     }
 
-    public void atualizar(int id, Log log){
+    public void atualizar(int id, LogModel log){
         this.logApplication.atualizar(id, log);
     }
 }

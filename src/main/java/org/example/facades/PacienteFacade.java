@@ -2,6 +2,7 @@ package org.example.facades;
 
 import org.example.applications.PacienteApplication;
 import org.example.entities.Paciente;
+import org.example.models.PacienteModel;
 
 import java.util.List;
 
@@ -12,15 +13,15 @@ public class PacienteFacade {
         this.pacienteApplication = pacienteApplication;
     }
 
-    public List<Paciente> buscarTodos() {
+    public List<PacienteModel> buscarTodos() {
         return this.pacienteApplication.buscarTodos();
     }
 
-    public Paciente buscarPorId(int id) {
+    public PacienteModel buscarPorId(int id) {
         return this.pacienteApplication.buscarPorId(id);
     }
 
-    public void adicionar(Paciente paciente) {
+    public void adicionar(PacienteModel paciente) {
         this.pacienteApplication.adicionar(paciente);
     }
 
@@ -28,7 +29,7 @@ public class PacienteFacade {
         this.pacienteApplication.excluir(id);
     }
 
-    public void atualizar(int id, Paciente paciente) {
+    public void atualizar(int id, PacienteModel paciente) {
         this.pacienteApplication.atualizar(id, paciente);
     }
 }

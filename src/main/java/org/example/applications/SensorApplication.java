@@ -1,7 +1,8 @@
 package org.example.applications;
 
 import org.example.interfaces.SensorRepository;
-import org.example.entities.Sensor;
+import org.example.models.SensorModel;
+
 import java.util.List;
 
 public class SensorApplication {
@@ -11,15 +12,15 @@ public class SensorApplication {
         this.sensorRepository = sensorRepository;
     }
 
-    public List<Sensor> buscarTodos() {
+    public List<SensorModel> buscarTodos() {
         return this.sensorRepository.buscarTodos();
     }
 
-    public Sensor buscarPorId(int id) {
+    public SensorModel buscarPorId(int id) {
         return this.sensorRepository.buscarPorId(id);
     }
 
-    public void adicionar(Sensor sensor) {
+    public void adicionar(SensorModel sensor) {
         this.sensorRepository.adicionar(sensor);
     }
 
@@ -27,7 +28,7 @@ public class SensorApplication {
         this.sensorRepository.excluir(id);
     }
 
-    public void atualizar(int id, Sensor sensor) {
+    public void atualizar(int id, SensorModel sensor) {
         this.sensorRepository.atualizar(id, sensor);
     }
 }

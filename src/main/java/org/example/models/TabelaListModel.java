@@ -21,7 +21,7 @@ public class TabelaListModel {
         this.nome = nome;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 

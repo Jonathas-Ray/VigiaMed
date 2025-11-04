@@ -2,6 +2,7 @@ package org.example.applications;
 
 import org.example.entities.MedicaoLista;
 import org.example.interfaces.MedicaoListaRepository;
+import org.example.models.MedicaoListaModel;
 
 import java.util.List;
 
@@ -12,15 +13,15 @@ public class MedicaoListaApplication {
             this.medicaoListaRepository = medicaoListaRepository;
         }
 
-        public List<MedicaoLista> buscarTodos(){
+        public List<MedicaoListaModel> buscarTodos(){
             return medicaoListaRepository.buscarTodos();
         }
 
-        public MedicaoLista buscarPorId(int id){
+        public MedicaoListaModel buscarPorId(int id){
             return medicaoListaRepository.buscarPorId(id);
         }
 
-        public void inserir(MedicaoLista medicaoLista){
+        public void inserir(MedicaoListaModel medicaoLista){
             medicaoListaRepository.adicionar(medicaoLista);
         }
 
@@ -28,9 +29,5 @@ public class MedicaoListaApplication {
             medicaoListaRepository.excluir(id);
         }
 
-        public void atualizar(int id, MedicaoLista medicaoLista){
-            medicaoListaRepository.atualizar(medicaoLista.getId(), medicaoLista);
-        }
-
-
+        public void atualizar(long id, MedicaoListaModel medicaoLista){ medicaoListaRepository.atualizar(medicaoLista.getId(), medicaoLista); }
 }

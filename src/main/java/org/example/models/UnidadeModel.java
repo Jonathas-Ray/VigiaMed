@@ -17,7 +17,7 @@ public class UnidadeModel {
 
     public UnidadeModel(){}
 
-    public UnidadeModel(int id, String nome, String endereço, String telefone, String email) {
+    public UnidadeModel(long id, String nome, String endereço, String telefone, String email) {
         this.id = id;
         this.nome = nome;
         this.endereço = endereço;
