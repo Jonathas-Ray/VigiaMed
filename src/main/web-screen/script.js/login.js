@@ -1,113 +1,108 @@
-// Validação do formulário de login
-const loginForm = document.getElementById('loginForm');
+// Coloque este arquivo em: script.js/login.js
+
+// [MUDANÇA] Importa de ../ (um nível acima)
+import { auth, db, googleProvider } from '../firebase-config.js'; 
+import { signInWithEmailAndPassword, signInWithPopup } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+import { doc, setDoc } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+
+// --- Seleção dos Elementos ---
 const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
-const loginBtn = document.getElementById('loginBtn');
-const emailError = document.getElementById('emailError');
-const passwordError = document.getElementById('passwordError');
+// Pega o botão "Entrar" (que é do tipo 'submit')
+const btnLogin = document.querySelector('button[type="submit"]');
+// Pega o botão do Google
+const btnGoogle = document.getElementById('google');
 
-// Função para validar email
-function validateEmail(email) {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-}
+// --- 1. LOGIN COM E-MAIL E SENHA ---
+btnLogin.addEventListener('click', (e) => {
+    e.preventDefault(); // Impede o formulário de recarregar a página
 
-// Limpar erros
-function clearError(input, errorElement) {
-  input.classList.remove('is-invalid');
-  errorElement.textContent = '';
-}
+    const email = emailInput.value;
+    const password = passwordInput.value;
 
-// Mostrar erro
-function showError(input, errorElement, message) {
-  input.classList.add('is-invalid');
-  errorElement.textContent = message;
-}
-
-// Validação Email em tempo real
-emailInput.addEventListener('input', function () {
-  if (this.value.trim() === '') {
-    clearError(this, emailError);
-  } else if (!validateEmail(this.value)) {
-    showError(this, emailError, 'Email inválido');
-  } else {
-    clearError(this, emailError);
-  }
-});
-
-// Validação Senha em tempo real
-passwordInput.addEventListener('input', function () {
-  if (this.value.trim() === '') {
-    clearError(this, passwordError);
-  } else if (this.value.length < 8) {
-    showError(this, passwordError, 'Mínimo 8 caracteres');
-  } else {
-    clearError(this, passwordError);
-  }
-});
-
-// Submissão do formulário
-loginForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    let isValid = true;
-    let errorMessages = [];
-
-    // Validar email
-    if (emailInput.value.trim() === '') {
-        showError(emailInput, emailError, 'Por favor, insira seu email');
-        errorMessages.push('Por favor, insira seu email');
-        isValid = false;
-    } else if (!validateEmail(emailInput.value)) {
-        showError(emailInput, emailError, 'Por favor, insira um email válido');
-        errorMessages.push('Por favor, insira um email válido');
-        isValid = false;
-    } else {
-        clearError(emailInput, emailError);
-    }
-
-    // Validar senha
-    if (passwordInput.value.trim() === '') {
-        showError(passwordInput, passwordError, 'Por favor, insira sua senha');
-        errorMessages.push('Por favor, insira sua senha');
-        isValid = false;
-    } else if (passwordInput.value.length < 8) {
-        showError(passwordInput, passwordError, 'A senha deve ter pelo menos 8 caracteres');
-        errorMessages.push('A senha deve ter pelo menos 8 caracteres');
-        isValid = false;
-    } else {
-        clearError(passwordInput, passwordError);
-    }
-
-    // Mostrar popup com erros se houver
-    if (!isValid) {
-        alert('⚠️ Erro de validação:\n\n' + errorMessages.join('\n'));
+    if (!email || !password) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Por favor, preencha e-mail e senha.',
+            background: '#343a40', // Cor de fundo escura
+            color: '#f8f9fa'       // Cor do texto
+        });
         return;
     }
 
-    // Se tudo estiver válido, processar login
-    loginBtn.disabled = true;
-    loginBtn.textContent = 'Entrando...';
-
-    // Simular processo de login
-    setTimeout(() => {
-        const rememberMe = document.getElementById('rememberMe').checked;
-        alert('✅ Login realizado com sucesso!\n\nEmail: ' + emailInput.value + '\nLembrar: ' + (rememberMe ? 'Sim' : 'Não'));
-        
-        loginBtn.disabled = false;
-        loginBtn.textContent = 'Entrar';
-    }, 1000);
+    signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            // Sucesso!
+            Swal.fire({
+                icon: 'success',
+                title: 'Login realizado!',
+                text: 'Redirecionando...',
+                timer: 2000,
+                showConfirmButton: false,
+                background: '#343a40',
+                color: '#f8f9fa'
+            }).then(() => {
+                window.location.href = 'mainScreen.html'; // Redireciona
+            });
+        })
+        .catch((error) => {
+            // Erro!
+            console.error("Erro no login:", error.code);
+            let mensagemErro = 'Ocorreu um erro ao fazer login.';
+            if (error.code === 'auth/invalid-credential') {
+                mensagemErro = 'E-mail ou senha incorretos.';
+            }
+            
+            Swal.fire({
+                icon: 'error',
+                title: 'Falha no Login',
+                text: mensagemErro,
+                background: '#343a40',
+                color: '#f8f9fa'
+            });
+        });
 });
 
-// Botões de login social (simulação)
-document.getElementById('google').addEventListener('click', function () {
-  alert('Login com Google - Funcionalidade a ser implementada');
-});
+// --- 2. LOGIN COM GOOGLE ---
+btnGoogle.addEventListener('click', () => {
+    signInWithPopup(auth, googleProvider)
+        .then((result) => {
+            // O usuário logou com o Google
+            const user = result.user;
 
-document.getElementById('apple').addEventListener('click', function () {
-  alert('Login com Apple - Funcionalidade a ser implementada');
-});
-
-document.getElementById('facebook').addEventListener('click', function () {
-  alert('Login com Facebook - Funcionalidade a ser implementada');
+            // Salva/Atualiza os dados dele no Firestore (igual fazemos no cadastro)
+            // 'merge: true' garante que não sobrescrevemos dados se o user já existir
+            setDoc(doc(db, "users", user.uid), {
+                nome: user.displayName,
+                email: user.email,
+                uid: user.uid
+            }, { merge: true })
+            .then(() => {
+                // Sucesso ao logar E salvar dados
+                Swal.fire({
+                    icon: 'success',
+                    title: `Bem-vindo, ${user.displayName}!`,
+                    text: 'Redirecionando...',
+                    timer: 2000,
+                    showConfirmButton: false,
+                    background: '#343a40',
+                    color: '#f8f9fa'
+                }).then(() => {
+                    window.location.href = '../'; // Redireciona
+                });
+            });
+            
+        })
+        .catch((error) => {
+            // Erro no login com Google
+            console.error("Erro no login com Google:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Falha no Login',
+                text: 'Não foi possível fazer login com o Google.',
+                background: '#343a40',
+                color: '#f8f9fa'
+            });
+        });
 });
