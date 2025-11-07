@@ -80,9 +80,6 @@ public class UnidadeModel {
         this.dispositivos = dispositivos;
     }
 
-    public List<UsuarioModel> getUsuarios() {
-        return usuarios;
-    }
 
     public void setUsuarios(List<UsuarioModel> usuarios) {
         this.usuarios = usuarios;
