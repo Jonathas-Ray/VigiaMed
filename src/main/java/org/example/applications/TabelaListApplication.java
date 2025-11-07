@@ -1,9 +1,11 @@
 package org.example.applications;
 
+import org.example.entities.TabelaList;
 import org.example.interfaces.TabelaListRepository;
 import org.example.models.TabelaListModel;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -14,15 +16,22 @@ public class TabelaListApplication {
         this.tabelaListRepository = tabelaListRepository;
     }
 
-    public List<TabelaListModel> buscarTodos() {
-        return this.tabelaListRepository.buscarTodos();
+    public List<TabelaList> buscarTodos() {
+        List<TabelaListModel> modelList = this.tabelaListRepository.buscarTodos();
+        List<TabelaList> entitieList = new ArrayList<>();
+        for(TabelaListModel tabelaListModel : modelList) {
+            entitieList.add(new TabelaList().fromModel(tabelaListModel));
+        }
+        return entitieList;
     }
 
-    public TabelaListModel buscarPorId(int id) {
-        return this.tabelaListRepository.buscarPorId(id);
+    public TabelaList buscarPorId(int id) {
+        TabelaList tabelaList = new TabelaList().fromModel(this.tabelaListRepository.buscarPorId(id));
+        return tabelaList;
     }
 
-    public void adicionar(TabelaListModel tabelaListModel) {
+    public void adicionar(TabelaList tabelaList) {
+        TabelaListModel tabelaListModel = tabelaList.toModel();
         this.tabelaListRepository.adicionar(tabelaListModel);
     }
 
@@ -30,7 +39,8 @@ public class TabelaListApplication {
         this.tabelaListRepository.excluir(id);
     }
 
-    public void atualizar(int id, TabelaListModel tabelaListModel) {
+    public void atualizar(int id, TabelaList tabelaList){
+        TabelaListModel tabelaListModel = tabelaList.toModel();
         this.tabelaListRepository.atualizar(id, tabelaListModel);
     }
 }

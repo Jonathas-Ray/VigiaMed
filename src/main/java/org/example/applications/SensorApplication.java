@@ -1,9 +1,11 @@
 package org.example.applications;
 
+import org.example.entities.Sensor;
 import org.example.interfaces.SensorRepository;
 import org.example.models.SensorModel;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -14,15 +16,22 @@ public class SensorApplication {
         this.sensorRepository = sensorRepository;
     }
 
-    public List<SensorModel> buscarTodos() {
-        return this.sensorRepository.buscarTodos();
+    public List<Sensor> buscarTodos() {
+        List<SensorModel> modelList = this.sensorRepository.buscarTodos();
+        List<Sensor> entitieList = new ArrayList<>();
+        for(SensorModel sensorModel : modelList) {
+            entitieList.add(new Sensor().fromModel(sensorModel));
+        }
+        return entitieList;
     }
 
-    public SensorModel buscarPorId(int id) {
-        return this.sensorRepository.buscarPorId(id);
+    public Sensor buscarPorId(int id) {
+        Sensor sensor = new Sensor().fromModel(this.sensorRepository.buscarPorId(id));
+        return sensor;
     }
 
-    public void adicionar(SensorModel sensorModel) {
+    public void adicionar(Sensor sensor) {
+        SensorModel sensorModel = sensor.toModel();
         this.sensorRepository.adicionar(sensorModel);
     }
 
@@ -30,7 +39,8 @@ public class SensorApplication {
         this.sensorRepository.excluir(id);
     }
 
-    public void atualizar(int id, SensorModel sensorModel) {
+    public void atualizar(int id, Sensor sensor){
+        SensorModel sensorModel = sensor.toModel();
         this.sensorRepository.atualizar(id, sensorModel);
     }
 }

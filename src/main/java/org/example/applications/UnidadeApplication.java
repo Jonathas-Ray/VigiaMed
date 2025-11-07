@@ -1,10 +1,11 @@
 package org.example.applications;
 
+import org.example.entities.Unidade;
 import org.example.interfaces.UnidadeRepository;
 import org.example.models.UnidadeModel;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -15,15 +16,22 @@ public class UnidadeApplication {
         this.unidadeRepository = unidadeRepository;
     }
 
-    public List<UnidadeModel> buscarTodos() {
-        return this.unidadeRepository.buscarTodos();
+    public List<Unidade> buscarTodos() {
+        List<UnidadeModel> modelList = this.unidadeRepository.buscarTodos();
+        List<Unidade> entitieList = new ArrayList<>();
+        for(UnidadeModel unidadeModel : modelList) {
+            entitieList.add(new Unidade().fromModel(unidadeModel));
+        }
+        return entitieList;
     }
 
-    public UnidadeModel buscarPorId(int id) {
-        return this.unidadeRepository.buscarPorId(id);
+    public Unidade buscarPorId(int id) {
+        Unidade unidade = new Unidade().fromModel(this.unidadeRepository.buscarPorId(id));
+        return unidade;
     }
 
-    public void adicionar(UnidadeModel unidadeModel) {
+    public void adicionar(Unidade unidade) {
+        UnidadeModel unidadeModel = unidade.toModel();
         this.unidadeRepository.adicionar(unidadeModel);
     }
 
@@ -31,7 +39,8 @@ public class UnidadeApplication {
         this.unidadeRepository.excluir(id);
     }
 
-    public void atualizar(int id, UnidadeModel unidadeModel) {
+    public void atualizar(int id, Unidade unidade){
+        UnidadeModel unidadeModel = unidade.toModel();
         this.unidadeRepository.atualizar(id, unidadeModel);
     }
 }

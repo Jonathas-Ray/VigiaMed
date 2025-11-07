@@ -1,7 +1,7 @@
 package org.example.facades;
 
 import org.example.applications.MedicaoListaApplication;
-import org.example.models.MedicaoListaModel;
+import org.example.entities.MedicaoLista;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,23 +14,23 @@ public class MedicaoListaFacade {
         this.medicaoListaApplication = medicaoListaApplication;
     }
 
-    public List<MedicaoListaModel> buscarTodos() {
+    public List<MedicaoLista> buscarTodos() {
         return this.medicaoListaApplication.buscarTodos();
     }
 
-    public MedicaoListaModel buscarPorId(int id) {
+    public MedicaoLista buscarPorId(int id) {
         return this.medicaoListaApplication.buscarPorId(id);
     }
 
-    public void adicionar(MedicaoListaModel medicaoListaModel) {
-        this.medicaoListaApplication.adicionar(medicaoListaModel);
+    public void adicionar(MedicaoLista medicaoLista) {
+        this.medicaoListaApplication.adicionar(medicaoLista);
     }
 
     public void excluir(int id) {
         this.medicaoListaApplication.excluir(id);
     }
 
-    public void atualizar(int id, MedicaoListaModel medicaoListaModel) {
-        this.medicaoListaApplication.atualizar(id, medicaoListaModel);
+    public void atualizar(int id, MedicaoLista medicaoLista) {
+        this.medicaoListaApplication.atualizar(id, medicaoLista);
     }
 }

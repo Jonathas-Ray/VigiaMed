@@ -1,9 +1,11 @@
 package org.example.applications;
 
+import org.example.entities.StatusDispositivo;
 import org.example.interfaces.StatusDispositivoRepository;
 import org.example.models.StatusDispositivoModel;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -14,15 +16,22 @@ public class StatusDispositivoApplication {
         this.statusDispositivoRepository = statusDispositivoRepository;
     }
 
-    public List<StatusDispositivoModel> buscarTodos(){
-        return this.statusDispositivoRepository.buscarTodos();
+    public List<StatusDispositivo> buscarTodos(){
+        List<StatusDispositivoModel> modelList = this.statusDispositivoRepository.buscarTodos();
+        List<StatusDispositivo> entitieList = new ArrayList<>();
+        for(StatusDispositivoModel statusDispositivoModel : modelList) {
+            entitieList.add(new StatusDispositivo().fromModel(statusDispositivoModel));
+        }
+        return entitieList;
     }
 
-    public StatusDispositivoModel buscarPorId(int id) {
-        return this.statusDispositivoRepository.buscarPorId(id);
+    public StatusDispositivo buscarPorId(int id) {
+        StatusDispositivo statusDispositivo = new StatusDispositivo().fromModel(this.statusDispositivoRepository.buscarPorId(id));
+        return statusDispositivo;
     }
 
-    public void adicionar(StatusDispositivoModel statusDispositivoModel){
+    public void adicionar(StatusDispositivo statusDispositivo){
+        StatusDispositivoModel statusDispositivoModel = statusDispositivo.toModel();
         this.statusDispositivoRepository.adicionar(statusDispositivoModel);
     }
 
@@ -30,7 +39,8 @@ public class StatusDispositivoApplication {
         this.statusDispositivoRepository.excluir(id);
     }
 
-    public void atualizar(int id, StatusDispositivoModel statusDispositivoModel) {
+    public void atualizar(int id, StatusDispositivo statusDispositivo) {
+        StatusDispositivoModel statusDispositivoModel = statusDispositivo.toModel();
         this.statusDispositivoRepository.atualizar(id, statusDispositivoModel);
     }
 }
