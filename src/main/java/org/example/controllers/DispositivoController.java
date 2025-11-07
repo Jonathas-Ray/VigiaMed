@@ -10,7 +10,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/Dispositivo")
+@RequestMapping("/api/dispositivo")
 public class DispositivoController{
 
     private final DispositivoFacade dispositivoFacade;

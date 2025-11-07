@@ -49,10 +49,6 @@ public class SensorModel {
         this.unidadeMedida = unidadeMedida;
     }
 
-    public List<MedicaoListaModel> getMedicoes() {
-        return medicoes;
-    }
-
     public void setMedicoes(List<MedicaoListaModel> medicoes) {
         this.medicoes = medicoes;
     }
