@@ -84,10 +84,18 @@ public class DispositivoModel {
     public void setUnidadeId(int unidadeId) {
         this.unidadeId = unidadeId;
     }
-
-    public void setStatusDispositivoIdId(int StatusDispositivoId) {
+    public void setStatusDispositivoId(int StatusDispositivoId) {
         this.statusDispositivoId = StatusDispositivoId;
     }
+
+    public StatusDispositivoModel getStatusDispositivoModel() {
+        return statusDispositivoModel;
+    }
+
+    public UnidadeModel getUnidade() {
+        return unidade;
+    }
+
     public void setMedicoes(List<MedicaoModel> medicoes) {
         this.medicoes = medicoes;
     }
