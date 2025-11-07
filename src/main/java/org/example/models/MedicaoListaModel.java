@@ -67,17 +67,11 @@ public class MedicaoListaModel {
         this.data_hora = data_hora;
     }
 
-    public MedicaoModel getMedicaoModel() {
-        return medicaoModel;
-    }
 
     public void setMedicaoModel(MedicaoModel medicaoModel) {
         this.medicaoModel = medicaoModel;
     }
 
-    public SensorModel getSensorModel() {
-        return sensorModel;
-    }
 
     public void setSensorModel(SensorModel sensorModel) {
         this.sensorModel = sensorModel;

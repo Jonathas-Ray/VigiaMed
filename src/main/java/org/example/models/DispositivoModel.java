@@ -22,11 +22,11 @@ public class DispositivoModel {
     @JoinColumn(name = "unidade_id", referencedColumnName = "id", insertable = false, updatable = false)
     private UnidadeModel unidade;
 
-    @Column(name = "status_dispositivo_id")
+    @Column(name = "statusDispositivo_id")
     private int statusDispositivoId;
-    @OneToOne
-    @JoinColumn(name = "status_dispositivo_id", referencedColumnName = "id", insertable = false, updatable = false)
-    private StatusDispositivoModel status;
+    @ManyToOne
+    @JoinColumn(name = "statusDispositivo_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private StatusDispositivoModel statusDispositivoModel;
 
     @OneToMany(mappedBy = "dispositivo", cascade = CascadeType.ALL)
     private List<MedicaoModel> medicoes;
@@ -71,26 +71,23 @@ public class DispositivoModel {
         this.dataAquisicao = dataAquisicao;
     }
 
-    public UnidadeModel getUnidade() {
-        return unidade;
-    }
 
     public void setUnidade(UnidadeModel unidade) {
         this.unidade = unidade;
     }
 
-    public StatusDispositivoModel getStatus() {
-        return status;
+
+    public void setStatus(StatusDispositivoModel statusDispositivoModel) {
+        this.statusDispositivoModel = statusDispositivoModel;
     }
 
-    public void setStatus(StatusDispositivoModel status) {
-        this.status = status;
+    public void setUnidadeId(int unidadeId) {
+        this.unidadeId = unidadeId;
     }
 
-    public List<MedicaoModel> getMedicoes() {
-        return medicoes;
+    public void setStatusDispositivoIdId(int StatusDispositivoId) {
+        this.statusDispositivoId = StatusDispositivoId;
     }
-
     public void setMedicoes(List<MedicaoModel> medicoes) {
         this.medicoes = medicoes;
     }
