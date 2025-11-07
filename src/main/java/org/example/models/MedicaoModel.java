@@ -61,9 +61,6 @@ public class MedicaoModel {
         this.dataHora = dataHora;
     }
 
-    public PacienteModel getPaciente() {
-        return paciente;
-    }
 
     public void setPaciente(PacienteModel paciente) {
         this.paciente = paciente;
@@ -71,6 +68,19 @@ public class MedicaoModel {
 
     public DispositivoModel getDispositivo() {
         return dispositivo;
+    }
+
+    public void setPacienteId(int pacienteId) {
+        this.pacienteId = pacienteId;
+    }
+
+    public void setDispositivoId(int dispositivoId) {
+        this.dispositivoId = dispositivoId;
+    }
+
+
+    public PacienteModel getPaciente() {
+        return paciente;
     }
 
     public void setDispositivo(DispositivoModel dispositivo) {

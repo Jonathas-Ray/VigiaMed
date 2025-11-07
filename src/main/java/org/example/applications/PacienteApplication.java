@@ -1,9 +1,11 @@
 package org.example.applications;
 
+import org.example.entities.Paciente;
 import org.example.interfaces.PacienteRepository;
 import org.example.models.PacienteModel;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -14,15 +16,22 @@ public class PacienteApplication {
         this.pacienteRepository = pacienteRepository;
     }
 
-    public List<PacienteModel> buscarTodos() {
-        return this.pacienteRepository.buscarTodos();
+    public List<Paciente> buscarTodos() {
+        List<PacienteModel> modelList = this.pacienteRepository.buscarTodos();
+        List<Paciente> entitieList = new ArrayList<>();
+        for(PacienteModel pacienteModel : modelList) {
+            entitieList.add(new Paciente().fromModel(pacienteModel));
+        }
+        return entitieList;
     }
 
-    public PacienteModel buscarPorId(int id) {
-        return this.pacienteRepository.buscarPorId(id);
+    public Paciente buscarPorId(int id) {
+        Paciente paciente = new Paciente().fromModel(this.pacienteRepository.buscarPorId(id));
+        return paciente;
     }
 
-    public void adicionar(PacienteModel pacienteModel) {
+    public void adicionar(Paciente paciente) {
+        PacienteModel pacienteModel = paciente.toModel();
         this.pacienteRepository.adicionar(pacienteModel);
     }
 
@@ -30,7 +39,8 @@ public class PacienteApplication {
         this.pacienteRepository.excluir(id);
     }
 
-    public void atualizar(int id, PacienteModel pacienteModel) {
+    public void atualizar(int id, Paciente paciente){
+        PacienteModel pacienteModel = paciente.toModel();
         this.pacienteRepository.atualizar(id, pacienteModel);
     }
 }

@@ -1,7 +1,7 @@
 package org.example.facades;
 
 import org.example.applications.UsuarioApplication;
-import org.example.models.UsuarioModel;
+import org.example.entities.Usuario;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,23 +14,23 @@ public class UsuarioFacade {
         this.usuarioApplication = usuarioApplication;
     }
 
-    public List<UsuarioModel> buscarTodos() {
+    public List<Usuario> buscarTodos() {
         return this.usuarioApplication.buscarTodos();
     }
 
-    public UsuarioModel buscarPorId(int id) {
+    public Usuario buscarPorId(int id) {
         return this.usuarioApplication.buscarPorId(id);
     }
 
-    public void adicionar(UsuarioModel usuarioModel) {
-        this.usuarioApplication.adicionar(usuarioModel);
+    public void adicionar(Usuario usuario) {
+        this.usuarioApplication.adicionar(usuario);
     }
 
     public void excluir(int id) {
         this.usuarioApplication.excluir(id);
     }
 
-    public void atualizar(int id, UsuarioModel usuarioModel) {
-        this.usuarioApplication.atualizar(id, usuarioModel);
+    public void atualizar(int id, Usuario usuario) {
+        this.usuarioApplication.atualizar(id, usuario);
     }
 }
