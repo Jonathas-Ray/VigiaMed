@@ -1,11 +1,12 @@
 package org.example.models;
 
-
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name = "Sensor")
+@Table(name = "sensor")
 public class SensorModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -13,13 +14,16 @@ public class SensorModel {
     private String nome;
     private String unidadeMedida;
 
+    @OneToMany(mappedBy = "sensorModel", cascade = CascadeType.ALL)
+    private List<MedicaoListaModel> medicoes;
+
+    public SensorModel() {}
+
     public SensorModel(int id, String nome, String unidadeMedida) {
         this.id = id;
         this.nome = nome;
         this.unidadeMedida = unidadeMedida;
     }
-
-    public SensorModel(){}
 
     public int getId() {
         return id;
@@ -45,12 +49,11 @@ public class SensorModel {
         this.unidadeMedida = unidadeMedida;
     }
 
-    @Override
-    public String toString() {
-        return "SensorModel{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", unidadeMedida='" + unidadeMedida + '\'' +
-                '}';
+    public List<MedicaoListaModel> getMedicoes() {
+        return medicoes;
+    }
+
+    public void setMedicoes(List<MedicaoListaModel> medicoes) {
+        this.medicoes = medicoes;
     }
 }

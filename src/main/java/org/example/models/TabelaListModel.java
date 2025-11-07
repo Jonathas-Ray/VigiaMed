@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "Tabela-Lista")
+@Table(name = "tabelaLista")
 public class TabelaListModel {
 
 
@@ -17,7 +17,7 @@ public class TabelaListModel {
     private String nome;
 
     @OneToMany(mappedBy = "tabelaListModel")
-    private List<LogModel> logModels = new ArrayList<>();
+    private List<LogModel> log = new ArrayList<>();
 
     public TabelaListModel() {
     }
@@ -43,11 +43,11 @@ public class TabelaListModel {
         this.nome = nome;
     }
 
-    @Override
-    public String toString() {
-        return "TabelaListModel{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                '}';
+    public List<LogModel> getLog() {
+        return log;
+    }
+
+    public void setLog(List<LogModel> log) {
+        this.log = log;
     }
 }
