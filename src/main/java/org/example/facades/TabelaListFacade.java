@@ -1,7 +1,7 @@
 package org.example.facades;
 
 import org.example.applications.TabelaListApplication;
-import org.example.models.TabelaListModel;
+import org.example.entities.TabelaList;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,23 +14,23 @@ public class TabelaListFacade {
         this.tabelaListApplication = tabelaListApplication;
     }
 
-    public List<TabelaListModel> buscarTodos() {
+    public List<TabelaList> buscarTodos() {
         return this.tabelaListApplication.buscarTodos();
     }
 
-    public TabelaListModel buscarPorId(int id) {
+    public TabelaList buscarPorId(int id) {
         return this.tabelaListApplication.buscarPorId(id);
     }
 
-    public void adicionar(TabelaListModel tabelaListModel) {
-        this.tabelaListApplication.adicionar(tabelaListModel);
+    public void adicionar(TabelaList tabelaList) {
+        this.tabelaListApplication.adicionar(tabelaList);
     }
 
     public void excluir(int id) {
         this.tabelaListApplication.excluir(id);
     }
 
-    public void atualizar(int id, TabelaListModel tabelaListModel) {
-        this.tabelaListApplication.atualizar(id, tabelaListModel);
+    public void atualizar(int id, TabelaList tabelaList) {
+        this.tabelaListApplication.atualizar(id, tabelaList);
     }
 }
