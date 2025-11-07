@@ -77,9 +77,6 @@ public class MedicaoModel {
         this.dispositivo = dispositivo;
     }
 
-    public List<MedicaoListaModel> getMedicoesLista() {
-        return medicoesLista;
-    }
 
     public void setMedicoesLista(List<MedicaoListaModel> medicoesLista) {
         this.medicoesLista = medicoesLista;

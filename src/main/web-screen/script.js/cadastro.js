@@ -1,146 +1,268 @@
-// Seletores principais
-const cadastroForm = document.getElementById('registerForm');
+// Importar Firebase
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { 
+    getAuth, 
+    createUserWithEmailAndPassword,
+    updateProfile,
+    GoogleAuthProvider,
+    signInWithPopup
+} from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+// IMPORTANTE: Substitua com suas credenciais do Firebase
+const firebaseConfig = {
+    apiKey: "SUA_API_KEY_AQUI",
+    authDomain: "seu-projeto.firebaseapp.com",
+    projectId: "seu-projeto-id",
+    storageBucket: "seu-projeto.appspot.com",
+    messagingSenderId: "123456789",
+    appId: "seu-app-id"
+};
+
+// Inicializar Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
+
+// Elementos do formulário
+const registerForm = document.getElementById('registerForm');
 const nomeInput = document.getElementById('nome');
 const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
 const confirmPasswordInput = document.getElementById('confirm-password');
-const termosInput = document.getElementById('termos');
-const cadastroBtn = document.getElementById('registerBtn');
+const termosCheckbox = document.getElementById('termos');
+const registerBtn = document.getElementById('registerBtn');
 
+// Elementos de erro
 const nomeError = document.getElementById('nomeError');
 const emailError = document.getElementById('emailError');
 const senhaError = document.getElementById('senhaError');
 const confirmSenhaError = document.getElementById('confirmSenhaError');
 
-// Função para validar email
+// Ícones de erro
+const nomeIcon = document.getElementById('nomeIcon');
+const emailIcon = document.getElementById('emailIcon');
+const senhaIcon = document.getElementById('senhaIcon');
+const confirmSenhaIcon = document.getElementById('confirmSenhaIcon');
+
+// Funções de validação
+function showError(input, errorElement, iconElement, message) {
+    input.classList.add('is-invalid');
+    if (errorElement) errorElement.textContent = message;
+    if (iconElement) iconElement.classList.remove('d-none');
+}
+
+function clearError(input, errorElement, iconElement) {
+    input.classList.remove('is-invalid');
+    if (errorElement) errorElement.textContent = '';
+    if (iconElement) iconElement.classList.add('d-none');
+}
+
+function validateNome(nome) {
+    if (!nome.trim()) {
+        showError(nomeInput, nomeError, nomeIcon, 'Nome completo é obrigatório');
+        return false;
+    }
+    if (nome.trim().length < 3) {
+        showError(nomeInput, nomeError, nomeIcon, 'Nome deve ter pelo menos 3 caracteres');
+        return false;
+    }
+    clearError(nomeInput, nomeError, nomeIcon);
+    return true;
+}
+
 function validateEmail(email) {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.trim()) {
+        showError(emailInput, emailError, emailIcon, 'Email é obrigatório');
+        return false;
+    }
+    if (!emailRegex.test(email)) {
+        showError(emailInput, emailError, emailIcon, 'Email inválido');
+        return false;
+    }
+    clearError(emailInput, emailError, emailIcon);
+    return true;
 }
 
-// Limpar erro
-function clearError(input, errorElement) {
-  input.classList.remove('is-invalid');
-  errorElement.textContent = '';
+function validatePassword(password) {
+    if (!password) {
+        showError(passwordInput, senhaError, senhaIcon, 'Senha é obrigatória');
+        return false;
+    }
+    if (password.length < 6) {
+        showError(passwordInput, senhaError, senhaIcon, 'Senha deve ter pelo menos 6 caracteres');
+        return false;
+    }
+    clearError(passwordInput, senhaError, senhaIcon);
+    return true;
 }
 
-// Mostrar erro
-function showError(input, errorElement, message) {
-  input.classList.add('is-invalid');
-  errorElement.textContent = message;
+function validateConfirmPassword(password, confirmPassword) {
+    if (!confirmPassword) {
+        showError(confirmPasswordInput, confirmSenhaError, confirmSenhaIcon, 'Confirmação de senha é obrigatória');
+        return false;
+    }
+    if (password !== confirmPassword) {
+        showError(confirmPasswordInput, confirmSenhaError, confirmSenhaIcon, 'As senhas não coincidem');
+        return false;
+    }
+    clearError(confirmPasswordInput, confirmSenhaError, confirmSenhaIcon);
+    return true;
 }
 
-// Validação de nome em tempo real
-nomeInput.addEventListener('input', function () {
-  if (this.value.trim() === '') {
-    clearError(this, nomeError);
-  } else if (this.value.trim().length < 3) {
-    showError(this, nomeError, 'Nome muito curto');
-  } else {
-    clearError(this, nomeError);
-  }
+function validateTermos() {
+    if (!termosCheckbox.checked) {
+        alert('Você deve aceitar os termos e condições para continuar');
+        return false;
+    }
+    return true;
+}
+
+// Validação em tempo real
+nomeInput.addEventListener('blur', () => validateNome(nomeInput.value));
+nomeInput.addEventListener('input', () => {
+    if (nomeInput.classList.contains('is-invalid')) {
+        validateNome(nomeInput.value);
+    }
 });
 
-// Validação de email em tempo real
-emailInput.addEventListener('input', function () {
-  if (this.value.trim() === '') {
-    clearError(this, emailError);
-  } else if (!validateEmail(this.value)) {
-    showError(this, emailError, 'Email inválido');
-  } else {
-    clearError(this, emailError);
-  }
+emailInput.addEventListener('blur', () => validateEmail(emailInput.value));
+emailInput.addEventListener('input', () => {
+    if (emailInput.classList.contains('is-invalid')) {
+        validateEmail(emailInput.value);
+    }
 });
 
-// Validação de senha em tempo real
-passwordInput.addEventListener('input', function () {
-  if (this.value.trim() === '') {
-    clearError(this, senhaError);
-  } else if (this.value.length < 8) {
-    showError(this, senhaError, 'Mínimo 8 caracteres');
-  } else {
-    clearError(this, senhaError);
-  }
+passwordInput.addEventListener('blur', () => validatePassword(passwordInput.value));
+passwordInput.addEventListener('input', () => {
+    if (passwordInput.classList.contains('is-invalid')) {
+        validatePassword(passwordInput.value);
+    }
 });
 
-// Validação de confirmação de senha em tempo real
-confirmPasswordInput.addEventListener('input', function () {
-  if (this.value.trim() === '') {
-    clearError(this, confirmSenhaError);
-  } else if (this.value !== passwordInput.value) {
-    showError(this, confirmSenhaError, 'As senhas não coincidem');
-  } else {
-    clearError(this, confirmSenhaError);
-  }
+confirmPasswordInput.addEventListener('blur', () => {
+    validateConfirmPassword(passwordInput.value, confirmPasswordInput.value);
+});
+confirmPasswordInput.addEventListener('input', () => {
+    if (confirmPasswordInput.classList.contains('is-invalid')) {
+        validateConfirmPassword(passwordInput.value, confirmPasswordInput.value);
+    }
 });
 
-// Submissão do formulário
-cadastroForm.addEventListener('submit', function (e) {
-  e.preventDefault();
+// Submissão do formulário com Firebase
+registerForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
 
-  let isValid = true;
-  let errorMessages = [];
+    const nome = nomeInput.value.trim();
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+    const confirmPassword = confirmPasswordInput.value;
 
-  // Validar nome
-  if (nomeInput.value.trim() === '') {
-    showError(nomeInput, nomeError, 'Por favor, insira seu nome');
-    errorMessages.push('Por favor, insira seu nome');
-    isValid = false;
-  }
+    // Validar todos os campos
+    const isNomeValid = validateNome(nome);
+    const isEmailValid = validateEmail(email);
+    const isPasswordValid = validatePassword(password);
+    const isConfirmPasswordValid = validateConfirmPassword(password, confirmPassword);
+    const isTermosValid = validateTermos();
 
-  // Validar email
-  if (emailInput.value.trim() === '') {
-    showError(emailInput, emailError, 'Por favor, insira seu email');
-    errorMessages.push('Por favor, insira seu email');
-    isValid = false;
-  } else if (!validateEmail(emailInput.value)) {
-    showError(emailInput, emailError, 'Por favor, insira um email válido');
-    errorMessages.push('Por favor, insira um email válido');
-    isValid = false;
-  }
+    if (!isNomeValid || !isEmailValid || !isPasswordValid || !isConfirmPasswordValid || !isTermosValid) {
+        return;
+    }
 
-  // Validar senha
-  if (passwordInput.value.trim() === '') {
-    showError(passwordInput, senhaError, 'Por favor, insira uma senha');
-    errorMessages.push('Por favor, insira uma senha');
-    isValid = false;
-  } else if (passwordInput.value.length < 8) {
-    showError(passwordInput, senhaError, 'A senha deve ter pelo menos 8 caracteres');
-    errorMessages.push('A senha deve ter pelo menos 8 caracteres');
-    isValid = false;
-  }
+    // Desabilitar botão durante o processo
+    registerBtn.disabled = true;
+    registerBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Cadastrando...';
 
-  // Validar confirmação de senha
-  if (confirmPasswordInput.value.trim() === '') {
-    showError(confirmPasswordInput, confirmSenhaError, 'Por favor, confirme sua senha');
-    errorMessages.push('Por favor, confirme sua senha');
-    isValid = false;
-  } else if (confirmPasswordInput.value !== passwordInput.value) {
-    showError(confirmPasswordInput, confirmSenhaError, 'As senhas não coincidem');
-    errorMessages.push('As senhas não coincidem');
-    isValid = false;
-  }
+    try {
+        // Criar usuário no Firebase
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        
+        // Atualizar perfil com o nome
+        await updateProfile(userCredential.user, {
+            displayName: nome
+        });
 
-  // Validar aceite dos termos
-  if (!termosInput.checked) {
-    errorMessages.push('Você deve aceitar os termos e condições');
-    isValid = false;
-  }
+        // Mostrar mensagem de sucesso
+        alert('Cadastro realizado com sucesso!\n\nBem-vindo, ' + nome + '!\n\nRedirecionando para o dashboard...');
+        
+        // Redirecionar para a página principal ou dashboard
+        window.location.href = 'dashboard.html';
 
-  // Mostrar popup de erro
-  if (!isValid) {
-    alert('⚠️ Erro de validação:\n\n' + errorMessages.join('\n'));
-    return;
-  }
+    } catch (error) {
+        console.error('Erro no cadastro:', error);
+        
+        // Tratamento de erros do Firebase
+        let errorMessage = 'Erro ao criar conta. Tente novamente.';
+        
+        switch (error.code) {
+            case 'auth/email-already-in-use':
+                errorMessage = 'Este email já está cadastrado.\n\nFaça login ou use outro email.';
+                showError(emailInput, emailError, emailIcon, 'Email já cadastrado');
+                break;
+            case 'auth/invalid-email':
+                errorMessage = 'Email inválido.\n\nVerifique o formato do email.';
+                showError(emailInput, emailError, emailIcon, 'Email inválido');
+                break;
+            case 'auth/weak-password':
+                errorMessage = 'Senha muito fraca.\n\nUse pelo menos 6 caracteres.';
+                showError(passwordInput, senhaError, senhaIcon, 'Senha muito fraca');
+                break;
+            case 'auth/operation-not-allowed':
+                errorMessage = 'Cadastro por email/senha não está habilitado.\n\nEntre em contato com o suporte.';
+                break;
+            case 'auth/network-request-failed':
+                errorMessage = 'Erro de conexão.\n\nVerifique sua internet e tente novamente.';
+                break;
+            default:
+                errorMessage = 'Erro ao criar conta:\n\n' + error.message;
+        }
+        
+        alert(errorMessage);
+    } finally {
+        // Reabilitar botão
+        registerBtn.disabled = false;
+        registerBtn.innerHTML = 'Cadastrar';
+    }
+});
 
-  // Se tudo estiver válido
-  cadastroBtn.disabled = true;
-  cadastroBtn.textContent = 'Cadastrando...';
+// Login com Google
+document.getElementById('google').addEventListener('click', async function () {
+    try {
+        const result = await signInWithPopup(auth, googleProvider);
+        alert('Login com Google realizado com sucesso!\n\nBem-vindo, ' + result.user.displayName);
+        window.location.href = 'dashboard.html';
+    } catch (error) {
+        console.error('Erro no login com Google:', error);
+        
+        let errorMessage = 'Erro ao fazer login com Google';
+        
+        if (error.code === 'auth/popup-closed-by-user') {
+            errorMessage = 'Login cancelado pelo usuário';
+        } else if (error.code === 'auth/popup-blocked') {
+            errorMessage = 'Pop-up bloqueado. Permita pop-ups e tente novamente.';
+        } else if (error.code === 'auth/account-exists-with-different-credential') {
+            errorMessage = 'Já existe uma conta com este email.\n\nFaça login usando o método original.';
+        }
+        
+        alert(errorMessage);
+    }
+});
 
-  setTimeout(() => {
-    alert('✅ Cadastro realizado com sucesso!\n\nEmail: ' + emailInput.value);
-    cadastroBtn.disabled = false;
-    cadastroBtn.textContent = 'Cadastrar';
-    cadastroForm.reset();
-  }, 1000);
+// Apple Login (Requer configuração adicional no Firebase)
+document.getElementById('apple').addEventListener('click', function () {
+    alert('Login com Apple\n\nFuncionalidade requer configuração adicional no Firebase Console.\n\nPara implementar:\n1. Acesse Firebase Console\n2. Vá em Authentication > Sign-in method\n3. Ative o provedor Apple\n4. Configure Service ID e Team ID');
+});
+
+// Facebook Login (Requer configuração adicional no Firebase)
+document.getElementById('facebook').addEventListener('click', function () {
+    alert('Login com Facebook\n\nFuncionalidade requer configuração adicional no Firebase Console.\n\nPara implementar:\n1. Acesse Firebase Console\n2. Vá em Authentication > Sign-in method\n3. Ative o provedor Facebook\n4. Configure App ID e App Secret do Facebook');
+});
+
+// Verificar se já está logado ao carregar a página
+auth.onAuthStateChanged((user) => {
+    if (user) {
+        // Se já estiver logado, redirecionar para dashboard
+        console.log('Usuário já está logado, redirecionando...');
+        window.location.href = 'dashboard.html';
+    }
 });

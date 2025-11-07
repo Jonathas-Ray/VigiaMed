@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/tabela-list")
+@RequestMapping("/api/tabelaList")
 public class TabelaListController {
 
     private final TabelaListFacade tabelaListFacade;
