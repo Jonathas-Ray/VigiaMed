@@ -1,6 +1,6 @@
 package org.example.controllers;
 
-import org.example.models.LogModel;
+import org.example.entities.Log;
 import org.example.facades.LogFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,28 +20,28 @@ public class LogController {
     }
 
     @GetMapping
-    public List<LogModel> getLogs() {
+    public List<Log> getLogs() {
         return logFacade.buscarTodos();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<LogModel> getLog(@PathVariable int id) {
-        LogModel logModel = logFacade.buscarPorId(id);
-        if (logModel != null) {
-            return ResponseEntity.ok(logModel);
+    public ResponseEntity<Log> getLog(@PathVariable int id) {
+        Log log = logFacade.buscarPorId(id);
+        if (log != null) {
+            return ResponseEntity.ok(log);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public void criarLog(@RequestBody LogModel logModel) {
-        logFacade.adicionar(logModel);
+    public void criarLog(@RequestBody Log log) {
+        logFacade.adicionar(log);
     }
 
     @PutMapping("/{id}")
-    public void atualizarLog(@PathVariable int id, @RequestBody LogModel logModel) {
-        logFacade.atualizar(id, logModel);
+    public void atualizarLog(@PathVariable int id, @RequestBody Log log) {
+        logFacade.atualizar(id, log);
     }
 
     @DeleteMapping("/{id}")

@@ -1,16 +1,15 @@
 package org.example.controllers;
 
 import org.example.facades.DispositivoFacade;
-import org.example.models.DispositivoModel;
+import org.example.entities.Dispositivo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @RestController
-@RequestMapping("/api/Dispositivo")
+@RequestMapping("/api/dispositivo")
 public class DispositivoController{
 
     private final DispositivoFacade dispositivoFacade;
@@ -21,33 +20,32 @@ public class DispositivoController{
     }
 
     @GetMapping
-    public List<DispositivoModel> getDispositivo(){
+    public List<Dispositivo> getDispositivo(){
         return dispositivoFacade.buscarTodos();
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<DispositivoModel> GetDispositivo(@PathVariable int id){
-        DispositivoModel dispositivoModel = dispositivoFacade.buscarPorId(id);
-        if (dispositivoModel != null){
-            return ResponseEntity.ok(dispositivoModel);
+    public ResponseEntity<Dispositivo> GetDispositivo(@PathVariable int id){
+        Dispositivo dispositivo = dispositivoFacade.buscarPorId(id);
+        if (dispositivo != null){
+            return ResponseEntity.ok(dispositivo);
         }else{
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public void criarDispositivo(@RequestBody DispositivoModel dispositivoModel){
-        dispositivoFacade.adicionar(dispositivoModel);
+    public void criarDispositivo(@RequestBody Dispositivo dispositivo){
+        dispositivoFacade.adicionar(dispositivo);
     }
 
     @DeleteMapping("/{id}")
-    public void removerDispoitivo(@PathVariable int id){
+    public void removerDispositivo(@PathVariable int id){
         dispositivoFacade.excluir(id);
     }
 
     @PutMapping("/{id}")
-    public void atualizarDispositivo(@PathVariable int id, @RequestBody DispositivoModel dispositivoModel){
-        dispositivoFacade.atualizar(id, dispositivoModel);
+    public void atualizarDispositivo(@PathVariable int id, @RequestBody Dispositivo dispositivo){
+        dispositivoFacade.atualizar(id, dispositivo);
     }
 }
-

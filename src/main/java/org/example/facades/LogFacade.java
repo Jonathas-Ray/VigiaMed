@@ -1,7 +1,7 @@
 package org.example.facades;
 
 import org.example.applications.LogApplication;
-import org.example.models.LogModel;
+import org.example.entities.Log;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,23 +14,23 @@ public class LogFacade {
         this.logApplication = logApplication;
     }
 
-    public List<LogModel> buscarTodos(){
+    public List<Log> buscarTodos(){
         return this.logApplication.buscarTodos();
     }
 
-    public LogModel buscarPorId(int id){
+    public Log buscarPorId(int id){
         return this.logApplication.buscarPorId(id);
     }
 
-    public void adicionar(LogModel logModel){
-        this.logApplication.adicionar(logModel);
+    public void adicionar(Log log){
+        this.logApplication.adicionar(log);
     }
 
     public void excluir(int id){
         this.logApplication.excluir(id);
     }
 
-    public void atualizar(int id, LogModel logModel){
-        this.logApplication.atualizar(id, logModel);
+    public void atualizar(int id, Log log){
+        this.logApplication.atualizar(id, log);
     }
 }

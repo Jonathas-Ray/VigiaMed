@@ -1,6 +1,6 @@
 package org.example.controllers;
 
-import org.example.models.MedicaoModel;
+import org.example.entities.Medicao;
 import org.example.facades.MedicaoFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,28 +20,28 @@ public class MedicaoController {
     }
 
     @GetMapping
-    public List<MedicaoModel> getMedicoes() {
+    public List<Medicao> getMedicoes() {
         return medicaoFacade.buscarTodos();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MedicaoModel> getMedicao(@PathVariable int id) {
-        MedicaoModel medicaoModel = medicaoFacade.buscarPorId(id);
-        if (medicaoModel != null) {
-            return ResponseEntity.ok(medicaoModel);
+    public ResponseEntity<Medicao> getMedicao(@PathVariable int id) {
+        Medicao medicao = medicaoFacade.buscarPorId(id);
+        if (medicao != null) {
+            return ResponseEntity.ok(medicao);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public void criarMedicao(@RequestBody MedicaoModel medicaoModel) {
-        medicaoFacade.adicionar(medicaoModel);
+    public void criarMedicao(@RequestBody Medicao medicao) {
+        medicaoFacade.adicionar(medicao);
     }
 
     @PutMapping("/{id}")
-    public void atualizarMedicao(@PathVariable int id, @RequestBody MedicaoModel medicaoModel) {
-        medicaoFacade.atualizar(id, medicaoModel);
+    public void atualizarMedicao(@PathVariable int id, @RequestBody Medicao medicao) {
+        medicaoFacade.atualizar(id, medicao);
     }
 
     @DeleteMapping("/{id}")

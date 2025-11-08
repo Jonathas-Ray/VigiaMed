@@ -1,7 +1,7 @@
 package org.example.facades;
 
 import org.example.applications.SensorApplication;
-import org.example.models.SensorModel;
+import org.example.entities.Sensor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,23 +14,23 @@ public class SensorFacade {
         this.sensorApplication = sensorApplication;
     }
 
-    public List<SensorModel> buscarTodos() {
+    public List<Sensor> buscarTodos() {
         return this.sensorApplication.buscarTodos();
     }
 
-    public SensorModel buscarPorId(int id) {
+    public Sensor buscarPorId(int id) {
         return this.sensorApplication.buscarPorId(id);
     }
 
-    public void adicionar(SensorModel sensorModel) {
-        this.sensorApplication.adicionar(sensorModel);
+    public void adicionar(Sensor sensor) {
+        this.sensorApplication.adicionar(sensor);
     }
 
     public void excluir(int id) {
         this.sensorApplication.excluir(id);
     }
 
-    public void atualizar(int id, SensorModel sensorModel) {
-        this.sensorApplication.atualizar(id, sensorModel);
+    public void atualizar(int id, Sensor sensor) {
+        this.sensorApplication.atualizar(id, sensor);
     }
 }

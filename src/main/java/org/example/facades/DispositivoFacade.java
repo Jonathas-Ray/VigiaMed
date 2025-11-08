@@ -1,7 +1,7 @@
 package org.example.facades;
 
 import org.example.applications.DispositivoApplication;
-import org.example.models.DispositivoModel;
+import org.example.entities.Dispositivo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,23 +14,23 @@ public class DispositivoFacade {
         this.dispositivoApplication = dispositivoApplication;
     }
 
-    public List<DispositivoModel> buscarTodos() {
+    public List<Dispositivo> buscarTodos() {
         return this.dispositivoApplication.buscarTodos();
     }
 
-    public DispositivoModel buscarPorId(int id) {
+    public Dispositivo buscarPorId(int id) {
         return this.dispositivoApplication.buscarPorId(id);
     }
 
-    public void adicionar(DispositivoModel dispositivoModel) {
-        this.dispositivoApplication.adicionar(dispositivoModel);
+    public void adicionar(Dispositivo dispositivo) {
+        this.dispositivoApplication.adicionar(dispositivo);
     }
 
     public void excluir(int id) {
         this.dispositivoApplication.excluir(id);
     }
 
-    public void atualizar(int id, DispositivoModel dispositivoModel){
-        this.dispositivoApplication.atualizar(id, dispositivoModel);
+    public void atualizar(int id, Dispositivo dispositivo){
+        this.dispositivoApplication.atualizar(id, dispositivo);
     }
 }
