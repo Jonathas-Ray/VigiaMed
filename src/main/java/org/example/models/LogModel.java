@@ -75,6 +75,9 @@ public class LogModel {
         this.tabelaListId = tabelaListId;
     }
 
+    public TabelaListModel getTabelaListModel() {
+        return tabelaListModel;
+    }
 
     public void setTabelaListModel(TabelaListModel tabelaListModel) {
         this.tabelaListModel = tabelaListModel;
@@ -88,4 +91,11 @@ public class LogModel {
         this.usuarioId = usuarioId;
     }
 
+    public UsuarioModel getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(UsuarioModel usuario) {
+        this.usuario = usuario;
+    }
 }

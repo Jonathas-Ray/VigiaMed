@@ -48,6 +48,9 @@ public class PacienteModel {
         this.referencia = referencia;
     }
 
+    public List<MedicaoModel> getMedicoes() {
+        return medicoes;
+    }
 
     public void setMedicoes(List<MedicaoModel> medicoes) {
         this.medicoes = medicoes;

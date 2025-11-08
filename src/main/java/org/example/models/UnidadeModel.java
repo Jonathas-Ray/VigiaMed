@@ -72,8 +72,16 @@ public class UnidadeModel {
         this.email = email;
     }
 
+    public List<DispositivoModel> getDispositivos() {
+        return dispositivos;
+    }
+
     public void setDispositivos(List<DispositivoModel> dispositivos) {
         this.dispositivos = dispositivos;
+    }
+
+    public List<UsuarioModel> getUsuarios() {
+        return usuarios;
     }
 
     public void setUsuarios(List<UsuarioModel> usuarios) {

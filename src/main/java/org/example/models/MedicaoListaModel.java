@@ -67,28 +67,19 @@ public class MedicaoListaModel {
         this.data_hora = data_hora;
     }
 
+    public MedicaoModel getMedicaoModel() {
+        return medicaoModel;
+    }
+
     public void setMedicaoModel(MedicaoModel medicaoModel) {
         this.medicaoModel = medicaoModel;
+    }
+
+    public SensorModel getSensorModel() {
+        return sensorModel;
     }
 
     public void setSensorModel(SensorModel sensorModel) {
         this.sensorModel = sensorModel;
     }
-    public void setMedicaoId(int medicaoId) {
-        this.medicaoId = medicaoId;
-    }
-
-    public void setSensorId(int sensorId) {
-        this.sensorId = sensorId;
-    }
-
-
-    public MedicaoModel getMedicao() {
-        return medicaoModel;
-    }
-
-    public SensorModel getSensor() {
-        return sensorModel;
-    }
-
 }
