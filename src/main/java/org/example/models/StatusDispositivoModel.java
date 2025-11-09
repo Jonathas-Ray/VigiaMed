@@ -2,9 +2,6 @@ package org.example.models;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Table (name = "statusDispositivo")
 public class StatusDispositivoModel {
@@ -13,9 +10,6 @@ public class StatusDispositivoModel {
     private int id;
 
     private String estado;
-
-    @OneToMany(mappedBy = "statusDispositivoModel")
-    private List<DispositivoModel> dispositivo = new ArrayList<>();
 
     public StatusDispositivoModel(){}
 
