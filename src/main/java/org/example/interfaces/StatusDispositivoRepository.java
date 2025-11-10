@@ -1,15 +1,14 @@
 package org.example.interfaces;
 
-import org.example.entities.StatusDispositivo;
-import org.example.entities.Unidade;
+import org.example.models.StatusDispositivoModel;
 
 
 import java.util.List;
 
 public interface StatusDispositivoRepository {
-    public List<StatusDispositivo> buscarTodos();
-    public StatusDispositivo buscarPorId(int id);
-    public void adicionar(StatusDispositivo statusDispositivo);
+    public List<StatusDispositivoModel> buscarTodos();
+    public StatusDispositivoModel buscarPorId(int id);
+    public void adicionar(StatusDispositivoModel statusDispositivoModel);
     public void excluir(int id);
-    public void atualizar(int id, StatusDispositivo statusDispositivo);
+    public void atualizar(int id, StatusDispositivoModel statusDispositivoModel);
 }

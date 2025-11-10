@@ -1,37 +1,45 @@
 package org.example.models;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name = "Usuario")
+@Table(name = "usuario")
 public class UsuarioModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     private String nome;
     private String tipo;
     private String email;
     private String senha;
-    private int unidade;
 
-    public UsuarioModel(){}
+    @Column(name = "unidade_id")
+    private int unidadeId;
+    @ManyToOne
+    @JoinColumn(name = "unidade_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private UnidadeModel unidade;
 
-    public UsuarioModel(int id, String nome, String tipo, String email, String senha, int unidade) {
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private List<LogModel> logs;
+
+    public UsuarioModel() {}
+
+    public UsuarioModel(int id, String nome, String tipo, String email, String senha) {
         this.id = id;
         this.nome = nome;
         this.tipo = tipo;
         this.email = email;
         this.senha = senha;
-        this.unidade = unidade;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -67,23 +75,27 @@ public class UsuarioModel {
         this.senha = senha;
     }
 
-    public int getUnidade() {
+    public int getUnidadeId() {
+        return unidadeId;
+    }
+
+    public void setUnidadeId(int unidadeId) {
+        this.unidadeId = unidadeId;
+    }
+
+    public UnidadeModel getUnidade() {
         return unidade;
     }
 
-    public void setUnidade(int unidade) {
+    public void setUnidade(UnidadeModel unidade) {
         this.unidade = unidade;
     }
 
-    @Override
-    public String toString() {
-        return "UsuarioModel{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", tipo='" + tipo + '\'' +
-                ", email='" + email + '\'' +
-                ", senha='" + senha + '\'' +
-                ", unidade=" + unidade +
-                '}';
+    public List<LogModel> getLogs() {
+        return logs;
+    }
+
+    public void setLogs(List<LogModel> logs) {
+        this.logs = logs;
     }
 }

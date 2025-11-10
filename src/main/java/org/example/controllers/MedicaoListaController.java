@@ -1,49 +1,51 @@
 package org.example.controllers;
 
-import org.example.entities.MedicaoLista;
+import org.example.models.MedicaoListaModel;
 import org.example.facades.MedicaoListaFacade;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RestController
+@RequestMapping("/api/medicao-lista")
 public class MedicaoListaController {
 
-        private final MedicaoListaFacade medicaoListaFacade;
+    private final MedicaoListaFacade medicaoListaFacade;
 
-        public MedicaoListaController(MedicaoListaFacade medicaoListaFacade) {
-            this.medicaoListaFacade = medicaoListaFacade;
+    @Autowired
+    public MedicaoListaController(MedicaoListaFacade medicaoListaFacade) {
+        this.medicaoListaFacade = medicaoListaFacade;
+    }
+
+    @GetMapping
+    public List<MedicaoListaModel> getMedicaoListas() {
+        return medicaoListaFacade.buscarTodos();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<MedicaoListaModel> getMedicaoLista(@PathVariable int id) {
+        MedicaoListaModel medicaoListaModel = medicaoListaFacade.buscarPorId(id);
+        if (medicaoListaModel != null) {
+            return ResponseEntity.ok(medicaoListaModel);
+        } else {
+            return ResponseEntity.notFound().build();
         }
+    }
 
-        @GetMapping
-        public List<MedicaoLista> getMedicaoListas() {
-            return medicaoListaFacade.buscarTodos();
-        }
+    @PostMapping
+    public void criarMedicaoLista(@RequestBody MedicaoListaModel medicaoListaModel) {
+        medicaoListaFacade.adicionar(medicaoListaModel);
+    }
 
-        @GetMapping("/{id}")
-        public ResponseEntity<MedicaoLista> getMedicao(@PathVariable int id) {
-            MedicaoLista medicaoLista = medicaoListaFacade.buscarPorId(id);
-            if (medicaoLista != null) {
-                return ResponseEntity.ok(medicaoLista);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        }
+    @PutMapping("/{id}")
+    public void atualizarMedicaoLista(@PathVariable int id, @RequestBody MedicaoListaModel medicaoListaModel) {
+        medicaoListaFacade.atualizar(id, medicaoListaModel);
+    }
 
-        @PostMapping
-        public void criaMedicaoLista(@RequestBody MedicaoLista medicaoLista) {
-            medicaoListaFacade.adicionar(medicaoLista);
-        }
-
-        @PutMapping("/{id}")
-        public void atualizarMedicaoLista(@PathVariable int id, @RequestBody MedicaoLista medicaoLista) {
-            medicaoListaFacade.atualizar(id, medicaoLista);
-        }
-
-        @DeleteMapping("/{id}")
-        public void removerMedicaoLista(@PathVariable int id) {
-            medicaoListaFacade.excluir(id);
-        }
-
-
+    @DeleteMapping("/{id}")
+    public void removerMedicaoLista(@PathVariable int id) {
+        medicaoListaFacade.excluir(id);
+    }
 }

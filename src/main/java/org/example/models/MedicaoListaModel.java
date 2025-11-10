@@ -3,30 +3,49 @@ package org.example.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Medição-Lista")
-
+@Table(name = "medicaoLista")
 public class MedicaoListaModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     private double resultado;
     private String tipoMedicao;
     private String data_hora;
 
+<<<<<<< HEAD
     public MedicaoListaModel(long id, double resultado, String tipoMedicao, String data_hora) {
+=======
+    @Column(name = "medicao_id")
+    private int medicaoId;
+    @ManyToOne
+    @JoinColumn(name = "medicao_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private MedicaoModel medicaoModel;
+
+    @Column(name = "sensor_id")
+    private int sensorId;
+    @ManyToOne
+    @JoinColumn(name = "sensor_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private SensorModel sensorModel;
+
+    public MedicaoListaModel() {}
+
+    public MedicaoListaModel(int id, double resultado, String tipoMedicao, String data_hora) {
+>>>>>>> d19d9cafe26fb1354eb778f2bf8bac639262281e
         this.id = id;
         this.resultado = resultado;
         this.tipoMedicao = tipoMedicao;
         this.data_hora = data_hora;
     }
 
-    public MedicaoListaModel(){}
+    public int getId() {
+        return id;
+    }
 
-    public long getId() { return id; }
-
-    public void setId(long id) { this.id = id; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public double getResultado() {
         return resultado;
@@ -52,13 +71,19 @@ public class MedicaoListaModel {
         this.data_hora = data_hora;
     }
 
-    @Override
-    public String toString() {
-        return "MedicaoListaModel{" +
-                "id=" + id +
-                ", resultado=" + resultado +
-                ", tipoMedicao='" + tipoMedicao + '\'' +
-                ", data_hora='" + data_hora + '\'' +
-                '}';
+    public MedicaoModel getMedicaoModel() {
+        return medicaoModel;
+    }
+
+    public void setMedicaoModel(MedicaoModel medicaoModel) {
+        this.medicaoModel = medicaoModel;
+    }
+
+    public SensorModel getSensorModel() {
+        return sensorModel;
+    }
+
+    public void setSensorModel(SensorModel sensorModel) {
+        this.sensorModel = sensorModel;
     }
 }

@@ -1,7 +1,7 @@
 package org.example.applications;
 
 import org.example.interfaces.DispositivoRepository;
-import org.example.entities.Dispositivo;
+import org.example.models.DispositivoModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,19 +14,23 @@ public class DispositivoApplication {
         this.dispositivoRepository = dispositivoRepository;
     }
 
-    public List<Dispositivo> buscarTodos() {
+    public List<DispositivoModel> buscarTodos() {
         return this.dispositivoRepository.buscarTodos();
     }
 
-    public Dispositivo buscarPorId(int id) {
+    public DispositivoModel buscarPorId(int id) {
         return this.dispositivoRepository.buscarPorId(id);
     }
 
-    public void adicionar(Dispositivo dispositivo) {
-        this.dispositivoRepository.adicionar(dispositivo);
+    public void adicionar(DispositivoModel dispositivoModel) {
+        this.dispositivoRepository.adicionar(dispositivoModel);
     }
 
     public void excluir(int id) {
         this.dispositivoRepository.excluir(id);
+    }
+
+    public void atualizar(int id, DispositivoModel dispositivoModel){
+        this.dispositivoRepository.atualizar(id, dispositivoModel);
     }
 }

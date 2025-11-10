@@ -1,6 +1,5 @@
 package org.example.repositories;
 
-import org.example.entities.Unidade;
 import org.example.interfaces.UnidadeRepository;
 import org.example.models.UnidadeModel;
 import org.springframework.stereotype.Repository;
@@ -9,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Repository
+//
 public class UnidadeRepositoryImpl implements UnidadeRepository {
     private final List<UnidadeModel> unidadeModels = new ArrayList<>();
     private final AtomicInteger idCounter = new AtomicInteger(1);
@@ -51,7 +50,7 @@ public class UnidadeRepositoryImpl implements UnidadeRepository {
         UnidadeModel unidadeExistente = buscarPorId(id);
         if (unidadeExistente != null) {
             unidadeExistente.setNome(unidadeModel.getNome());
-            unidadeExistente.setEndereço(unidadeModel.getEndereço());
+            unidadeExistente.setEndereco(unidadeModel.getEndereco());
             unidadeExistente.setTelefone(unidadeModel.getTelefone());
             unidadeExistente.setEmail(unidadeModel.getEmail());
         }

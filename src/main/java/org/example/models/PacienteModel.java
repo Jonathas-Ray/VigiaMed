@@ -1,17 +1,22 @@
 package org.example.models;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name = "Paciente")
+@Table(name = "patient")
 public class PacienteModel {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     private String nome;
     private String referencia;
+
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
+    private List<MedicaoModel> medicoes;
+
+    public PacienteModel() {}
 
     public PacienteModel(int id, String nome, String referencia) {
         this.id = id;
@@ -19,11 +24,13 @@ public class PacienteModel {
         this.referencia = referencia;
     }
 
-    public PacienteModel(){}
+    public int getId() {
+        return id;
+    }
 
-    public long getId() { return id; }
-
-    public void setId(long id) { this.id = id; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getNome() {
         return nome;
@@ -41,12 +48,11 @@ public class PacienteModel {
         this.referencia = referencia;
     }
 
-    @Override
-    public String toString() {
-        return "PacienteModel{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", referencia='" + referencia + '\'' +
-                '}';
+    public List<MedicaoModel> getMedicoes() {
+        return medicoes;
+    }
+
+    public void setMedicoes(List<MedicaoModel> medicoes) {
+        this.medicoes = medicoes;
     }
 }

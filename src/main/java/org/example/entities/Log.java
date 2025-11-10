@@ -3,21 +3,23 @@ package org.example.entities;
 import java.util.Date;
 
 public class Log {
-    private long id;
+    private int id;
     private String acao;
     private String descricao;
     private Date data;
 
-    public Log(long id, String acao, String descricao, Date data) {
+    public Log(int id, String acao, String descricao, Date data) {
         this.id = id;
         this.acao = acao;
         this.descricao = descricao;
         this.data = data;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
+
+    public void setId(int id){ this.id = id;}
 
     public String getAcao() {
         return acao;
@@ -36,6 +38,7 @@ public class Log {
     public Date getData() {
         return data;
     }
+
     public void setData(Date data) {
         this.data = data;
     }

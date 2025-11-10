@@ -3,29 +3,39 @@ package org.example.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
-@Table(name = "Tabela-Lista")
+@Table(name = "tabelaLista")
 public class TabelaListModel {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
     private String nome;
+
+    @OneToMany(mappedBy = "tabelaListModel")
+    private List<LogModel> log = new ArrayList<>();
 
     public TabelaListModel() {
     }
 
-    public TabelaListModel(long id, String nome) {
+    public TabelaListModel(int id, String nome) {
         this.id = id;
         this.nome = nome;
     }
 
+<<<<<<< HEAD
     public long getId() {
+=======
+    public int getId() {
+>>>>>>> d19d9cafe26fb1354eb778f2bf8bac639262281e
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -37,11 +47,11 @@ public class TabelaListModel {
         this.nome = nome;
     }
 
-    @Override
-    public String toString() {
-        return "TabelaListModel{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                '}';
+    public List<LogModel> getLog() {
+        return log;
+    }
+
+    public void setLog(List<LogModel> log) {
+        this.log = log;
     }
 }

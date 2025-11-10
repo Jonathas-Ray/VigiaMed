@@ -1,30 +1,41 @@
 package org.example.models;
 
-
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name = "Sensor")
+@Table(name = "sensor")
 public class SensorModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     private String nome;
     private String unidadeMedida;
 
-    public SensorModel(long id, String nome, String unidadeMedida) {
+    @OneToMany(mappedBy = "sensorModel", cascade = CascadeType.ALL)
+    private List<MedicaoListaModel> medicoes;
+
+    public SensorModel() {}
+
+    public SensorModel(int id, String nome, String unidadeMedida) {
         this.id = id;
         this.nome = nome;
         this.unidadeMedida = unidadeMedida;
     }
 
+<<<<<<< HEAD
     public SensorModel(){}
 
     public long getId() {return id;}
+=======
+    public int getId() {
+        return id;
+    }
+>>>>>>> d19d9cafe26fb1354eb778f2bf8bac639262281e
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -44,12 +55,11 @@ public class SensorModel {
         this.unidadeMedida = unidadeMedida;
     }
 
-    @Override
-    public String toString() {
-        return "SensorModel{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", unidadeMedida='" + unidadeMedida + '\'' +
-                '}';
+    public List<MedicaoListaModel> getMedicoes() {
+        return medicoes;
+    }
+
+    public void setMedicoes(List<MedicaoListaModel> medicoes) {
+        this.medicoes = medicoes;
     }
 }

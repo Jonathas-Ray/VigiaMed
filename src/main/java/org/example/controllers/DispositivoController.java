@@ -1,7 +1,7 @@
 package org.example.controllers;
 
-import org.example.entities.Dispositivo;
 import org.example.facades.DispositivoFacade;
+import org.example.models.DispositivoModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,28 +21,33 @@ public class DispositivoController{
     }
 
     @GetMapping
-    public List<Dispositivo> getDispositivo(){
+    public List<DispositivoModel> getDispositivo(){
         return dispositivoFacade.buscarTodos();
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Dispositivo> GetDispositivo(@PathVariable int id){
-        Dispositivo dispositivo = dispositivoFacade.buscarPorId(id);
-        if (dispositivo != null){
-            return ResponseEntity.ok(dispositivo);
+    public ResponseEntity<DispositivoModel> GetDispositivo(@PathVariable int id){
+        DispositivoModel dispositivoModel = dispositivoFacade.buscarPorId(id);
+        if (dispositivoModel != null){
+            return ResponseEntity.ok(dispositivoModel);
         }else{
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public void criarDispositivo(@RequestBody Dispositivo dispositivo){
-        dispositivoFacade.adicionar(dispositivo);
+    public void criarDispositivo(@RequestBody DispositivoModel dispositivoModel){
+        dispositivoFacade.adicionar(dispositivoModel);
     }
 
     @DeleteMapping("/{id}")
     public void removerDispoitivo(@PathVariable int id){
         dispositivoFacade.excluir(id);
+    }
+
+    @PutMapping("/{id}")
+    public void atualizarDispositivo(@PathVariable int id, @RequestBody DispositivoModel dispositivoModel){
+        dispositivoFacade.atualizar(id, dispositivoModel);
     }
 }
 

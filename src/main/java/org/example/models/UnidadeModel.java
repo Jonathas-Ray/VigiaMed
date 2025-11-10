@@ -1,35 +1,46 @@
-package org.example.models; // repository, application, facade de cada classe
+package org.example.models;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name = "Unidade")
+@Table(name = "unidade")
 public class UnidadeModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     private String nome;
-    private String endereço;
+    private String endereco;
     private String telefone;
     private String email;
 
-    public UnidadeModel(){}
+    @OneToMany(mappedBy = "unidade", cascade = CascadeType.ALL)
+    private List<DispositivoModel> dispositivos;
 
+<<<<<<< HEAD
     public UnidadeModel(long id, String nome, String endereço, String telefone, String email) {
+=======
+    @OneToMany(mappedBy = "unidade", cascade = CascadeType.ALL) // 🔹 agora compatível com UsuarioModel
+    private List<UsuarioModel> usuarios;
+
+    public UnidadeModel() {}
+
+    public UnidadeModel(int id, String nome, String endereco, String telefone, String email) {
+>>>>>>> d19d9cafe26fb1354eb778f2bf8bac639262281e
         this.id = id;
         this.nome = nome;
-        this.endereço = endereço;
+        this.endereco = endereco;
         this.telefone = telefone;
         this.email = email;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -41,12 +52,12 @@ public class UnidadeModel {
         this.nome = nome;
     }
 
-    public String getEndereço() {
-        return endereço;
+    public String getEndereco() {
+        return endereco;
     }
 
-    public void setEndereço(String endereço) {
-        this.endereço = endereço;
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
     }
 
     public String getTelefone() {
@@ -65,14 +76,19 @@ public class UnidadeModel {
         this.email = email;
     }
 
-    @Override
-    public String toString() {
-        return "UnidadeModel{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", endereço='" + endereço + '\'' +
-                ", telefone='" + telefone + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+    public List<DispositivoModel> getDispositivos() {
+        return dispositivos;
+    }
+
+    public void setDispositivos(List<DispositivoModel> dispositivos) {
+        this.dispositivos = dispositivos;
+    }
+
+    public List<UsuarioModel> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<UsuarioModel> usuarios) {
+        this.usuarios = usuarios;
     }
 }

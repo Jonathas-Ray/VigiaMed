@@ -3,6 +3,7 @@ package org.example.applications;
 import org.example.interfaces.UsuarioRepository;
 import org.example.entities.Usuario;
 import org.example.models.UsuarioModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
