@@ -1,6 +1,6 @@
 package org.example.controllers;
 
-import org.example.models.SensorModel;
+import org.example.entities.Sensor;
 import org.example.facades.SensorFacade;
 <<<<<<< HEAD
 import org.example.models.SensorModel;
@@ -28,11 +28,12 @@ public class SensorController {
 >>>>>>> d19d9cafe26fb1354eb778f2bf8bac639262281e
 
     @GetMapping
-    public List<SensorModel> getSensores() {
+    public List<Sensor> getSensores() {
         return sensorFacade.buscarTodos();
     }
 
     @GetMapping("/{id}")
+<<<<<<< HEAD
     public ResponseEntity<SensorModel> getSensor(@PathVariable int id) {
 <<<<<<< HEAD
         SensorModel sensor = sensorFacade.buscarPorId(id);
@@ -43,12 +44,19 @@ public class SensorController {
         if (sensorModel != null) {
             return ResponseEntity.ok(sensorModel);
 >>>>>>> d19d9cafe26fb1354eb778f2bf8bac639262281e
+=======
+    public ResponseEntity<Sensor> getSensor(@PathVariable int id) {
+        Sensor sensor = sensorFacade.buscarPorId(id);
+        if (sensor != null) {
+            return ResponseEntity.ok(sensor);
+>>>>>>> 2857621346484ba555ef36c741558c8d17b482d9
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
+<<<<<<< HEAD
 <<<<<<< HEAD
     public void criarSensor(@RequestBody SensorModel sensor) {
         sensorFacade.adicionar(sensor);
@@ -66,6 +74,15 @@ public class SensorController {
     public void atualizarSensor(@PathVariable int id, @RequestBody SensorModel sensorModel) {
         sensorFacade.atualizar(id, sensorModel);
 >>>>>>> d19d9cafe26fb1354eb778f2bf8bac639262281e
+=======
+    public void criarSensor(@RequestBody Sensor sensor) {
+        sensorFacade.adicionar(sensor);
+    }
+
+    @PutMapping("/{id}")
+    public void atualizarSensor(@PathVariable int id, @RequestBody Sensor sensor) {
+        sensorFacade.atualizar(id, sensor);
+>>>>>>> 2857621346484ba555ef36c741558c8d17b482d9
     }
 
     @DeleteMapping("/{id}")

@@ -2,7 +2,6 @@ package org.example.controllers;
 
 import org.example.entities.StatusDispositivo;
 import org.example.facades.StatusDispositivoFacade;
-import org.example.models.StatusDispositivoModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,28 +19,28 @@ public class StatusDispositivoController {
     }
 
     @GetMapping
-    public List<StatusDispositivoModel> getStatusDispositivo(){
+    public List<StatusDispositivo> getStatusDispositivo(){
         return statusDispositivoFacade.buscarTodos();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StatusDispositivoModel> getStatusDispositivo(@PathVariable int id){
-        StatusDispositivoModel statusDispositivoModel = statusDispositivoFacade.buscarPorId(id);
-        if(statusDispositivoModel != null){
-            return ResponseEntity.ok(statusDispositivoModel);
+    public ResponseEntity<StatusDispositivo> getStatusDispositivo(@PathVariable int id){
+        StatusDispositivo statusDispositivo = statusDispositivoFacade.buscarPorId(id);
+        if(statusDispositivo != null){
+            return ResponseEntity.ok(statusDispositivo);
         }else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public void criarStatusDispositivo(@RequestBody StatusDispositivoModel statusDispositivoModel){
-        statusDispositivoFacade.adicionar(statusDispositivoModel);
+    public void criarStatusDispositivo(@RequestBody StatusDispositivo statusDispositivo){
+        statusDispositivoFacade.adicionar(statusDispositivo);
     }
 
     @PutMapping("/{id}")
-    public void atualizarStatusDispositivo(@PathVariable int id, @RequestBody StatusDispositivoModel statusDispositivoModel){
-        statusDispositivoFacade.atualizar(id, statusDispositivoModel);
+    public void atualizarStatusDispositivo(@PathVariable int id, @RequestBody StatusDispositivo statusDispositivo){
+        statusDispositivoFacade.atualizar(id, statusDispositivo);
     }
 
     @DeleteMapping("/{id}")

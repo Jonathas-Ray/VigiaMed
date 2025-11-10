@@ -1,5 +1,6 @@
 package org.example.applications;
 
+import org.example.entities.MedicaoLista;
 import org.example.interfaces.MedicaoListaRepository;
 import org.example.models.MedicaoListaModel;
 <<<<<<< HEAD
@@ -7,6 +8,7 @@ import org.example.models.MedicaoListaModel;
 import org.springframework.stereotype.Service;
 >>>>>>> d19d9cafe26fb1354eb778f2bf8bac639262281e
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,6 +19,7 @@ public class MedicaoListaApplication {
         this.medicaoListaRepository = medicaoListaRepository;
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
         public List<MedicaoListaModel> buscarTodos(){
             return medicaoListaRepository.buscarTodos();
@@ -38,13 +41,24 @@ public class MedicaoListaApplication {
 =======
     public List<MedicaoListaModel> buscarTodos() {
         return this.medicaoListaRepository.buscarTodos();
+=======
+    public List<MedicaoLista> buscarTodos() {
+        List<MedicaoListaModel> modelList = this.medicaoListaRepository.buscarTodos();
+        List<MedicaoLista> entitieList = new ArrayList<>();
+        for(MedicaoListaModel medicaoListaModel : modelList) {
+            entitieList.add(new MedicaoLista().fromModel(medicaoListaModel));
+        }
+        return entitieList;
+>>>>>>> 2857621346484ba555ef36c741558c8d17b482d9
     }
 
-    public MedicaoListaModel buscarPorId(int id) {
-        return this.medicaoListaRepository.buscarPorId(id);
+    public MedicaoLista buscarPorId(int id) {
+        MedicaoLista medicaoLista = new MedicaoLista().fromModel(this.medicaoListaRepository.buscarPorId(id));
+        return medicaoLista;
     }
 
-    public void adicionar(MedicaoListaModel medicaoListaModel) {
+    public void adicionar(MedicaoLista medicaoLista) {
+        MedicaoListaModel medicaoListaModel = medicaoLista.toModel();
         this.medicaoListaRepository.adicionar(medicaoListaModel);
     }
 
@@ -52,8 +66,13 @@ public class MedicaoListaApplication {
         this.medicaoListaRepository.excluir(id);
     }
 
-    public void atualizar(int id, MedicaoListaModel medicaoListaModel) {
+    public void atualizar(int id, MedicaoLista medicaoLista){
+        MedicaoListaModel medicaoListaModel = medicaoLista.toModel();
         this.medicaoListaRepository.atualizar(id, medicaoListaModel);
     }
+<<<<<<< HEAD
 >>>>>>> d19d9cafe26fb1354eb778f2bf8bac639262281e
 }
+=======
+}
+>>>>>>> 2857621346484ba555ef36c741558c8d17b482d9
