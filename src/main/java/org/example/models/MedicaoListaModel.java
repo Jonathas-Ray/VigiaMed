@@ -14,6 +14,9 @@ public class MedicaoListaModel {
     private String tipoMedicao;
     private String data_hora;
 
+<<<<<<< HEAD
+    public MedicaoListaModel(long id, double resultado, String tipoMedicao, String data_hora) {
+=======
     @Column(name = "medicao_id")
     private int medicaoId;
     @ManyToOne
@@ -29,6 +32,7 @@ public class MedicaoListaModel {
     public MedicaoListaModel() {}
 
     public MedicaoListaModel(int id, double resultado, String tipoMedicao, String data_hora) {
+>>>>>>> d19d9cafe26fb1354eb778f2bf8bac639262281e
         this.id = id;
         this.resultado = resultado;
         this.tipoMedicao = tipoMedicao;

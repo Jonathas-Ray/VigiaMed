@@ -27,7 +27,11 @@ public class TabelaListModel {
         this.nome = nome;
     }
 
+<<<<<<< HEAD
+    public long getId() {
+=======
     public int getId() {
+>>>>>>> d19d9cafe26fb1354eb778f2bf8bac639262281e
         return id;
     }
 

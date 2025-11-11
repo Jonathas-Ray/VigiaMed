@@ -25,9 +25,15 @@ public class SensorModel {
         this.unidadeMedida = unidadeMedida;
     }
 
+<<<<<<< HEAD
+    public SensorModel(){}
+
+    public long getId() {return id;}
+=======
     public int getId() {
         return id;
     }
+>>>>>>> d19d9cafe26fb1354eb778f2bf8bac639262281e
 
     public void setId(int id) {
         this.id = id;

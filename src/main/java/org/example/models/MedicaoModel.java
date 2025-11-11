@@ -9,6 +9,12 @@ public class MedicaoModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+<<<<<<< HEAD
+    private long id;
+    private String data_hora;
+
+    public MedicaoModel(long id, String data_hora) {
+=======
     private int id;
 
     private String descricao;
@@ -32,12 +38,13 @@ public class MedicaoModel {
     public MedicaoModel() {}
 
     public MedicaoModel(int id, String descricao, String dataHora) {
+>>>>>>> d19d9cafe26fb1354eb778f2bf8bac639262281e
         this.id = id;
         this.descricao = descricao;
         this.dataHora = dataHora;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

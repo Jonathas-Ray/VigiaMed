@@ -19,12 +19,16 @@ public class UnidadeModel {
     @OneToMany(mappedBy = "unidade", cascade = CascadeType.ALL)
     private List<DispositivoModel> dispositivos;
 
+<<<<<<< HEAD
+    public UnidadeModel(long id, String nome, String endereço, String telefone, String email) {
+=======
     @OneToMany(mappedBy = "unidade", cascade = CascadeType.ALL) // 🔹 agora compatível com UsuarioModel
     private List<UsuarioModel> usuarios;
 
     public UnidadeModel() {}
 
     public UnidadeModel(int id, String nome, String endereco, String telefone, String email) {
+>>>>>>> d19d9cafe26fb1354eb778f2bf8bac639262281e
         this.id = id;
         this.nome = nome;
         this.endereco = endereco;

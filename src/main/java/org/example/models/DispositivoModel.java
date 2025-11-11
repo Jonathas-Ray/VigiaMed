@@ -22,6 +22,10 @@ public class DispositivoModel {
     @JoinColumn(name = "unidade_id", referencedColumnName = "id", insertable = false, updatable = false)
     private UnidadeModel unidade;
 
+<<<<<<< HEAD
+    public DispositivoModel (long id, String modelo, String numeroSerie, Date dataAquisicao){
+        this.id = id;
+=======
     @Column(name = "status_dispositivo_id")
     private int statusDispositivoId;
     @OneToOne
@@ -34,6 +38,7 @@ public class DispositivoModel {
     public DispositivoModel() {}
 
     public DispositivoModel(String modelo, String numeroSerie, Date dataAquisicao) {
+>>>>>>> d19d9cafe26fb1354eb778f2bf8bac639262281e
         this.modelo = modelo;
         this.numeroSerie = numeroSerie;
         this.dataAquisicao = dataAquisicao;
