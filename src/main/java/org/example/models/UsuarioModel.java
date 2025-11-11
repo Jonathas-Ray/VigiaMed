@@ -74,6 +74,10 @@ public class UsuarioModel {
         this.senha = senha;
     }
 
+    public int getUnidadeId() {
+        return unidadeId;
+    }
+
     public void setUnidadeId(int unidadeId) {
         this.unidadeId = unidadeId;
     }
