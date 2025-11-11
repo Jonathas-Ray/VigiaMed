@@ -24,7 +24,6 @@ public class Sensor {
 
     public SensorModel toModel() {
         return new SensorModel(
-                this.getId(),
                 this.getNome(),
                 this.getUnidadeMedida()
         );

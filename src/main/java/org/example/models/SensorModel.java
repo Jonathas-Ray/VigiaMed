@@ -19,8 +19,7 @@ public class SensorModel {
 
     public SensorModel() {}
 
-    public SensorModel(int id, String nome, String unidadeMedida) {
-        this.id = id;
+    public SensorModel( String nome, String unidadeMedida) {
         this.nome = nome;
         this.unidadeMedida = unidadeMedida;
     }

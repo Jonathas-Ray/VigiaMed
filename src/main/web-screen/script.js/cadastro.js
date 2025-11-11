@@ -186,7 +186,7 @@ registerForm.addEventListener('submit', async function(e) {
         alert('Cadastro realizado com sucesso!\n\nBem-vindo, ' + nome + '!\n\nRedirecionando para o dashboard...');
         
         // Redirecionar para a página principal ou dashboard
-        window.location.href = 'dashboard.html';
+        window.location.href = 'login.html';
 
     } catch (error) {
         console.error('Erro no cadastro:', error);

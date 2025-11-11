@@ -9,8 +9,7 @@ public class Paciente {
 
     public Paciente(){}
 
-    public Paciente(int id, String nome, String referencia) {
-        this.id = id;
+    public Paciente( int id, String nome, String referencia) {
         this.nome = nome;
         this.referencia = referencia;
     }
@@ -24,7 +23,6 @@ public class Paciente {
 
     public PacienteModel toModel() {
         return new PacienteModel(
-                this.getId(),
                 this.getNome(),
                 this.getReferencia()
         );
