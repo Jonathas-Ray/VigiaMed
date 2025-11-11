@@ -11,13 +11,6 @@ public class Unidade {
 
     public Unidade(){}
 
-    public Unidade(String nome, String endereco, String telefone, String email) {
-        this.nome = nome;
-        this.endereco = endereco;
-        this.telefone = telefone;
-        this.email = email;
-    }
-
     public Unidade(int id, String nome, String endereco, String telefone, String email) {
         this.id = id;
         this.nome = nome;
@@ -38,23 +31,21 @@ public class Unidade {
     public void setEmail(String email) { this.email = email; }
 
     public UnidadeModel toModel() {
-        UnidadeModel model = new UnidadeModel();
-        model.setId(this.getId());
-        model.setNome(this.getNome());
-        model.setEndereco(this.getEndereco());
-        model.setTelefone(this.getTelefone());
-        model.setEmail(this.getEmail());
-        return model;
+        return new UnidadeModel(
+                this.getNome(),
+                this.getEndereco(),
+                this.getTelefone(),
+                this.getEmail()
+        );
     }
 
     public static Unidade fromModel(UnidadeModel model) {
-        Unidade unidade = new Unidade(
+        return new Unidade(
+                model.getId(),
                 model.getNome(),
                 model.getEndereco(),
                 model.getTelefone(),
                 model.getEmail()
         );
-        unidade.setId(model.getId());
-        return unidade;
     }
 }

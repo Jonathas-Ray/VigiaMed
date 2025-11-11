@@ -11,13 +11,6 @@ public class Usuario {
 
     public Usuario(){}
 
-    public Usuario(String nome, String tipo, String email, String senha) {
-        this.nome = nome;
-        this.tipo = tipo;
-        this.email = email;
-        this.senha = senha;
-    }
-
     public Usuario(int id, String nome, String tipo, String email, String senha) {
         this.id = id;
         this.nome = nome;
@@ -38,23 +31,21 @@ public class Usuario {
     public void setSenha(String senha) { this.senha = senha; }
 
     public UsuarioModel toModel() {
-        UsuarioModel model = new UsuarioModel();
-        model.setId(this.getId());
-        model.setNome(this.getNome());
-        model.setTipo(this.getTipo());
-        model.setEmail(this.getEmail());
-        model.setSenha(this.getSenha());
-        return model;
+        return new UsuarioModel(
+                this.getNome(),
+                this.getTipo(),
+                this.getEmail(),
+                this.getSenha()
+        );
     }
 
     public static Usuario fromModel(UsuarioModel model) {
-        Usuario usuario = new Usuario(
+        return new Usuario(
+                model.getId(),
                 model.getNome(),
                 model.getTipo(),
                 model.getEmail(),
                 model.getSenha()
         );
-        usuario.setId(model.getId());
-        return usuario;
     }
 }

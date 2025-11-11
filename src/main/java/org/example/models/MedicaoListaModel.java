@@ -28,7 +28,7 @@ public class MedicaoListaModel {
 
     public MedicaoListaModel() {}
 
-    public MedicaoListaModel(int id, double resultado, String tipoMedicao, String data_hora) {
+    public MedicaoListaModel( double resultado, String tipoMedicao, String data_hora) {
         this.id = id;
         this.resultado = resultado;
         this.tipoMedicao = tipoMedicao;
@@ -67,12 +67,28 @@ public class MedicaoListaModel {
         this.data_hora = data_hora;
     }
 
+    public int getMedicaoId() {
+        return medicaoId;
+    }
+
+    public void setMedicaoId(int medicaoId) {
+        this.medicaoId = medicaoId;
+    }
+
     public MedicaoModel getMedicaoModel() {
         return medicaoModel;
     }
 
     public void setMedicaoModel(MedicaoModel medicaoModel) {
         this.medicaoModel = medicaoModel;
+    }
+
+    public int getSensorId() {
+        return sensorId;
+    }
+
+    public void setSensorId(int sensorId) {
+        this.sensorId = sensorId;
     }
 
     public SensorModel getSensorModel() {

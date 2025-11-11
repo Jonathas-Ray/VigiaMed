@@ -31,7 +31,7 @@ public class MedicaoModel {
 
     public MedicaoModel() {}
 
-    public MedicaoModel(int id, String descricao, String dataHora) {
+    public MedicaoModel( String descricao, String dataHora) {
         this.id = id;
         this.descricao = descricao;
         this.dataHora = dataHora;
@@ -61,32 +61,41 @@ public class MedicaoModel {
         this.dataHora = dataHora;
     }
 
-
-    public void setPaciente(PacienteModel paciente) {
-        this.paciente = paciente;
-    }
-
-    public DispositivoModel getDispositivo() {
-        return dispositivo;
+    public int getPacienteId() {
+        return pacienteId;
     }
 
     public void setPacienteId(int pacienteId) {
         this.pacienteId = pacienteId;
     }
 
+    public PacienteModel getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(PacienteModel paciente) {
+        this.paciente = paciente;
+    }
+
+    public int getDispositivoId() {
+        return dispositivoId;
+    }
+
     public void setDispositivoId(int dispositivoId) {
         this.dispositivoId = dispositivoId;
     }
 
-
-    public PacienteModel getPaciente() {
-        return paciente;
+    public DispositivoModel getDispositivo() {
+        return dispositivo;
     }
 
     public void setDispositivo(DispositivoModel dispositivo) {
         this.dispositivo = dispositivo;
     }
 
+    public List<MedicaoListaModel> getMedicoesLista() {
+        return medicoesLista;
+    }
 
     public void setMedicoesLista(List<MedicaoListaModel> medicoesLista) {
         this.medicoesLista = medicoesLista;

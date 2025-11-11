@@ -18,8 +18,7 @@ public class PacienteModel {
 
     public PacienteModel() {}
 
-    public PacienteModel(int id, String nome, String referencia) {
-        this.id = id;
+    public PacienteModel( String nome, String referencia) {
         this.nome = nome;
         this.referencia = referencia;
     }

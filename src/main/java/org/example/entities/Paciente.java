@@ -9,13 +9,7 @@ public class Paciente {
 
     public Paciente(){}
 
-    public Paciente(String nome, String referencia) {
-        this.nome = nome;
-        this.referencia = referencia;
-    }
-
-    public Paciente(int id, String nome, String referencia) {
-        this.id = id;
+    public Paciente( int id, String nome, String referencia) {
         this.nome = nome;
         this.referencia = referencia;
     }
@@ -28,19 +22,17 @@ public class Paciente {
     public void setReferencia(String referencia) { this.referencia = referencia; }
 
     public PacienteModel toModel() {
-        PacienteModel model = new PacienteModel();
-        model.setId(this.getId());
-        model.setNome(this.getNome());
-        model.setReferencia(this.getReferencia());
-        return model;
+        return new PacienteModel(
+                this.getNome(),
+                this.getReferencia()
+        );
     }
 
     public static Paciente fromModel(PacienteModel model) {
-        Paciente paciente = new Paciente(
+        return new Paciente(
+                model.getId(),
                 model.getNome(),
                 model.getReferencia()
         );
-        paciente.setId(model.getId());
-        return paciente;
     }
 }

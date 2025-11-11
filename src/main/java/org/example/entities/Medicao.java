@@ -9,11 +9,6 @@ public class Medicao {
 
     public Medicao(){}
 
-    public Medicao(String descricao, String dataHora) {
-        this.descricao = descricao;
-        this.dataHora = dataHora;
-    }
-
     public Medicao(int id, String descricao, String dataHora) {
         this.id = id;
         this.descricao = descricao;
@@ -28,20 +23,17 @@ public class Medicao {
     public void setDataHora(String dataHora) { this.dataHora = dataHora; }
 
     public MedicaoModel toModel() {
-        MedicaoModel model = new MedicaoModel(
-                this.getId(),
+        return new MedicaoModel(
                 this.getDescricao(),
                 this.getDataHora()
         );
-        return model;
     }
 
     public static Medicao fromModel(MedicaoModel model) {
-        Medicao medicao = new Medicao(
+        return new Medicao(
                 model.getId(),
                 model.getDescricao(),
                 model.getDataHora()
         );
-        return medicao;
     }
 }

@@ -22,8 +22,7 @@ public class TabelaListModel {
     public TabelaListModel() {
     }
 
-    public TabelaListModel(int id, String nome) {
-        this.id = id;
+    public TabelaListModel( String nome) {
         this.nome = nome;
     }
 
@@ -43,6 +42,9 @@ public class TabelaListModel {
         this.nome = nome;
     }
 
+    public List<LogModel> getLog() {
+        return log;
+    }
 
     public void setLog(List<LogModel> log) {
         this.log = log;

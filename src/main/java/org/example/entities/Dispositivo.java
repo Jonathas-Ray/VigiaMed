@@ -11,12 +11,6 @@ public class Dispositivo {
 
     public Dispositivo(){}
 
-    public Dispositivo(String modelo, String numeroSerie, Date dataAquisicao) {
-        this.modelo = modelo;
-        this.numeroSerie = numeroSerie;
-        this.dataAquisicao = dataAquisicao;
-    }
-
     public Dispositivo(int id, String modelo, String numeroSerie, Date dataAquisicao) {
         this.id = id;
         this.modelo = modelo;
@@ -34,22 +28,19 @@ public class Dispositivo {
     public void setDataAquisicao(Date dataAquisicao) { this.dataAquisicao = dataAquisicao; }
 
     public DispositivoModel toModel() {
-        DispositivoModel model = new DispositivoModel(
+        return new DispositivoModel(
                 this.getModelo(),
                 this.getNumeroSerie(),
                 this.getDataAquisicao()
         );
-        model.setId(this.getId());
-        return model;
     }
 
     public static Dispositivo fromModel(DispositivoModel model) {
-        Dispositivo dispositivo = new Dispositivo(
+        return new Dispositivo(
+                model.getId(),
                 model.getModelo(),
                 model.getNumeroSerie(),
                 model.getDataAquisicao()
         );
-        dispositivo.setId(model.getId());
-        return dispositivo;
     }
 }

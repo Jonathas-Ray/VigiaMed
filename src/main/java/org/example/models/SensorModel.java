@@ -19,8 +19,7 @@ public class SensorModel {
 
     public SensorModel() {}
 
-    public SensorModel(int id, String nome, String unidadeMedida) {
-        this.id = id;
+    public SensorModel( String nome, String unidadeMedida) {
         this.nome = nome;
         this.unidadeMedida = unidadeMedida;
     }
@@ -47,6 +46,10 @@ public class SensorModel {
 
     public void setUnidadeMedida(String unidadeMedida) {
         this.unidadeMedida = unidadeMedida;
+    }
+
+    public List<MedicaoListaModel> getMedicoes() {
+        return medicoes;
     }
 
     public void setMedicoes(List<MedicaoListaModel> medicoes) {
