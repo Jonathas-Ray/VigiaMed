@@ -1,5 +1,6 @@
 package org.example.entities;
 
+import org.example.models.UnidadeModel;
 import org.example.models.UsuarioModel;
 
 public class Usuario {
@@ -8,15 +9,17 @@ public class Usuario {
     private String tipo;
     private String email;
     private String senha;
+    private int unidadeId;
 
     public Usuario(){}
 
-    public Usuario(int id, String nome, String tipo, String email, String senha) {
+    public Usuario(int id, String nome, String tipo, String email, String senha, int unidadeId) {
         this.id = id;
         this.nome = nome;
         this.tipo = tipo;
         this.email = email;
         this.senha = senha;
+        this.unidadeId = unidadeId;
     }
 
     public int getId() { return id; }
@@ -30,12 +33,18 @@ public class Usuario {
     public String getSenha() { return senha; }
     public void setSenha(String senha) { this.senha = senha; }
 
+    public int getUnidadeId() {
+        return unidadeId;
+    }
+
     public UsuarioModel toModel() {
         return new UsuarioModel(
                 this.getNome(),
                 this.getTipo(),
                 this.getEmail(),
-                this.getSenha()
+                this.getSenha(),
+                this.getUnidadeId()
+
         );
     }
 
@@ -45,7 +54,8 @@ public class Usuario {
                 model.getNome(),
                 model.getTipo(),
                 model.getEmail(),
-                model.getSenha()
+                model.getSenha(),
+                model.getUnidadeId()
         );
     }
 }

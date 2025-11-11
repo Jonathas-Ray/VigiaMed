@@ -1,6 +1,8 @@
 package org.example.models;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,11 +26,12 @@ public class UnidadeModel {
 
     public UnidadeModel() {}
 
-    public UnidadeModel( String nome, String endereco, String telefone, String email) {
+    public UnidadeModel( String nome, String endereco, String telefone, String email, List<UsuarioModel> usuarios) {
         this.nome = nome;
         this.endereco = endereco;
         this.telefone = telefone;
         this.email = email;
+        usuarios = new ArrayList<>();
     }
 
     public int getId() {

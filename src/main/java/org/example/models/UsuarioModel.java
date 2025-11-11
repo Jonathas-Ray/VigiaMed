@@ -22,16 +22,20 @@ public class UsuarioModel {
     @JoinColumn(name = "unidade_id", referencedColumnName = "id", insertable = false, updatable = false)
     private UnidadeModel unidade;
 
+
+
+
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<LogModel> logs;
 
     public UsuarioModel() {}
 
-    public UsuarioModel( String nome, String tipo, String email, String senha) {
+    public UsuarioModel( String nome, String tipo, String email, String senha, int unidadeId) {
         this.nome = nome;
         this.tipo = tipo;
         this.email = email;
         this.senha = senha;
+        this.unidadeId = unidadeId;
     }
 
     public int getId() {
