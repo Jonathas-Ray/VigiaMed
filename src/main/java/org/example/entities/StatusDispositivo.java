@@ -8,10 +8,6 @@ public class StatusDispositivo {
 
     public StatusDispositivo(){}
 
-    public StatusDispositivo(String estado){
-        this.estado = estado;
-    }
-
     public StatusDispositivo(int id, String estado){
         this.id = id;
         this.estado = estado;
@@ -34,17 +30,15 @@ public class StatusDispositivo {
     }
 
     public StatusDispositivoModel toModel() {
-        StatusDispositivoModel model = new StatusDispositivoModel();
-        model.setId(this.getId());
-        model.setEstado(this.getEstado());
-        return model;
+        return new StatusDispositivoModel(
+                this.getEstado()
+        );
     }
 
     public static StatusDispositivo fromModel(StatusDispositivoModel model) {
-        StatusDispositivo status = new StatusDispositivo(
+        return new StatusDispositivo(
+                model.getId(),
                 model.getEstado()
         );
-        status.setId(model.getId());
-        return status;
     }
 }

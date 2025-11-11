@@ -22,8 +22,7 @@ public class TabelaListModel {
     public TabelaListModel() {
     }
 
-    public TabelaListModel(int id, String nome) {
-        this.id = id;
+    public TabelaListModel( String nome) {
         this.nome = nome;
     }
 

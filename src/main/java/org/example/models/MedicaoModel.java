@@ -31,8 +31,7 @@ public class MedicaoModel {
 
     public MedicaoModel() {}
 
-    public MedicaoModel(int id, String descricao, String dataHora) {
-        this.id = id;
+    public MedicaoModel( String descricao, String dataHora) {
         this.descricao = descricao;
         this.dataHora = dataHora;
     }

@@ -11,14 +11,7 @@ public class Log {
 
     public Log(){}
 
-    public Log(String acao, String descricao, Date data) {
-        this.acao = acao;
-        this.descricao = descricao;
-        this.data = data;
-    }
-
     public Log(int id, String acao, String descricao, Date data) {
-        this.id = id;
         this.acao = acao;
         this.descricao = descricao;
         this.data = data;
@@ -34,21 +27,19 @@ public class Log {
     public void setData(Date data) { this.data = data; }
 
     public LogModel toModel() {
-        LogModel model = new LogModel();
-        model.setId(this.getId());
-        model.setAcao(this.getAcao());
-        model.setDescricao(this.getDescricao());
-        model.setData(this.getData());
-        return model;
+        return new LogModel(
+                this.getAcao(),
+                this.getDescricao(),
+                this.getData()
+        );
     }
 
     public static Log fromModel(LogModel model) {
-        Log log = new Log(
+        return new Log(
                 model.getId(),
                 model.getAcao(),
                 model.getDescricao(),
                 model.getData()
         );
-        return log;
     }
 }

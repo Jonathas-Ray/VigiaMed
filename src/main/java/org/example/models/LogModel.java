@@ -28,7 +28,7 @@ public class LogModel {
 
     public LogModel() {}
 
-    public LogModel(int id, String acao, String descricao, Date data) {
+    public LogModel(String acao, String descricao, Date data) {
         this.id = id;
         this.acao = acao;
         this.descricao = descricao;

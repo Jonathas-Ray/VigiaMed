@@ -9,11 +9,6 @@ public class Sensor {
 
     public Sensor(){}
 
-    public Sensor(String nome, String unidadeMedida) {
-        this.nome = nome;
-        this.unidadeMedida = unidadeMedida;
-    }
-
     public Sensor(int id, String nome, String unidadeMedida) {
         this.id = id;
         this.nome = nome;
@@ -28,19 +23,18 @@ public class Sensor {
     public void setUnidadeMedida(String unidadeMedida) { this.unidadeMedida = unidadeMedida; }
 
     public SensorModel toModel() {
-        SensorModel model = new SensorModel();
-        model.setId(this.getId());
-        model.setNome(this.getNome());
-        model.setUnidadeMedida(this.getUnidadeMedida());
-        return model;
+        return new SensorModel(
+                this.getId(),
+                this.getNome(),
+                this.getUnidadeMedida()
+        );
     }
 
     public static Sensor fromModel(SensorModel model) {
-        Sensor sensor = new Sensor(
+        return new Sensor(
+                model.getId(),
                 model.getNome(),
                 model.getUnidadeMedida()
         );
-        sensor.setId(model.getId());
-        return sensor;
     }
 }

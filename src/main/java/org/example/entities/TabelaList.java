@@ -8,10 +8,6 @@ public class TabelaList {
 
     public TabelaList() {}
 
-    public TabelaList(String nome) {
-        this.nome = nome;
-    }
-
     public TabelaList(int id, String nome) {
         this.id = id;
         this.nome = nome;
@@ -34,17 +30,15 @@ public class TabelaList {
     }
 
     public TabelaListModel toModel() {
-        TabelaListModel model = new TabelaListModel();
-        model.setId(this.getId());
-        model.setNome(this.getNome());
-        return model;
+        return new TabelaListModel(
+                this.getNome()
+        );
     }
 
     public static TabelaList fromModel(TabelaListModel model) {
-        TabelaList tabelaList = new TabelaList(
+        return new TabelaList(
+                model.getId(),
                 model.getNome()
         );
-        tabelaList.setId(model.getId());
-        return tabelaList;
     }
 }

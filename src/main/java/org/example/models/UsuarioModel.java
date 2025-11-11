@@ -27,8 +27,7 @@ public class UsuarioModel {
 
     public UsuarioModel() {}
 
-    public UsuarioModel(int id, String nome, String tipo, String email, String senha) {
-        this.id = id;
+    public UsuarioModel( String nome, String tipo, String email, String senha) {
         this.nome = nome;
         this.tipo = tipo;
         this.email = email;
