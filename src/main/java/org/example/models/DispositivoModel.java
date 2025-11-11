@@ -71,29 +71,40 @@ public class DispositivoModel {
         this.dataAquisicao = dataAquisicao;
     }
 
-
-    public void setUnidade(UnidadeModel unidade) {
-        this.unidade = unidade;
-    }
-
-
-    public void setStatus(StatusDispositivoModel statusDispositivoModel) {
-        this.statusDispositivoModel = statusDispositivoModel;
+    public int getUnidadeId() {
+        return unidadeId;
     }
 
     public void setUnidadeId(int unidadeId) {
         this.unidadeId = unidadeId;
     }
-    public void setStatusDispositivoId(int StatusDispositivoId) {
-        this.statusDispositivoId = StatusDispositivoId;
+
+    public UnidadeModel getUnidade() {
+        return unidade;
+    }
+
+    public void setUnidade(UnidadeModel unidade) {
+        this.unidade = unidade;
+    }
+
+    public int getStatusDispositivoId() {
+        return statusDispositivoId;
+    }
+
+    public void setStatusDispositivoId(int statusDispositivoId) {
+        this.statusDispositivoId = statusDispositivoId;
     }
 
     public StatusDispositivoModel getStatusDispositivoModel() {
         return statusDispositivoModel;
     }
 
-    public UnidadeModel getUnidade() {
-        return unidade;
+    public void setStatusDispositivoModel(StatusDispositivoModel statusDispositivoModel) {
+        this.statusDispositivoModel = statusDispositivoModel;
+    }
+
+    public List<MedicaoModel> getMedicoes() {
+        return medicoes;
     }
 
     public void setMedicoes(List<MedicaoModel> medicoes) {

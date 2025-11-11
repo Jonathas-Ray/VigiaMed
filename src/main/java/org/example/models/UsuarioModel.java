@@ -18,7 +18,7 @@ public class UsuarioModel {
 
     @Column(name = "unidade_id")
     private int unidadeId;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "unidade_id", referencedColumnName = "id", insertable = false, updatable = false)
     private UnidadeModel unidade;
 
@@ -72,6 +72,10 @@ public class UsuarioModel {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public int getUnidadeId() {
+        return unidadeId;
     }
 
     public void setUnidadeId(int unidadeId) {
