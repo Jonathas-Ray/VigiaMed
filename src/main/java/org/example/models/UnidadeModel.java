@@ -26,12 +26,13 @@ public class UnidadeModel {
 
     public UnidadeModel() {}
 
-    public UnidadeModel( String nome, String endereco, String telefone, String email, List<UsuarioModel> usuarios) {
+    public UnidadeModel( String nome, String endereco, String telefone, String email, List<UsuarioModel> usuarios, List<DispositivoModel> dispositivos) {
         this.nome = nome;
         this.endereco = endereco;
         this.telefone = telefone;
         this.email = email;
         usuarios = new ArrayList<>();
+        dispositivos = new ArrayList<>();
     }
 
     public int getId() {
@@ -89,4 +90,5 @@ public class UnidadeModel {
     public void setUsuarios(List<UsuarioModel> usuarios) {
         this.usuarios = usuarios;
     }
+
 }

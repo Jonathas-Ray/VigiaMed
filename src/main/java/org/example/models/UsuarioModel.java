@@ -1,6 +1,8 @@
 package org.example.models;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,19 +25,18 @@ public class UsuarioModel {
     private UnidadeModel unidade;
 
 
-
-
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<LogModel> logs;
 
     public UsuarioModel() {}
 
-    public UsuarioModel( String nome, String tipo, String email, String senha, int unidadeId) {
+    public UsuarioModel( String nome, String tipo, String email, String senha, int unidadeId, List<LogModel> logs) {
         this.nome = nome;
         this.tipo = tipo;
         this.email = email;
         this.senha = senha;
         this.unidadeId = unidadeId;
+        logs = new ArrayList<>();
     }
 
     public int getId() {

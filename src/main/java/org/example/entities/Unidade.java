@@ -1,5 +1,6 @@
 package org.example.entities;
 
+import org.example.models.DispositivoModel;
 import org.example.models.UnidadeModel;
 import org.example.models.UsuarioModel;
 
@@ -13,16 +14,18 @@ public class Unidade {
     private String telefone;
     private String email;
     private List<UsuarioModel> usuarios;
+    private List<DispositivoModel> dispositivos;
 
     public Unidade(){}
 
-    public Unidade(int id, String nome, String endereco, String telefone, String email, List<UsuarioModel> usuarios) {
+    public Unidade(int id, String nome, String endereco, String telefone, String email, List<UsuarioModel> usuarios, List<DispositivoModel> dispositivos) {
         this.id = id;
         this.nome = nome;
         this.endereco = endereco;
         this.telefone = telefone;
         this.email = email;
         usuarios = new ArrayList<>();
+        dispositivos = new ArrayList<>();
     }
 
     public int getId() { return id; }
@@ -42,7 +45,8 @@ public class Unidade {
                 this.getEndereco(),
                 this.getTelefone(),
                 this.getEmail(),
-                this.usuarios
+                this.usuarios,
+                this.dispositivos
         );
     }
 
@@ -53,7 +57,8 @@ public class Unidade {
                 model.getEndereco(),
                 model.getTelefone(),
                 model.getEmail(),
-                model.getUsuarios()
+                model.getUsuarios(),
+                model.getDispositivos()
         );
     }
 }

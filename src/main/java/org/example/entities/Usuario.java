@@ -1,7 +1,11 @@
 package org.example.entities;
 
+import org.example.models.LogModel;
 import org.example.models.UnidadeModel;
 import org.example.models.UsuarioModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Usuario {
     private int id;
@@ -10,16 +14,18 @@ public class Usuario {
     private String email;
     private String senha;
     private int unidadeId;
+    private List<LogModel> usuarios;
 
     public Usuario(){}
 
-    public Usuario(int id, String nome, String tipo, String email, String senha, int unidadeId) {
+    public Usuario(int id, String nome, String tipo, String email, String senha, int unidadeId, List<LogModel> usuarios) {
         this.id = id;
         this.nome = nome;
         this.tipo = tipo;
         this.email = email;
         this.senha = senha;
         this.unidadeId = unidadeId;
+        usuarios = new ArrayList<>();
     }
 
     public int getId() { return id; }
@@ -43,7 +49,8 @@ public class Usuario {
                 this.getTipo(),
                 this.getEmail(),
                 this.getSenha(),
-                this.getUnidadeId()
+                this.getUnidadeId(),
+                this.usuarios
 
         );
     }
@@ -55,7 +62,8 @@ public class Usuario {
                 model.getTipo(),
                 model.getEmail(),
                 model.getSenha(),
-                model.getUnidadeId()
+                model.getUnidadeId(),
+                model.getLogs()
         );
     }
 }
