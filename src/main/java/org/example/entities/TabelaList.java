@@ -13,10 +13,10 @@ public class TabelaList {
 
     public TabelaList() {}
 
-    public TabelaList(int id, String nome) {
+    public TabelaList(int id, String nome, List<LogModel> log) {
         this.id = id;
         this.nome = nome;
-        this.log = new ArrayList<>();
+        log = new ArrayList<>();
     }
 
     public int getId() {
@@ -38,14 +38,15 @@ public class TabelaList {
     public TabelaListModel toModel() {
         return new TabelaListModel(
                 this.getNome(),
-                log = new ArrayList<>()
+                this.log
         );
     }
 
     public static TabelaList fromModel(TabelaListModel model) {
         return new TabelaList(
                 model.getId(),
-                model.getNome()
+                model.getNome(),
+                model.getLog()
         );
     }
 }
