@@ -1,6 +1,8 @@
 package org.example.models;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,10 +35,13 @@ public class DispositivoModel {
 
     public DispositivoModel() {}
 
-    public DispositivoModel(String modelo, String numeroSerie, Date dataAquisicao) {
+    public DispositivoModel(String modelo, String numeroSerie, Date dataAquisicao, int unidadeId, int statusDispositivoId, List<MedicaoModel> medicoes) {
         this.modelo = modelo;
         this.numeroSerie = numeroSerie;
         this.dataAquisicao = dataAquisicao;
+        this.unidadeId = unidadeId;
+        this.statusDispositivoId = statusDispositivoId;
+        medicoes = new ArrayList<>();
     }
 
     public int getId() {

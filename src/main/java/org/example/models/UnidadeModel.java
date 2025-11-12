@@ -90,5 +90,4 @@ public class UnidadeModel {
     public void setUsuarios(List<UsuarioModel> usuarios) {
         this.usuarios = usuarios;
     }
-
 }

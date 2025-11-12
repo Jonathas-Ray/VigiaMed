@@ -35,6 +35,14 @@ public class TabelaList {
         this.nome = nome;
     }
 
+    public List<LogModel> getLog() {
+        return log;
+    }
+
+    public void setLog(List<LogModel> log) {
+        this.log = log;
+    }
+
     public TabelaListModel toModel() {
         return new TabelaListModel(
                 this.getNome(),

@@ -1,7 +1,6 @@
 package org.example.models;
 
 import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +22,6 @@ public class UsuarioModel {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "unidade_id", referencedColumnName = "id", insertable = false, updatable = false)
     private UnidadeModel unidade;
-
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<LogModel> logs;

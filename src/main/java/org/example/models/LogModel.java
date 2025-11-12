@@ -28,10 +28,12 @@ public class LogModel {
 
     public LogModel() {}
 
-    public LogModel(String acao, String descricao, Date data) {
+    public LogModel(String acao, String descricao, Date data, int tabelaListId, int usuarioId) {
         this.acao = acao;
         this.descricao = descricao;
         this.data = data;
+        this.tabelaListId = tabelaListId;
+        this.usuarioId = usuarioId;
     }
 
     public int getId() {

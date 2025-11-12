@@ -1,6 +1,8 @@
 package org.example.models;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,9 +21,10 @@ public class SensorModel {
 
     public SensorModel() {}
 
-    public SensorModel( String nome, String unidadeMedida) {
+    public SensorModel( String nome, String unidadeMedida, List<MedicaoListaModel> medicoes) {
         this.nome = nome;
         this.unidadeMedida = unidadeMedida;
+        medicoes = new ArrayList<>();
     }
 
     public int getId() {

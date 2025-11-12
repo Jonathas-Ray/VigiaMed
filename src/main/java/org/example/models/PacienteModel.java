@@ -1,6 +1,7 @@
 package org.example.models;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,9 +19,10 @@ public class PacienteModel {
 
     public PacienteModel() {}
 
-    public PacienteModel( String nome, String referencia) {
+    public PacienteModel( String nome, String referencia, List<MedicaoModel> medicoes) {
         this.nome = nome;
         this.referencia = referencia;
+        medicoes = new ArrayList<>();
     }
 
     public int getId() {

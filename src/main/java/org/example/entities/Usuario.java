@@ -1,7 +1,6 @@
 package org.example.entities;
 
 import org.example.models.LogModel;
-import org.example.models.UnidadeModel;
 import org.example.models.UsuarioModel;
 
 import java.util.ArrayList;
@@ -28,16 +27,57 @@ public class Usuario {
         usuarios = new ArrayList<>();
     }
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-    public String getNome() { return nome; }
-    public void setNome(String nome) { this.nome = nome; }
-    public String getTipo() { return tipo; }
-    public void setTipo(String tipo) { this.tipo = tipo; }
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-    public String getSenha() { return senha; }
-    public void setSenha(String senha) { this.senha = senha; }
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public void setUnidadeId(int unidadeId) {
+        this.unidadeId = unidadeId;
+    }
+
+    public List<LogModel> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<LogModel> usuarios) {
+        this.usuarios = usuarios;
+    }
 
     public int getUnidadeId() {
         return unidadeId;
