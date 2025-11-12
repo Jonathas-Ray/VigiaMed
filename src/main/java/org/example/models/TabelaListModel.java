@@ -22,8 +22,9 @@ public class TabelaListModel {
     public TabelaListModel() {
     }
 
-    public TabelaListModel( String nome) {
+    public TabelaListModel( String nome, List<LogModel> log) {
         this.nome = nome;
+        log = new ArrayList<>();
     }
 
     public int getId() {

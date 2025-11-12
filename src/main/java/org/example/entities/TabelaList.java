@@ -1,16 +1,22 @@
 package org.example.entities;
 
+import org.example.models.LogModel;
 import org.example.models.TabelaListModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TabelaList {
     private int id;
     private String nome;
+    private List<LogModel> log;
 
     public TabelaList() {}
 
     public TabelaList(int id, String nome) {
         this.id = id;
         this.nome = nome;
+        this.log = new ArrayList<>();
     }
 
     public int getId() {
@@ -31,7 +37,8 @@ public class TabelaList {
 
     public TabelaListModel toModel() {
         return new TabelaListModel(
-                this.getNome()
+                this.getNome(),
+                log = new ArrayList<>()
         );
     }
 
