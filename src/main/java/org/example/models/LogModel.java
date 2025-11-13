@@ -20,7 +20,7 @@ public class LogModel {
     @ManyToOne
     @JsonBackReference
     @JoinColumn(name = "tabelaList_id", referencedColumnName = "id", insertable = false, updatable = false)
-    private TabelaListModel tabelaListModel;
+    private TabelaListModel tabelaList;
 
     @Column(name = "usuario_id")
     private int usuarioId;
@@ -31,12 +31,14 @@ public class LogModel {
 
     public LogModel() {}
 
-    public LogModel(String acao, String descricao, Date data, int tabelaListId, int usuarioId) {
+    public LogModel(String acao, String descricao, Date data, int tabelaListId, TabelaListModel tabelaList, int usuarioId, UsuarioModel usuario) {
         this.acao = acao;
         this.descricao = descricao;
         this.data = data;
         this.tabelaListId = tabelaListId;
+        this.tabelaList = tabelaList;
         this.usuarioId = usuarioId;
+        this.usuario = usuario;
     }
 
     public int getId() {
@@ -80,11 +82,11 @@ public class LogModel {
     }
 
     public TabelaListModel getTabelaListModel() {
-        return tabelaListModel;
+        return tabelaList;
     }
 
     public void setTabelaListModel(TabelaListModel tabelaListModel) {
-        this.tabelaListModel = tabelaListModel;
+        this.tabelaList = tabelaListModel;
     }
 
     public int getUsuarioId() {

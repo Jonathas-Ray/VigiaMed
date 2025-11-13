@@ -34,16 +34,18 @@ public class MedicaoModel {
 
     @OneToMany(mappedBy = "medicaoModel", cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<MedicaoListaModel> medicoesLista;
+    private List<MedicaoListaModel> medicoesLista = new ArrayList<>();;
 
     public MedicaoModel() {}
 
-    public MedicaoModel( String descricao, String dataHora, int pacienteId, int dispositivoId, List<MedicaoListaModel> medicoesLista) {
+    public MedicaoModel( String descricao, String dataHora, int pacienteId,  PacienteModel paciente, int dispositivoId, DispositivoModel dispositivo, List<MedicaoListaModel> medicoesLista) {
         this.descricao = descricao;
         this.dataHora = dataHora;
         this.pacienteId = pacienteId;
+        this.paciente = paciente;
         this.dispositivoId = dispositivoId;
-        medicoesLista = new ArrayList<>();
+        this.dispositivo = dispositivo;
+        this.medicoesLista = medicoesLista;
     }
 
     public int getId() {

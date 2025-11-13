@@ -1,7 +1,9 @@
 package org.example.entities;
 
+import org.example.models.DispositivoModel;
 import org.example.models.MedicaoListaModel;
 import org.example.models.MedicaoModel;
+import org.example.models.PacienteModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,18 +13,22 @@ public class Medicao {
     private String descricao;
     private String dataHora;
     private int pacienteId;
+    private PacienteModel paciente;
     private int dispositivoId;
-    private List<MedicaoListaModel> medicoesLista;
+    private DispositivoModel dispositivo;
+    private List<MedicaoListaModel> medicoesLista = new ArrayList<>();
 
     public Medicao(){}
 
-    public Medicao(int id, String descricao, String dataHora, int pacienteId, int dispositivoId, List<MedicaoListaModel> medicoesLista) {
+    public Medicao(int id, String descricao, String dataHora, int pacienteId, PacienteModel paciente, int dispositivoId, DispositivoModel dispositivo, List<MedicaoListaModel> medicoesLista) {
         this.id = id;
         this.descricao = descricao;
         this.dataHora = dataHora;
         this.pacienteId = pacienteId;
+        this.paciente = paciente;
         this.dispositivoId = dispositivoId;
-        medicoesLista = new ArrayList<>();
+        this.dispositivo = dispositivo;
+        this.medicoesLista = medicoesLista;
     }
 
     public int getId() {
@@ -78,7 +84,9 @@ public class Medicao {
                 this.getDescricao(),
                 this.getDataHora(),
                 this.pacienteId,
+                null,
                 this.dispositivoId,
+                null,
                 this.medicoesLista
         );
     }
@@ -89,7 +97,9 @@ public class Medicao {
                 model.getDescricao(),
                 model.getDataHora(),
                 model.getPacienteId(),
+                null,
                 model.getDispositivoId(),
+                null,
                 model.getMedicoesLista()
         );
     }

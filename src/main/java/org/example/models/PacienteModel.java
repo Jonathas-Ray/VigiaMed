@@ -17,14 +17,14 @@ public class PacienteModel {
 
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<MedicaoModel> medicoes;
+    private List<MedicaoModel> medicoes = new ArrayList<>();
 
     public PacienteModel() {}
 
     public PacienteModel( String nome, String referencia, List<MedicaoModel> medicoes) {
         this.nome = nome;
         this.referencia = referencia;
-        medicoes = new ArrayList<>();
+        this.medicoes = medicoes;
     }
 
     public int getId() {

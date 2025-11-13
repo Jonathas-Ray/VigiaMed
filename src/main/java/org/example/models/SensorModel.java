@@ -19,14 +19,14 @@ public class SensorModel {
 
     @OneToMany(mappedBy = "sensorModel", cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<MedicaoListaModel> medicoes;
+    private List<MedicaoListaModel> medicoes = new ArrayList<>();;
 
     public SensorModel() {}
 
     public SensorModel( String nome, String unidadeMedida, List<MedicaoListaModel> medicoes) {
         this.nome = nome;
         this.unidadeMedida = unidadeMedida;
-        medicoes = new ArrayList<>();
+        this.medicoes = medicoes;
     }
 
     public int getId() {

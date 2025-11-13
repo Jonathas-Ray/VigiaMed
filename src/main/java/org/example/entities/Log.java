@@ -2,6 +2,8 @@ package org.example.entities;
 
 import java.util.Date;
 import org.example.models.LogModel;
+import org.example.models.TabelaListModel;
+import org.example.models.UsuarioModel;
 
 public class Log {
     private int id;
@@ -9,16 +11,20 @@ public class Log {
     private String descricao;
     private Date data;
     private int tabelaListId;
+    private TabelaListModel tabelaList;
     private int usuarioId;
+    private UsuarioModel usuario;
 
     public Log(){}
 
-    public Log(int id, String acao, String descricao, Date data, int tabelaListId, int usuarioId) {
+    public Log(int id, String acao, String descricao, Date data, int tabelaListId, TabelaListModel tabelaList, int usuarioId, UsuarioModel usuario) {
         this.acao = acao;
         this.descricao = descricao;
         this.data = data;
         this.tabelaListId = tabelaListId;
+        this.tabelaList = tabelaList;
         this.usuarioId = usuarioId;
+        this.usuario = usuario;
     }
 
     public int getId() {
@@ -75,7 +81,9 @@ public class Log {
                 this.getDescricao(),
                 this.getData(),
                 this.tabelaListId,
-                this.usuarioId
+                null,
+                this.usuarioId,
+                null
         );
     }
 
@@ -86,7 +94,9 @@ public class Log {
                 model.getDescricao(),
                 model.getData(),
                 model.getTabelaListId(),
-                model.getUsuarioId()
+                null,
+                model.getUsuarioId(),
+                null
         );
     }
 }

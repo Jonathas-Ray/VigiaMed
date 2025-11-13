@@ -1,6 +1,8 @@
 package org.example.entities;
 
 import org.example.models.MedicaoListaModel;
+import org.example.models.MedicaoModel;
+import org.example.models.SensorModel;
 
 public class MedicaoLista {
     private int id;
@@ -8,17 +10,21 @@ public class MedicaoLista {
     private String tipoMedicao;
     private String dataHora;
     private int medicaoId;
+    private MedicaoModel medicao;
     private int sensorId;
+    private SensorModel sensor;
 
     public MedicaoLista(){}
 
-    public MedicaoLista(int id, double resultado, String tipoMedicao, String dataHora, int medicaoId, int sensorId) {
+    public MedicaoLista(int id, double resultado, String tipoMedicao, String dataHora, int medicaoId, MedicaoModel medicao, int sensorId, SensorModel sensor) {
         this.id = id;
         this.resultado = resultado;
         this.tipoMedicao = tipoMedicao;
         this.dataHora = dataHora;
         this.medicaoId = medicaoId;
+        this.medicao = medicao;
         this.sensorId = sensorId;
+        this.sensor = sensor;
     }
 
     public int getId() {
@@ -75,7 +81,9 @@ public class MedicaoLista {
                 this.getTipoMedicao(),
                 this.getDataHora(),
                 this.medicaoId,
-                this.sensorId
+                null,
+                this.sensorId,
+                null
         );
     }
 
@@ -86,7 +94,9 @@ public class MedicaoLista {
                 model.getTipoMedicao(),
                 model.getData_hora(),
                 model.getMedicaoId(),
-                model.getSensorId()
+                null,
+                model.getSensorId(),
+                null
         );
     }
 }

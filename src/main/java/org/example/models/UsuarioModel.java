@@ -28,7 +28,7 @@ public class UsuarioModel {
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<LogModel> logs;
+    private List<LogModel> logs = new ArrayList<>();
 
     public UsuarioModel() {}
 

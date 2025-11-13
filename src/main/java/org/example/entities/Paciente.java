@@ -9,14 +9,14 @@ public class Paciente {
     private int id;
     private String nome;
     private String referencia;
-    private List<MedicaoModel> medicoes;
+    private List<MedicaoModel> medicoes = new ArrayList<>();;
 
     public Paciente(){}
 
     public Paciente( int id, String nome, String referencia, List<MedicaoModel> medicoes) {
         this.nome = nome;
         this.referencia = referencia;
-        medicoes = new ArrayList<>();
+        this.medicoes = medicoes;
     }
 
     public int getId() {
