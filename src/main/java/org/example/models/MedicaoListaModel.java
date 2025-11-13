@@ -1,6 +1,7 @@
 package org.example.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -18,14 +19,14 @@ public class MedicaoListaModel {
     @Column(name = "medicao_id")
     private int medicaoId;
     @ManyToOne
-    @JsonBackReference
+    @JsonIgnore
     @JoinColumn(name = "medicao_id", referencedColumnName = "id", insertable = false, updatable = false)
     private MedicaoModel medicaoModel;
 
     @Column(name = "sensor_id")
     private int sensorId;
     @ManyToOne
-    @JsonBackReference
+    @JsonIgnore
     @JoinColumn(name = "sensor_id", referencedColumnName = "id", insertable = false, updatable = false)
     private SensorModel sensorModel;
 

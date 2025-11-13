@@ -1,6 +1,7 @@
 package org.example.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -23,19 +24,19 @@ public class DispositivoModel {
     @Column(name = "unidade_id")
     private int unidadeId;
     @ManyToOne
-    @JsonBackReference
+    @JsonIgnore
     @JoinColumn(name = "unidade_id", referencedColumnName = "id", insertable = false, updatable = false)
     private UnidadeModel unidade;
 
     @Column(name = "statusDispositivo_id")
     private int statusDispositivoId;
     @ManyToOne
-    @JsonBackReference
+    @JsonIgnore
     @JoinColumn(name = "statusDispositivo_id", referencedColumnName = "id", insertable = false, updatable = false)
     private StatusDispositivoModel statusDispositivoModel;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "dispositivo", cascade = CascadeType.ALL)
-    @JsonManagedReference
     private List<MedicaoModel> medicoes = new ArrayList<>();;
 
     public DispositivoModel() {}

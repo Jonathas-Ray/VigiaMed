@@ -9,14 +9,14 @@ import java.util.List;
 public class TabelaList {
     private int id;
     private String nome;
-    private List<LogModel> log = new ArrayList<>();;
+    private List<LogModel> log = new ArrayList<>();
 
     public TabelaList() {}
 
-    public TabelaList(int id, String nome, List<LogModel> log) {
+    public TabelaList(int id, String nome, List<LogModel> logs) {
         this.id = id;
         this.nome = nome;
-        this.log = log;
+        this.log = logs;
     }
 
     public int getId() {
@@ -35,6 +35,7 @@ public class TabelaList {
         this.nome = nome;
     }
 
+    //apagaria o getLog para parar o loop
     public List<LogModel> getLog() {
         return log;
     }
@@ -46,7 +47,7 @@ public class TabelaList {
     public TabelaListModel toModel() {
         return new TabelaListModel(
                 this.getNome(),
-                this.log
+                this.getLog()
         );
     }
 

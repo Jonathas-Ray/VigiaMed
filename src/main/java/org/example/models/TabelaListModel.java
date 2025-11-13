@@ -1,6 +1,7 @@
 package org.example.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -17,16 +18,16 @@ public class TabelaListModel {
     private int id;
     private String nome;
 
-    @OneToMany(mappedBy = "tabelaListModel")
-    @JsonManagedReference
+    @JsonIgnore
+    @OneToMany(mappedBy = "tabelaList")
     private List<LogModel> log = new ArrayList<>();
 
     public TabelaListModel() {
     }
 
-    public TabelaListModel( String nome, List<LogModel> log ) {
+    public TabelaListModel( String nome, List<LogModel> logs ) {
         this.nome = nome;
-        this.log = log;
+        this.log = logs;
     }
 
     public int getId() {

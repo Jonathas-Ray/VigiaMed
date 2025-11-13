@@ -14,7 +14,7 @@ public class Unidade {
     private String telefone;
     private String email;
     private List<UsuarioModel> usuarios = new ArrayList<>();
-    private List<DispositivoModel> dispositivos = new ArrayList<>();
+    private List<DispositivoModel> dispositivo = new ArrayList<>();
 
     public Unidade(){}
 
@@ -25,7 +25,7 @@ public class Unidade {
         this.telefone = telefone;
         this.email = email;
         this.usuarios = usuarios;
-        this.dispositivos = dispositivos;
+        this.dispositivo = dispositivos;
     }
 
     public int getId() {
@@ -77,11 +77,11 @@ public class Unidade {
     }
 
     public List<DispositivoModel> getDispositivos() {
-        return dispositivos;
+        return dispositivo;
     }
 
         public void setDispositivos(List<DispositivoModel> dispositivos) {
-        this.dispositivos = dispositivos;
+        this.dispositivo = dispositivos;
     }
 
     public UnidadeModel toModel() {

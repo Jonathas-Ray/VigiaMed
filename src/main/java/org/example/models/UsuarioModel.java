@@ -1,6 +1,7 @@
 package org.example.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.ArrayList;
@@ -22,12 +23,12 @@ public class UsuarioModel {
     @Column(name = "unidade_id")
     private int unidadeId;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JsonBackReference
+    @JsonIgnore
     @JoinColumn(name = "unidade_id", referencedColumnName = "id", insertable = false, updatable = false)
     private UnidadeModel unidade;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-    @JsonManagedReference
     private List<LogModel> logs = new ArrayList<>();
 
     public UsuarioModel() {}

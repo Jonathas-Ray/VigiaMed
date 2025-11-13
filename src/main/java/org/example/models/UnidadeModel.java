@@ -1,5 +1,6 @@
 package org.example.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -19,12 +20,12 @@ public class UnidadeModel {
     private String telefone;
     private String email;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "unidade", cascade = CascadeType.ALL)
-    @JsonManagedReference
     private List<DispositivoModel> dispositivos = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "unidade", cascade = CascadeType.ALL)
-    @JsonManagedReference
     private List<UsuarioModel> usuarios = new ArrayList<>();;
 
     public UnidadeModel() {}

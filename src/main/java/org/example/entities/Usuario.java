@@ -15,7 +15,7 @@ public class Usuario {
     private String senha;
     private int unidadeId;
     private UnidadeModel unidade;
-    private List<LogModel> logs = new ArrayList<>();
+    private List<LogModel> log = new ArrayList<>();
 
 
     public Usuario(){}
@@ -28,7 +28,7 @@ public class Usuario {
         this.senha = senha;
         this.unidadeId = unidadeId;
         this.unidade = unidade;
-        this. logs = logs;
+        this. log = logs;
     }
 
     public int getId() {
@@ -71,12 +71,28 @@ public class Usuario {
         this.senha = senha;
     }
 
+    public int getUnidadeId() {
+        return unidadeId;
+    }
+
     public void setUnidadeId(int unidadeId) {
         this.unidadeId = unidadeId;
     }
 
-    public int getUnidadeId() {
-        return unidadeId;
+    public UnidadeModel getUnidade() {
+        return unidade;
+    }
+
+    public void setUnidade(UnidadeModel unidade) {
+        this.unidade = unidade;
+    }
+
+    public List<LogModel> getLog() {
+        return log;
+    }
+
+    public void setLog(List<LogModel> log) {
+        this.log = log;
     }
 
     public UsuarioModel toModel() {
@@ -87,7 +103,7 @@ public class Usuario {
                 this.getSenha(),
                 this.getUnidadeId(),
                 null,
-                this.logs
+                this.getLog()
         );
     }
 

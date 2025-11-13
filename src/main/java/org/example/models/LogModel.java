@@ -1,6 +1,7 @@
 package org.example.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.Date;
 
@@ -18,14 +19,14 @@ public class LogModel {
     @Column(name = "tabelaList_id")
     private int tabelaListId;
     @ManyToOne
-    @JsonBackReference
+    @JsonIgnore
     @JoinColumn(name = "tabelaList_id", referencedColumnName = "id", insertable = false, updatable = false)
     private TabelaListModel tabelaList;
 
     @Column(name = "usuario_id")
     private int usuarioId;
     @ManyToOne
-    @JsonBackReference
+    @JsonIgnore
     @JoinColumn(name = "usuario_id", referencedColumnName = "id", insertable = false, updatable = false)
     private UsuarioModel usuario;
 
@@ -81,12 +82,12 @@ public class LogModel {
         this.tabelaListId = tabelaListId;
     }
 
-    public TabelaListModel getTabelaListModel() {
+    public TabelaListModel getTabelaList() {
         return tabelaList;
     }
 
-    public void setTabelaListModel(TabelaListModel tabelaListModel) {
-        this.tabelaList = tabelaListModel;
+    public void setTabelaList(TabelaListModel tabelaList) {
+        this.tabelaList = tabelaList;
     }
 
     public int getUsuarioId() {

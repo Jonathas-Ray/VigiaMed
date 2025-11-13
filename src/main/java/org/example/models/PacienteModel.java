@@ -1,5 +1,6 @@
 package org.example.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.ArrayList;
@@ -15,8 +16,8 @@ public class PacienteModel {
     private String nome;
     private String referencia;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
-    @JsonManagedReference
     private List<MedicaoModel> medicoes = new ArrayList<>();
 
     public PacienteModel() {}

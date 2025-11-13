@@ -1,5 +1,6 @@
 package org.example.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -17,8 +18,8 @@ public class SensorModel {
     private String nome;
     private String unidadeMedida;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "sensorModel", cascade = CascadeType.ALL)
-    @JsonManagedReference
     private List<MedicaoListaModel> medicoes = new ArrayList<>();;
 
     public SensorModel() {}
