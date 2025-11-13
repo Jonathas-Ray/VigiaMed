@@ -13,8 +13,8 @@ public class Unidade {
     private String endereco;
     private String telefone;
     private String email;
-    private List<UsuarioModel> usuarios;
-    private List<DispositivoModel> dispositivos;
+    private List<UsuarioModel> usuarios = new ArrayList<>();
+    private List<DispositivoModel> dispositivos = new ArrayList<>();
 
     public Unidade(){}
 
@@ -24,8 +24,8 @@ public class Unidade {
         this.endereco = endereco;
         this.telefone = telefone;
         this.email = email;
-        usuarios = new ArrayList<>();
-        dispositivos = new ArrayList<>();
+        this.usuarios = usuarios;
+        this.dispositivos = dispositivos;
     }
 
     public int getId() {
@@ -80,18 +80,19 @@ public class Unidade {
         return dispositivos;
     }
 
-    public void setDispositivos(List<DispositivoModel> dispositivos) {
+        public void setDispositivos(List<DispositivoModel> dispositivos) {
         this.dispositivos = dispositivos;
     }
 
     public UnidadeModel toModel() {
         return new UnidadeModel(
+                this.getId(),
                 this.getNome(),
                 this.getEndereco(),
                 this.getTelefone(),
                 this.getEmail(),
-                this.usuarios,
-                this.dispositivos
+                this.getUsuarios(),
+                this.getDispositivos()
         );
     }
 

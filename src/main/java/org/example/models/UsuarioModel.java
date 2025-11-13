@@ -1,5 +1,7 @@
 package org.example.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,21 +22,24 @@ public class UsuarioModel {
     @Column(name = "unidade_id")
     private int unidadeId;
     @ManyToOne(cascade = CascadeType.ALL)
+    @JsonBackReference
     @JoinColumn(name = "unidade_id", referencedColumnName = "id", insertable = false, updatable = false)
     private UnidadeModel unidade;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<LogModel> logs;
 
     public UsuarioModel() {}
 
-    public UsuarioModel( String nome, String tipo, String email, String senha, int unidadeId, List<LogModel> logs) {
+    public UsuarioModel( String nome, String tipo, String email, String senha, int unidadeId,  UnidadeModel unidade, List<LogModel> logs) {
         this.nome = nome;
         this.tipo = tipo;
         this.email = email;
         this.senha = senha;
         this.unidadeId = unidadeId;
-        logs = new ArrayList<>();
+        this.unidade = unidade;
+        this.logs = logs;
     }
 
     public int getId() {
@@ -83,10 +88,6 @@ public class UsuarioModel {
 
     public void setUnidadeId(int unidadeId) {
         this.unidadeId = unidadeId;
-    }
-
-    public UnidadeModel getUnidade() {
-        return unidade;
     }
 
     public void setUnidade(UnidadeModel unidade) {

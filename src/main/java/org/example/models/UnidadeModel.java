@@ -1,5 +1,6 @@
 package org.example.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -19,20 +20,23 @@ public class UnidadeModel {
     private String email;
 
     @OneToMany(mappedBy = "unidade", cascade = CascadeType.ALL)
-    private List<DispositivoModel> dispositivos;
+    @JsonManagedReference
+    private List<DispositivoModel> dispositivos = new ArrayList<>();
 
-    @OneToMany(mappedBy = "unidade", cascade = CascadeType.ALL) // 🔹 agora compatível com UsuarioModel
-    private List<UsuarioModel> usuarios;
+    @OneToMany(mappedBy = "unidade", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<UsuarioModel> usuarios = new ArrayList<>();;
 
     public UnidadeModel() {}
 
-    public UnidadeModel( String nome, String endereco, String telefone, String email, List<UsuarioModel> usuarios, List<DispositivoModel> dispositivos) {
+    public UnidadeModel(int id, String nome, String endereco, String telefone, String email, List<UsuarioModel> usuarios, List<DispositivoModel> dispositivos) {
+        this.id = id;
         this.nome = nome;
         this.endereco = endereco;
         this.telefone = telefone;
         this.email = email;
-        usuarios = new ArrayList<>();
-        dispositivos = new ArrayList<>();
+        this.usuarios = usuarios;
+        this.dispositivos = dispositivos;
     }
 
     public int getId() {

@@ -9,14 +9,14 @@ import java.util.List;
 public class TabelaList {
     private int id;
     private String nome;
-    private List<LogModel> log;
+    private List<LogModel> log = new ArrayList<>();;
 
     public TabelaList() {}
 
     public TabelaList(int id, String nome, List<LogModel> log) {
         this.id = id;
         this.nome = nome;
-        log = new ArrayList<>();
+        this.log = log;
     }
 
     public int getId() {
