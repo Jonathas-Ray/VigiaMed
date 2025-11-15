@@ -39,7 +39,8 @@ public class MedicaoModel {
 
     public MedicaoModel() {}
 
-    public MedicaoModel( String descricao, String dataHora, int pacienteId,  PacienteModel paciente, int dispositivoId, DispositivoModel dispositivo, List<MedicaoListaModel> medicoesLista) {
+    public MedicaoModel(int id, String descricao, String dataHora) {
+        this.id = id;
         this.descricao = descricao;
         this.dataHora = dataHora;
         this.pacienteId = pacienteId;
@@ -49,7 +50,7 @@ public class MedicaoModel {
         this.medicoesLista = medicoesLista;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

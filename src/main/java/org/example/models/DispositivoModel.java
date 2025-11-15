@@ -28,7 +28,7 @@ public class DispositivoModel {
     @JoinColumn(name = "unidade_id", referencedColumnName = "id", insertable = false, updatable = false)
     private UnidadeModel unidade;
 
-    @Column(name = "statusDispositivo_id")
+    @Column(name = "status_dispositivo_id")
     private int statusDispositivoId;
     @ManyToOne
     @JsonIgnore
@@ -41,7 +41,7 @@ public class DispositivoModel {
 
     public DispositivoModel() {}
 
-    public DispositivoModel(String modelo, String numeroSerie, Date dataAquisicao, int unidadeId, UnidadeModel unidade, int statusDispositivoId, StatusDispositivoModel statusDispositivoModel, List<MedicaoModel> medicoes) {
+    public DispositivoModel(String modelo, String numeroSerie, Date dataAquisicao) {
         this.modelo = modelo;
         this.numeroSerie = numeroSerie;
         this.dataAquisicao = dataAquisicao;

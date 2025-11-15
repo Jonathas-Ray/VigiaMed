@@ -32,7 +32,8 @@ public class MedicaoListaModel {
 
     public MedicaoListaModel() {}
 
-    public MedicaoListaModel( double resultado, String tipoMedicao, String data_hora, int medicaoId, MedicaoModel medicao, int sensorId, SensorModel sensor) {
+    public MedicaoListaModel(int id, double resultado, String tipoMedicao, String data_hora) {
+        this.id = id;
         this.resultado = resultado;
         this.tipoMedicao = tipoMedicao;
         this.data_hora = data_hora;

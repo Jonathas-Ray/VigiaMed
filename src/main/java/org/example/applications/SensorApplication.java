@@ -3,7 +3,10 @@ package org.example.applications;
 import org.example.entities.Sensor;
 import org.example.interfaces.SensorRepository;
 import org.example.models.SensorModel;
+<<<<<<< HEAD
+=======
 import org.springframework.stereotype.Service;
+>>>>>>> d19d9cafe26fb1354eb778f2bf8bac639262281e
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,17 +33,35 @@ public class SensorApplication {
         return sensor;
     }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+    public void adicionar(SensorModel sensor) {
+        this.sensorRepository.adicionar(sensor);
+=======
+    public void adicionar(SensorModel sensorModel) {
+=======
     public void adicionar(Sensor sensor) {
         SensorModel sensorModel = sensor.toModel();
+>>>>>>> 2857621346484ba555ef36c741558c8d17b482d9
         this.sensorRepository.adicionar(sensorModel);
+>>>>>>> d19d9cafe26fb1354eb778f2bf8bac639262281e
     }
 
     public void excluir(int id) {
         this.sensorRepository.excluir(id);
     }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+    public void atualizar(int id, SensorModel sensor) {
+        this.sensorRepository.atualizar(id, sensor);
+=======
+    public void atualizar(int id, SensorModel sensorModel) {
+=======
     public void atualizar(int id, Sensor sensor){
         SensorModel sensorModel = sensor.toModel();
+>>>>>>> 2857621346484ba555ef36c741558c8d17b482d9
         this.sensorRepository.atualizar(id, sensorModel);
+>>>>>>> d19d9cafe26fb1354eb778f2bf8bac639262281e
     }
 }

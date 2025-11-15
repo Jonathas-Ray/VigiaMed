@@ -24,13 +24,12 @@ public class UnidadeModel {
     @OneToMany(mappedBy = "unidade", cascade = CascadeType.ALL)
     private List<DispositivoModel> dispositivos = new ArrayList<>();
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "unidade", cascade = CascadeType.ALL)
-    private List<UsuarioModel> usuarios = new ArrayList<>();;
+    @OneToMany(mappedBy = "unidade", cascade = CascadeType.ALL) // 🔹 agora compatível com UsuarioModel
+    private List<UsuarioModel> usuarios;
 
     public UnidadeModel() {}
 
-    public UnidadeModel(int id, String nome, String endereco, String telefone, String email, List<UsuarioModel> usuarios, List<DispositivoModel> dispositivos) {
+    public UnidadeModel(int id, String nome, String endereco, String telefone, String email) {
         this.id = id;
         this.nome = nome;
         this.endereco = endereco;
