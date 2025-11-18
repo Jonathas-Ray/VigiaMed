@@ -9,9 +9,10 @@ BPMHelper::BPMHelper() :
     ultimoPico(0),
     posicaoAtualTaxa(0),
     batimentosPorMinuto(0),
-    mediaBatimentos(0) {
+    mediaBatimentos(0),
+    maxNormalizado(0) { // Inicialização da nova variável
     for (byte i = 0; i < TAMANHO_MEDIA; i++) {
-        taxasBatimento[i] = 0;
+        taxasBatimento[i] = 0.0f; // CORREÇÃO: Inicialização float
     }
 }
 
@@ -22,13 +23,16 @@ void BPMHelper::begin() {
 void BPMHelper::atualizarMediaBPMExponencial() {
     const float ALPHA = 0.2;
     
+    // Lógica para inicializar a média
     if (mediaBatimentos == 0) {
         mediaBatimentos = batimentosPorMinuto;
     } else {
+        // CORREÇÃO: mediaBatimentos é float, garantindo precisão
         mediaBatimentos = (ALPHA * batimentosPorMinuto) + ((1 - ALPHA) * mediaBatimentos);
     }
     
-    taxasBatimento[posicaoAtualTaxa] = (byte)batimentosPorMinuto;
+    // CORREÇÃO: Armazena o valor float, sem truncamento
+    taxasBatimento[posicaoAtualTaxa] = batimentosPorMinuto;
     posicaoAtualTaxa = (posicaoAtualTaxa + 1) % TAMANHO_MEDIA;
 }
 
@@ -40,11 +44,24 @@ bool BPMHelper::processarAmostraBatimento(long valorSensor, unsigned long agora)
     }
 
     long valorNormalizado = valorSensor - baseline;
+    
+    // CORREÇÃO C: Lógica para Limiar Dinâmico
+    if (valorNormalizado > maxNormalizado) {
+        maxNormalizado = valorNormalizado;
+    } else if (valorNormalizado < maxNormalizado * 0.9) { 
+        // Decay do pico máximo se o sinal cair significativamente
+        maxNormalizado = (maxNormalizado * 0.95) + (valorNormalizado * 0.05);
+    }
+    
     bool estavaSubindo = subindo;
     subindo = (valorNormalizado > ultimoValor);
+    
+    // Limiar Dinâmico: 70% da amplitude máxima recente
+    const long LIMIAR_DINAMICO = (long)(maxNormalizado * 0.70); 
 
     if (estavaSubindo && !subindo && 
-        valorNormalizado > 5000 && 
+        // CORREÇÃO: Substituindo o valor mágico 5000 pelo limiar dinâmico
+        valorNormalizado > LIMIAR_DINAMICO && 
         (agora - ultimoPico) > INTERVALO_MINIMO_PICOS) {
         
         unsigned long intervalo = agora - ultimoPico;
@@ -66,7 +83,8 @@ bool BPMHelper::processarAmostraBatimento(long valorSensor, unsigned long agora)
 }
 
 int BPMHelper::getMediaBatimentos() const {
-    return mediaBatimentos;
+    // Retorna o float castado para int para uso externo (ex: Firebase)
+    return (int)mediaBatimentos; 
 }
 
 float BPMHelper::getBatimentosPorMinuto() const {
@@ -85,4 +103,6 @@ void BPMHelper::resetBaseline() {
     baseline = 0;
     baselineEstabelecida = false;
     tempoBaseline = millis();
+    // Reinicia o máximo normalizado
+    maxNormalizado = 0; 
 }

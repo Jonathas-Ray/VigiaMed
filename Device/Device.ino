@@ -1,16 +1,16 @@
 #include "secrets.h"
-#include "FirebaseHelper.h"
+#include "CapsulaFirebase.h"
 #include "WiFiHelper.h"          
 #include <Wire.h>
 #include <Adafruit_NeoPixel.h>
 #include "MAX30105.h"
 #include "BPMHelper.h"
-#include "SensorAdjuster.h"
+#include "AjustarSensor.h"
 
 //Constantes e Pinos
-#define ID_DO_APARELHO "vitals"
+#define ID_DO_APARELHO "vitals" 
 #define PINO_SDA 3
-#define PINO_SCL 10
+#define PINO_SCL 9
 #define PIN_INTERRUPCAO 4
 #define LEDRGB 48
 #define LED_COUNT 1
@@ -19,15 +19,17 @@
 MAX30105 sensorParticula;
 Adafruit_NeoPixel strip(LED_COUNT, LEDRGB, NEO_GRB + NEO_KHZ800);
 WiFiHelper wifi(&strip);
-FirebaseHelper firebase;
+CapsulaFirebase firebase;
 BPMHelper bpmHelper;
-SensorAdjuster sensorAdjuster(&sensorParticula);
+AjustarSensor ajustarSensor(&sensorParticula);
 
 //Variáveis globais
 volatile bool sensorQuaseCheio = false;
 bool piscando = false;
 unsigned long inicioPiscada = 0;
 const unsigned long DURACAO_PISCADA = 30;
+String DEVICE_MAC_ADDRESS = ""; // Variável global para armazenar o MAC Address
+
 
 void IRAM_ATTR FIFOPronto() {
   sensorQuaseCheio = true;
@@ -60,10 +62,13 @@ void iniciarSensor() {
     sensorEncontrado = sensorParticula.begin(Wire, I2C_SPEED_FAST);
     strip.setPixelColor(0, strip.Color(255, 255, 255));
     strip.show();
-    sensorParticula.setup();
+    
+    // CORREÇÃO: Retorna à configuração padrão (compatível com sua biblioteca)
+    sensorParticula.setup(); 
+    
     sensorParticula.setFIFOAlmostFull(4);
     sensorParticula.enableAFULL();
-    sensorParticula.setPulseAmplitudeRed(sensorAdjuster.getIntensidadeLedAtual());
+    sensorParticula.setPulseAmplitudeRed(ajustarSensor.getIntensidadeLedAtual());
     sensorParticula.setPulseAmplitudeGreen(0);
     attachInterrupt(digitalPinToInterrupt(PIN_INTERRUPCAO), FIFOPronto, FALLING);
     delay(300);
@@ -78,12 +83,17 @@ void setup() {
   strip.setPixelColor(0, strip.Color(0, 0, 160));
   strip.show();
   iniciarSensor();
+  ajustarSensor.ajustar();
+  wifi.begin();
+  wifi.conectarWifi();
   
-  // Opcional: chamar ajuste do sensor se necessário
-  // sensorAdjuster.ajustar();
+  // OBTENÇÃO E CONFIGURAÇÃO DO ID DO DISPOSITIVO (MAC ADDRESS)
+  DEVICE_MAC_ADDRESS = WiFi.macAddress();
+  DEVICE_MAC_ADDRESS.replace(":", ""); 
+  Serial.printf("ID do Dispositivo (MAC): %s\n", DEVICE_MAC_ADDRESS.c_str());
   
-  wifi.iniciar();
-  wifi.conectar();
+  firebase.setDeviceID(DEVICE_MAC_ADDRESS);
+  
   firebase.login();
   bpmHelper.begin();
 }
@@ -107,6 +117,12 @@ void loop() {
       inicioPiscada = millis();
       strip.setPixelColor(0, strip.Color(255, 0, 0));
       strip.show();
+      
+      int bpm = bpmHelper.getMediaBatimentos();
+      if (bpm > 0) {
+        // Envia o valor usando "heartRate"
+        firebase.enviar("heartRate", String(bpm));
+      }
     }
     
     sensorParticula.nextSample();

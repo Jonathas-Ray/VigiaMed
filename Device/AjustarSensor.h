@@ -1,12 +1,12 @@
-#ifndef SENSORADJUSTER_H
-#define SENSORADJUSTER_H
+#ifndef AJUSTARSENSOR_H
+#define AJUSTARSENSOR_H
 
 #include <Arduino.h>
 #include "MAX30105.h"
 
-class SensorAdjuster {
+class AjustarSensor {
 public:
-    SensorAdjuster(MAX30105* sensor);
+    AjustarSensor(MAX30105* sensor);
     
     void ajustar();
     bool getAjusteConcluido() const;

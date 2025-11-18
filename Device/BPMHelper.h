@@ -9,7 +9,7 @@ public:
     
     void begin();
     bool processarAmostraBatimento(long valorSensor, unsigned long agora);
-    int getMediaBatimentos() const;
+    int getMediaBatimentos() const; // Retorna int para uso externo (ex: Firebase)
     float getBatimentosPorMinuto() const;
     void setBaselineEstabelecida(bool estabelecida);
     bool getBaselineEstabelecida() const;
@@ -29,10 +29,11 @@ private:
     
     // Cálculo BPM
     static const byte TAMANHO_MEDIA = 4;
-    byte taxasBatimento[TAMANHO_MEDIA];
+    float taxasBatimento[TAMANHO_MEDIA]; // CORREÇÃO: Mudança para float
     byte posicaoAtualTaxa;
     float batimentosPorMinuto;
-    int mediaBatimentos;
+    float mediaBatimentos; // CORREÇÃO: Mudança para float (melhor precisão)
+    long maxNormalizado; // CORREÇÃO: Para detecção de pico dinâmico
 };
 
 #endif

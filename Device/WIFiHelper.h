@@ -1,21 +1,27 @@
-// Aqui o Adafruit é usado para controlar o LED RGB nativo da placa esp32s3
 #ifndef WIFI_HELPER_H
 #define WIFI_HELPER_H
 
+#include <Arduino.h>
 #include <WiFi.h>
 #include <Adafruit_NeoPixel.h>
 
 class WiFiHelper {
 public:
-    WiFiHelper(Adafruit_NeoPixel* strip);
-
+    WiFiHelper(Adafruit_NeoPixel* stripLed);
+    
     void begin();
     void conectarWifi();
-    void WifiReconectaAutomaticamente(WiFiEvent_t event);
+    void gerenciarLedConexao();
 
 private:
+    void WifiReconectaAutomaticamente(WiFiEvent_t event, WiFiEventInfo_t info); // Alterado para receber info
+    
     Adafruit_NeoPixel* strip;
     bool ledLigado;
+    
+    // CORREÇÃO: Membros faltantes adicionados
+    unsigned long tempoUltimoPisca;
+    uint32_t corPiscando;
 };
 
 #endif

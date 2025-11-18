@@ -1,12 +1,12 @@
-#include "SensorAdjuster.h"
+#include "AjustarSensor.h"
 #include <Arduino.h>
 
-SensorAdjuster::SensorAdjuster(MAX30105* sensor) : 
+AjustarSensor::AjustarSensor(MAX30105* sensor) : 
     sensorParticula(sensor),
     ajusteConcluido(false),
     intensidadeLedAtual(0x1F) {}
 
-void SensorAdjuster::ajustar() {
+void AjustarSensor::ajustar() {
     byte intensidades[] = {0x1F, 0x2F, 0x3F, 0x4F, 0x5F, 0x6F};
     byte totalIntensidades = sizeof(intensidades) / sizeof(intensidades[0]);
     byte melhorIntensidade = intensidades[0];
@@ -74,7 +74,7 @@ void SensorAdjuster::ajustar() {
     ajusteConcluido = true;
 }
 
-int SensorAdjuster::calcularQualidadeSinal(long valorIR) {
+int AjustarSensor::calcularQualidadeSinal(long valorIR) {
     if (valorIR > 80000) return 90;
     if (valorIR > 40000) return 70;
     if (valorIR > 15000) return 50;
@@ -83,14 +83,14 @@ int SensorAdjuster::calcularQualidadeSinal(long valorIR) {
     return 0;
 }
 
-bool SensorAdjuster::getAjusteConcluido() const {
+bool AjustarSensor::getAjusteConcluido() const {
     return ajusteConcluido;
 }
 
-byte SensorAdjuster::getIntensidadeLedAtual() const {
+byte AjustarSensor::getIntensidadeLedAtual() const {
     return intensidadeLedAtual;
 }
 
-void SensorAdjuster::setIntensidadeLedAtual(byte intensidade) {
+void AjustarSensor::setIntensidadeLedAtual(byte intensidade) {
     intensidadeLedAtual = intensidade;
 }

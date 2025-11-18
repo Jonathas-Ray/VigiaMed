@@ -12,12 +12,14 @@ public:
     CapsulaFirebase();
     
     bool login();
+    void setDeviceID(const String& id); // NOVO: Para definir o MAC/ID do dispositivo
     bool enviar(const String &tipo, const String &valor);
 
 private:
     WiFiClientSecure cliente;
     HTTPClient http;
     String idToken;
+    String deviceID; // NOVO: Para armazenar o ID do dispositivo
 };
 
 #endif
