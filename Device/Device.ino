@@ -1,130 +1,176 @@
 #include "secrets.h"
 #include "CapsulaFirebase.h"
-#include "WiFiHelper.h"          
+#include "WiFiHelper.h"
 #include <Wire.h>
 #include <Adafruit_NeoPixel.h>
 #include "MAX30105.h"
-#include "BPMHelper.h"
-#include "AjustarSensor.h"
+#include "heartRate.h"
 
-//Constantes e Pinos
-#define ID_DO_APARELHO "vitals" 
-#define PINO_SDA 3
+// --- Constantes e Pinos ---
+#define PINO_SDA 8
 #define PINO_SCL 9
-#define PIN_INTERRUPCAO 4
 #define LEDRGB 48
 #define LED_COUNT 1
+#define ID_DO_APARELHO "vitals"
 
-//Objetos
+//Leitura Atual
+const byte RATE_SIZE = 4; //Quantos leituras para calcular a média
+byte rates[RATE_SIZE]; //array para armazenar as leituras
+byte rateSpot = 0;
+long lastBeat = 0; //Última Batida
+float BPM;
+int BPMedia;
+
+// --- Configurações de Tempo ---
+const int INTERVALO_ENVIO_BPM_MS = 3000; // Enviar BPM a cada 1.2s
+const int INTERVALO_LOOP_MS = 2;
+const int INTERVALO_LOG_HORARIO_MS = 3600000; // 1 hora
+
+// --- Objetos ---
 MAX30105 sensorParticula;
 Adafruit_NeoPixel strip(LED_COUNT, LEDRGB, NEO_GRB + NEO_KHZ800);
 WiFiHelper wifi(&strip);
 CapsulaFirebase firebase;
-BPMHelper bpmHelper;
-AjustarSensor ajustarSensor(&sensorParticula);
 
-//Variáveis globais
-volatile bool sensorQuaseCheio = false;
-bool piscando = false;
-unsigned long inicioPiscada = 0;
-const unsigned long DURACAO_PISCADA = 30;
-String DEVICE_MAC_ADDRESS = ""; // Variável global para armazenar o MAC Address
+// --- Variáveis Globais de Estado ---
+String DEVICE_MAC_ADDRESS = "";
+bool loginFirebaseSucesso = false;
+unsigned long ultimoEnvioFB = 0; // Será usado para o Log Horário
+unsigned long ultimoLogHorario = 0;
+unsigned long ultimoCicloLeitura = 0;
+enum EstadoErro { STATUS_OK, ERRO_WIFI, ERRO_FIREBASE_CONEXAO, ERRO_FIREBASE_ENVIO }; 
+EstadoErro erroAtual = STATUS_OK; // Inicialização
 
-
-void IRAM_ATTR FIFOPronto() {
-  sensorQuaseCheio = true;
-}
-
-void gerenciarLED() {
-  unsigned long agora = millis();
-  
-  if (piscando) {
-    if (agora - inicioPiscada >= DURACAO_PISCADA) {
-      piscando = false;
-      strip.setPixelColor(0, strip.Color(0, 0, 160));
-      strip.show();
-    }
-  } else {
-    strip.setPixelColor(0, strip.Color(0, 0, 160));
-    strip.show();
-  }
-}
+// --- Funções Auxiliares ---
 
 void iniciarSensor() {
-  bool sensorEncontrado = false;
-  Wire.begin(PINO_SDA, PINO_SCL);
-  pinMode(PIN_INTERRUPCAO, INPUT_PULLUP);
-
-  strip.setPixelColor(0, strip.Color(255, 255, 255));
-  strip.show();
-  
-  do {
-    sensorEncontrado = sensorParticula.begin(Wire, I2C_SPEED_FAST);
+    Wire.begin(PINO_SDA, PINO_SCL);
+    bool sensorEncontrado = false;
     strip.setPixelColor(0, strip.Color(255, 255, 255));
     strip.show();
     
-    // CORREÇÃO: Retorna à configuração padrão (compatível com sua biblioteca)
-    sensorParticula.setup(); 
-    
-    sensorParticula.setFIFOAlmostFull(4);
-    sensorParticula.enableAFULL();
-    sensorParticula.setPulseAmplitudeRed(ajustarSensor.getIntensidadeLedAtual());
+    // Tenta inicializar o sensor
+    do {
+        sensorEncontrado = sensorParticula.begin(Wire, I2C_SPEED_FAST);
+        delay(300);
+    } while (!sensorEncontrado);
+
+    sensorParticula.setup();
+    const byte INTENSIDADE_PADRAO = 0x3F; // Usando intensidade padrão (0x3F) ou uma fixa, já que o AjustarSensor foi removido.
+    sensorParticula.setPulseAmplitudeRed(INTENSIDADE_PADRAO);
+    sensorParticula.setPulseAmplitudeIR(INTENSIDADE_PADRAO); // Adicionado para consistência
     sensorParticula.setPulseAmplitudeGreen(0);
-    attachInterrupt(digitalPinToInterrupt(PIN_INTERRUPCAO), FIFOPronto, FALLING);
-    delay(300);
-  } while (!sensorEncontrado);
-  strip.setPixelColor(0, strip.Color(0, 0, 0));
-  strip.show();
+}
+
+void gerenciarLED() {
+    const unsigned long DURACAO_ERRO_FIXO = 3000; // 3 segundos fixo
+    uint32_t corOK = strip.Color(0, 0, 160); // Azul (Padrão)
+    
+    // Gerencia a exibição dos erros
+    switch (erroAtual) {
+        case STATUS_OK:
+            strip.setPixelColor(0, corOK);
+            strip.show();
+            break;
+        case ERRO_WIFI:
+            // Branco Fixo (3s)
+            strip.setPixelColor(0, strip.Color(255, 255, 255));
+            strip.show();
+            delay(DURACAO_ERRO_FIXO);
+            erroAtual = STATUS_OK;
+            break;
+        case ERRO_FIREBASE_CONEXAO:
+            // Lilás Fixo (3s)
+            strip.setPixelColor(0, strip.Color(128, 0, 128));
+            strip.show();
+            delay(DURACAO_ERRO_FIXO);
+            erroAtual = STATUS_OK;
+            break;
+        case ERRO_FIREBASE_ENVIO:
+            // Amarelo Fixo (3s)
+            strip.setPixelColor(0, strip.Color(255, 255, 0));
+            strip.show();
+            delay(DURACAO_ERRO_FIXO);
+            erroAtual = STATUS_OK;
+            break;
+    }
 }
 
 void setup() {
-  Serial.begin(115200);
-  strip.begin();
-  strip.setPixelColor(0, strip.Color(0, 0, 160));
-  strip.show();
-  iniciarSensor();
-  ajustarSensor.ajustar();
-  wifi.begin();
-  wifi.conectarWifi();
-  
-  // OBTENÇÃO E CONFIGURAÇÃO DO ID DO DISPOSITIVO (MAC ADDRESS)
-  DEVICE_MAC_ADDRESS = WiFi.macAddress();
-  DEVICE_MAC_ADDRESS.replace(":", ""); 
-  Serial.printf("ID do Dispositivo (MAC): %s\n", DEVICE_MAC_ADDRESS.c_str());
-  
-  firebase.setDeviceID(DEVICE_MAC_ADDRESS);
-  
-  firebase.login();
-  bpmHelper.begin();
+    Serial.begin(115200);
+    strip.begin();
+    strip.setPixelColor(0, strip.Color(0, 0, 160));
+    strip.show();
+
+    iniciarSensor();
+    wifi.begin();
+    wifi.conectarWifi();
+    
+    if (WiFi.status() != WL_CONNECTED) {
+        erroAtual = ERRO_WIFI;
+        gerenciarLED();
+    } else {
+        DEVICE_MAC_ADDRESS = WiFi.macAddress();
+        DEVICE_MAC_ADDRESS.replace(":", "");
+        firebase.setDeviceID(DEVICE_MAC_ADDRESS); //Tá passando para ser o nome do aparelho
+        loginFirebaseSucesso = firebase.login();
+        if (!loginFirebaseSucesso) {
+            erroAtual = ERRO_FIREBASE_CONEXAO;
+            gerenciarLED();
+        }
+    }
 }
 
 void loop() {
-  gerenciarLED();
-  
-  if (!sensorQuaseCheio) return;
+    unsigned long agora = millis();
+    long irValue = sensorParticula.getIR();
 
-  sensorQuaseCheio = false;
-  byte amostrasDisponiveis = sensorParticula.available();
-  
-  for (int i = 0; i < amostrasDisponiveis; i++) {
-    int redValue = sensorParticula.getFIFORed();
-    int irValue = sensorParticula.getFIFOIR();
-    
-    bool batimentoDetectado = bpmHelper.processarAmostraBatimento(redValue, millis());
-    
-    if (batimentoDetectado) {
-      piscando = true;
-      inicioPiscada = millis();
-      strip.setPixelColor(0, strip.Color(255, 0, 0));
-      strip.show();
-      
-      int bpm = bpmHelper.getMediaBatimentos();
-      if (bpm > 0) {
-        // Envia o valor usando "heartRate"
-        firebase.enviar("heartRate", String(bpm));
-      }
+    if (checkForBeat(irValue) == true){
+        //piscar vermelho aqui, Gemini!!!
+        long delta = millis() - lastBeat;
+        lastBeat = millis();
+
+        BPM = 60 / (delta / 1000.0);
+
+        if (BPM < 255 && BPM > 20){
+        rates[rateSpot++] = (byte)BPM; //Armazena no Array
+        rateSpot %= RATE_SIZE; //Wrap variable
+
+        //Take average of readings
+        BPMedia = 0;
+        for (byte x = 0 ; x < RATE_SIZE ; x++)
+            BPMedia += rates[x];
+        BPMedia /= RATE_SIZE;
+        }
     }
     
-    sensorParticula.nextSample();
-  }
+    if (WiFi.status() == WL_CONNECTED) {
+        if (!loginFirebaseSucesso) { // Tenta reconectar ao Firebase se o token expirou
+            Serial.println("Tentando reconexão ao Firebase...");
+            loginFirebaseSucesso = firebase.login(); 
+            if (!loginFirebaseSucesso) {
+                erroAtual = ERRO_FIREBASE_CONEXAO;
+            }
+        }
+        
+        if (loginFirebaseSucesso) {
+            // A. ENVIO DO BPM ATUAL (1.2s)
+            if (BPMedia > 0 && agora - ultimoEnvioFB > INTERVALO_ENVIO_BPM_MS) {
+                ultimoEnvioFB = agora; 
+
+                if (!firebase.enviar("heartRate", String(BPM))) {
+                    erroAtual = ERRO_FIREBASE_ENVIO;
+                }
+                if (!firebase.enviar("heartRateAverage", String(BPMedia))) {
+                    erroAtual = ERRO_FIREBASE_ENVIO;
+                }
+            }
+        }
+    } else {
+        wifi.conectarWifi();
+        if (WiFi.status() != WL_CONNECTED) {
+            erroAtual = ERRO_WIFI; //Gestão de erros usa isso pra piscar na cor do erro
+        }
+    }
+    gerenciarLED(); //Expõe o erro atual
 }

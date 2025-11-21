@@ -4,6 +4,7 @@
 const char* WIFI_SSIDS[] = {
     "Hhsovov-#+$(hei",
     "Maria Isaltina"
+    
 };
 
 const char* WIFI_PASSWORDS[] = {

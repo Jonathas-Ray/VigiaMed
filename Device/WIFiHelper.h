@@ -14,7 +14,7 @@ public:
     void gerenciarLedConexao();
 
 private:
-    void WifiReconectaAutomaticamente(WiFiEvent_t event, WiFiEventInfo_t info); // Alterado para receber info
+    // REMOVIDO: void WifiReconectaAutomaticamente(WiFiEvent_t event, WiFiEventInfo_t info);
     
     Adafruit_NeoPixel* strip;
     bool ledLigado;
