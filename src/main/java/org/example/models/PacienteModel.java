@@ -1,6 +1,9 @@
 package org.example.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,15 +16,16 @@ public class PacienteModel {
     private String nome;
     private String referencia;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
-    private List<MedicaoModel> medicoes;
+    private List<MedicaoModel> medicoes = new ArrayList<>();
 
     public PacienteModel() {}
 
-    public PacienteModel(int id, String nome, String referencia) {
-        this.id = id;
+    public PacienteModel( String nome, String referencia, List<MedicaoModel> medicoes) {
         this.nome = nome;
         this.referencia = referencia;
+        this.medicoes = medicoes;
     }
 
     public int getId() {

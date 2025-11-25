@@ -1,5 +1,7 @@
 package org.example.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -17,22 +19,27 @@ public class MedicaoListaModel {
     @Column(name = "medicao_id")
     private int medicaoId;
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "medicao_id", referencedColumnName = "id", insertable = false, updatable = false)
     private MedicaoModel medicaoModel;
 
     @Column(name = "sensor_id")
     private int sensorId;
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "sensor_id", referencedColumnName = "id", insertable = false, updatable = false)
     private SensorModel sensorModel;
 
     public MedicaoListaModel() {}
 
-    public MedicaoListaModel(int id, double resultado, String tipoMedicao, String data_hora) {
-        this.id = id;
+    public MedicaoListaModel( double resultado, String tipoMedicao, String data_hora, int medicaoId, MedicaoModel medicao, int sensorId, SensorModel sensor) {
         this.resultado = resultado;
         this.tipoMedicao = tipoMedicao;
         this.data_hora = data_hora;
+        this.medicaoId = medicaoId;
+        this.medicaoModel = medicao;
+        this.sensorId = sensorId;
+        this.sensorModel = sensor;
     }
 
     public int getId() {
@@ -67,12 +74,28 @@ public class MedicaoListaModel {
         this.data_hora = data_hora;
     }
 
+    public int getMedicaoId() {
+        return medicaoId;
+    }
+
+    public void setMedicaoId(int medicaoId) {
+        this.medicaoId = medicaoId;
+    }
+
     public MedicaoModel getMedicaoModel() {
         return medicaoModel;
     }
 
     public void setMedicaoModel(MedicaoModel medicaoModel) {
         this.medicaoModel = medicaoModel;
+    }
+
+    public int getSensorId() {
+        return sensorId;
+    }
+
+    public void setSensorId(int sensorId) {
+        this.sensorId = sensorId;
     }
 
     public SensorModel getSensorModel() {

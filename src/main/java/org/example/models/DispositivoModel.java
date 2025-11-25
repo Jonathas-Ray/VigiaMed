@@ -1,6 +1,11 @@
 package org.example.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,24 +24,30 @@ public class DispositivoModel {
     @Column(name = "unidade_id")
     private int unidadeId;
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "unidade_id", referencedColumnName = "id", insertable = false, updatable = false)
     private UnidadeModel unidade;
 
-    @Column(name = "status_dispositivo_id")
+    @Column(name = "statusDispositivo_id")
     private int statusDispositivoId;
-    @OneToOne
-    @JoinColumn(name = "status_dispositivo_id", referencedColumnName = "id", insertable = false, updatable = false)
-    private StatusDispositivoModel status;
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "statusDispositivo_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private StatusDispositivoModel statusDispositivoModel;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "dispositivo", cascade = CascadeType.ALL)
-    private List<MedicaoModel> medicoes;
+    private List<MedicaoModel> medicoes = new ArrayList<>();;
 
     public DispositivoModel() {}
 
-    public DispositivoModel(String modelo, String numeroSerie, Date dataAquisicao) {
+    public DispositivoModel(String modelo, String numeroSerie, Date dataAquisicao, int unidadeId, UnidadeModel unidade, int statusDispositivoId, StatusDispositivoModel statusDispositivoModel, List<MedicaoModel> medicoes) {
         this.modelo = modelo;
         this.numeroSerie = numeroSerie;
         this.dataAquisicao = dataAquisicao;
+        this.unidadeId = unidadeId;
+        this.statusDispositivoId = statusDispositivoId;
+        this.medicoes = medicoes;
     }
 
     public int getId() {
@@ -71,6 +82,10 @@ public class DispositivoModel {
         this.dataAquisicao = dataAquisicao;
     }
 
+    public int getUnidadeId() {
+        return unidadeId;
+    }
+
     public void setUnidadeId(int unidadeId) {
         this.unidadeId = unidadeId;
     }
@@ -83,16 +98,24 @@ public class DispositivoModel {
         this.unidade = unidade;
     }
 
+    public int getStatusDispositivoId() {
+        return statusDispositivoId;
+    }
+
     public void setStatusDispositivoId(int statusDispositivoId) {
         this.statusDispositivoId = statusDispositivoId;
     }
 
-    public StatusDispositivoModel getStatus() {
-        return status;
+    public StatusDispositivoModel getStatusDispositivoModel() {
+        return statusDispositivoModel;
     }
 
-    public void setStatus(StatusDispositivoModel status) {
-        this.status = status;
+    public void setStatusDispositivoModel(StatusDispositivoModel statusDispositivoModel) {
+        this.statusDispositivoModel = statusDispositivoModel;
+    }
+
+    public List<MedicaoModel> getMedicoes() {
+        return medicoes;
     }
 
     public void setMedicoes(List<MedicaoModel> medicoes) {

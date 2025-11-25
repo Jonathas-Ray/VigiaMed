@@ -1,5 +1,7 @@
 package org.example.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.Date;
 
@@ -17,22 +19,27 @@ public class LogModel {
     @Column(name = "tabelaList_id")
     private int tabelaListId;
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "tabelaList_id", referencedColumnName = "id", insertable = false, updatable = false)
-    private TabelaListModel tabelaListModel;
+    private TabelaListModel tabelaList;
 
     @Column(name = "usuario_id")
     private int usuarioId;
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "usuario_id", referencedColumnName = "id", insertable = false, updatable = false)
     private UsuarioModel usuario;
 
     public LogModel() {}
 
-    public LogModel(int id, String acao, String descricao, Date data) {
-        this.id = id;
+    public LogModel(String acao, String descricao, Date data, int tabelaListId, TabelaListModel tabelaList, int usuarioId, UsuarioModel usuario) {
         this.acao = acao;
         this.descricao = descricao;
         this.data = data;
+        this.tabelaListId = tabelaListId;
+        this.tabelaList = tabelaList;
+        this.usuarioId = usuarioId;
+        this.usuario = usuario;
     }
 
     public int getId() {
@@ -75,12 +82,12 @@ public class LogModel {
         this.tabelaListId = tabelaListId;
     }
 
-    public TabelaListModel getTabelaListModel() {
-        return tabelaListModel;
+    public TabelaListModel getTabelaList() {
+        return tabelaList;
     }
 
-    public void setTabelaListModel(TabelaListModel tabelaListModel) {
-        this.tabelaListModel = tabelaListModel;
+    public void setTabelaList(TabelaListModel tabelaList) {
+        this.tabelaList = tabelaList;
     }
 
     public int getUsuarioId() {

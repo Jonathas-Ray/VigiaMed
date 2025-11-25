@@ -1,6 +1,10 @@
 package org.example.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,15 +18,16 @@ public class SensorModel {
     private String nome;
     private String unidadeMedida;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "sensorModel", cascade = CascadeType.ALL)
-    private List<MedicaoListaModel> medicoes;
+    private List<MedicaoListaModel> medicoes = new ArrayList<>();;
 
     public SensorModel() {}
 
-    public SensorModel(int id, String nome, String unidadeMedida) {
-        this.id = id;
+    public SensorModel( String nome, String unidadeMedida, List<MedicaoListaModel> medicoes) {
         this.nome = nome;
         this.unidadeMedida = unidadeMedida;
+        this.medicoes = medicoes;
     }
 
     public int getId() {
@@ -47,6 +52,10 @@ public class SensorModel {
 
     public void setUnidadeMedida(String unidadeMedida) {
         this.unidadeMedida = unidadeMedida;
+    }
+
+    public List<MedicaoListaModel> getMedicoes() {
+        return medicoes;
     }
 
     public void setMedicoes(List<MedicaoListaModel> medicoes) {

@@ -1,53 +1,102 @@
 package org.example.entities;
 
 import org.example.models.MedicaoListaModel;
+import org.example.models.MedicaoModel;
+import org.example.models.SensorModel;
 
 public class MedicaoLista {
     private int id;
     private double resultado;
     private String tipoMedicao;
-    private String data_hora;
+    private String dataHora;
+    private int medicaoId;
+    private MedicaoModel medicao;
+    private int sensorId;
+    private SensorModel sensor;
 
     public MedicaoLista(){}
 
-    public MedicaoLista(double resultado, String tipoMedicao, String data_hora) {
-        this.resultado = resultado;
-        this.tipoMedicao = tipoMedicao;
-        this.data_hora = data_hora;
-    }
-
-    public MedicaoLista(int id, double resultado, String tipoMedicao, String data_hora) {
+    public MedicaoLista(int id, double resultado, String tipoMedicao, String dataHora, int medicaoId, MedicaoModel medicao, int sensorId, SensorModel sensor) {
         this.id = id;
         this.resultado = resultado;
         this.tipoMedicao = tipoMedicao;
-        this.data_hora = data_hora;
+        this.dataHora = dataHora;
+        this.medicaoId = medicaoId;
+        this.medicao = medicao;
+        this.sensorId = sensorId;
+        this.sensor = sensor;
     }
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-    public double getResultado() { return resultado; }
-    public void setResultado(double resultado) { this.resultado = resultado; }
-    public String getTipoMedicao() { return tipoMedicao; }
-    public void setTipoMedicao(String tipoMedicao) { this.tipoMedicao = tipoMedicao; }
-    public String getData_hora() { return data_hora; }
-    public void setData_hora(String data_hora) { this.data_hora = data_hora; }
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public double getResultado() {
+        return resultado;
+    }
+
+    public void setResultado(double resultado) {
+        this.resultado = resultado;
+    }
+
+    public String getTipoMedicao() {
+        return tipoMedicao;
+    }
+
+    public void setTipoMedicao(String tipoMedicao) {
+        this.tipoMedicao = tipoMedicao;
+    }
+
+    public String getDataHora() {
+        return dataHora;
+    }
+
+    public void setDataHora(String dataHora) {
+        this.dataHora = dataHora;
+    }
+
+    public int getMedicaoId() {
+        return medicaoId;
+    }
+
+    public void setMedicaoId(int medicaoId) {
+        this.medicaoId = medicaoId;
+    }
+
+    public int getSensorId() {
+        return sensorId;
+    }
+
+    public void setSensorId(int sensorId) {
+        this.sensorId = sensorId;
+    }
 
     public MedicaoListaModel toModel() {
-        MedicaoListaModel model = new MedicaoListaModel();
-        model.setId(this.getId());
-        model.setResultado(this.getResultado());
-        model.setTipoMedicao(this.getTipoMedicao());
-        model.setData_hora(this.getData_hora());
-        return model;
+        return new MedicaoListaModel(
+                this.getResultado(),
+                this.getTipoMedicao(),
+                this.getDataHora(),
+                this.medicaoId,
+                null,
+                this.sensorId,
+                null
+        );
     }
 
     public static MedicaoLista fromModel(MedicaoListaModel model) {
-        MedicaoLista medicaoLista = new MedicaoLista(
+        return new MedicaoLista(
+                model.getId(),
                 model.getResultado(),
                 model.getTipoMedicao(),
-                model.getData_hora()
+                model.getData_hora(),
+                model.getMedicaoId(),
+                null,
+                model.getSensorId(),
+                null
         );
-        medicaoLista.setId(model.getId());
-        return medicaoLista;
     }
 }

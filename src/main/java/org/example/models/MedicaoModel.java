@@ -1,6 +1,11 @@
 package org.example.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,24 +22,31 @@ public class MedicaoModel {
     @Column(name = "paciente_id")
     private int pacienteId;
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "paciente_id", referencedColumnName = "id", insertable = false, updatable = false)
     private PacienteModel paciente;
 
     @Column(name = "dispositivo_id")
     private int dispositivoId;
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "dispositivo_id", referencedColumnName = "id", insertable = false, updatable = false)
     private DispositivoModel dispositivo;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "medicaoModel", cascade = CascadeType.ALL)
-    private List<MedicaoListaModel> medicoesLista;
+    private List<MedicaoListaModel> medicoesLista = new ArrayList<>();;
 
     public MedicaoModel() {}
 
-    public MedicaoModel(int id, String descricao, String dataHora) {
-        this.id = id;
+    public MedicaoModel( String descricao, String dataHora, int pacienteId,  PacienteModel paciente, int dispositivoId, DispositivoModel dispositivo, List<MedicaoListaModel> medicoesLista) {
         this.descricao = descricao;
         this.dataHora = dataHora;
+        this.pacienteId = pacienteId;
+        this.paciente = paciente;
+        this.dispositivoId = dispositivoId;
+        this.dispositivo = dispositivo;
+        this.medicoesLista = medicoesLista;
     }
 
     public int getId() {
@@ -61,32 +73,41 @@ public class MedicaoModel {
         this.dataHora = dataHora;
     }
 
-
-    public void setPaciente(PacienteModel paciente) {
-        this.paciente = paciente;
-    }
-
-    public DispositivoModel getDispositivo() {
-        return dispositivo;
+    public int getPacienteId() {
+        return pacienteId;
     }
 
     public void setPacienteId(int pacienteId) {
         this.pacienteId = pacienteId;
     }
 
+    public PacienteModel getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(PacienteModel paciente) {
+        this.paciente = paciente;
+    }
+
+    public int getDispositivoId() {
+        return dispositivoId;
+    }
+
     public void setDispositivoId(int dispositivoId) {
         this.dispositivoId = dispositivoId;
     }
 
-
-    public PacienteModel getPaciente() {
-        return paciente;
+    public DispositivoModel getDispositivo() {
+        return dispositivo;
     }
 
     public void setDispositivo(DispositivoModel dispositivo) {
         this.dispositivo = dispositivo;
     }
 
+    public List<MedicaoListaModel> getMedicoesLista() {
+        return medicoesLista;
+    }
 
     public void setMedicoesLista(List<MedicaoListaModel> medicoesLista) {
         this.medicoesLista = medicoesLista;
