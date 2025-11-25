@@ -2,8 +2,9 @@
 let intervalo;
 let monitorandoAtivo = false;
 
-// ⚠️ CONFIGURE A URL DA SUA API AQUI
+//  CONFIGURA URL DA API
 const API_URL = 'http://localhost:8080/api/medicao-lista/monitorar';
+const API_URL_AWS = 'jdbc:mysql://admin.ckutk4ri5e4o.us-east-1.rds.amazonaws.com:3306/VigiaMed?createDatabaseIfNotExist=true';
 
 async function buscarUltimaMedicao() {
     try {
@@ -63,9 +64,9 @@ function iniciarMonitoramento() {
     if (monitorandoAtivo) return;
     
     monitorandoAtivo = true;
-    buscarUltimaMedicao(); // Primeira busca imediata
+    buscarUltimaMedicao();
     
-    // Atualiza a cada 3 segundos
+    // 3 segundos
     intervalo = setInterval(buscarUltimaMedicao, 3000);
     
     console.log('Monitoramento iniciado');
@@ -88,12 +89,10 @@ function atualizarAgora() {
     console.log('🔄 Atualização manual');
 }
 
-// Inicia automaticamente quando a página carregar
 window.addEventListener('load', () => {
     iniciarMonitoramento();
 });
 
-// Para o monitoramento quando a página for fechada
 window.addEventListener('beforeunload', () => {
     pararMonitoramento();
 });
