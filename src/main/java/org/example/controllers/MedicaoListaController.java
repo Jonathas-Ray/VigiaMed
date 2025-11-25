@@ -1,5 +1,6 @@
 package org.example.controllers;
 
+import org.example.applications.MedicaoListaApplication;
 import org.example.entities.MedicaoLista;
 import org.example.facades.MedicaoListaFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +11,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/medicao-lista")
+@CrossOrigin(origins = "*") // Permite acesso do front-end
 public class MedicaoListaController {
 
     private final MedicaoListaFacade medicaoListaFacade;
 
+    // ✅ ADICIONE ESTA INJEÇÃO
+    private final MedicaoListaApplication medicaoListaApplication;
+
     @Autowired
-    public MedicaoListaController(MedicaoListaFacade medicaoListaFacade) {
+    public MedicaoListaController(MedicaoListaFacade medicaoListaFacade,
+                                  MedicaoListaApplication medicaoListaApplication) {
         this.medicaoListaFacade = medicaoListaFacade;
+        this.medicaoListaApplication = medicaoListaApplication;
     }
 
     @GetMapping
@@ -47,5 +54,14 @@ public class MedicaoListaController {
     @DeleteMapping("/{id}")
     public void removerMedicaoLista(@PathVariable int id) {
         medicaoListaFacade.excluir(id);
+    }
+
+    //verificaçã
+
+    @GetMapping("/monitorar")
+    public ResponseEntity<MedicaoListaApplication.ResultadoValidacao> monitorar() {
+        MedicaoListaApplication.ResultadoValidacao resultado =
+                medicaoListaApplication.verificarUltimoResultado();
+        return ResponseEntity.ok(resultado);
     }
 }

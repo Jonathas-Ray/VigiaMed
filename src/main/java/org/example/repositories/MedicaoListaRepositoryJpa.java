@@ -43,4 +43,11 @@ public class MedicaoListaRepositoryJpa implements MedicaoListaRepository {
         listaMedicao.setId(id);
         this.medicaoListaModelRepositoryJpa.save(listaMedicao);
     }
+
+    // retorna o mais recente
+    @Override
+    public Double findUltimoResultado() {
+        List<Double> lista = this.medicaoListaModelRepositoryJpa.findUltimoResultadoList();
+        return lista.isEmpty() ? null : lista.get(0);
+    }
 }
