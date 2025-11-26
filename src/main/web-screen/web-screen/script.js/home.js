@@ -20,13 +20,13 @@ document.addEventListener('DOMContentLoaded', () => {
             fetchUserInfo(user.uid);
             listenToVitals(DEVICE_ID);
         } else {
-            window.location.href = 'login.html';
+            window.location.href = '../html/login.html';
         }
     });
 
     btnLogout.addEventListener('click', () => {
         signOut(auth).then(() => {
-            window.location.href = 'login.html';
+            window.location.href = '../html/login.html';
         }).catch((error) => {
             console.error("Erro ao sair:", error);
         });
