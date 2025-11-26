@@ -75,7 +75,7 @@ btnGoogle.addEventListener('click', () => {
                     background: '#343a40',
                     color: '#f8f9fa'
                 }).then(() => {
-                    window.location.href = 'home.html'; 
+                    window.location.href = '../html/home.html'; 
                 });
             });
             
