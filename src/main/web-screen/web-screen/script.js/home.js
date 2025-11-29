@@ -47,19 +47,15 @@ async function fetchUserInfo(uid) {
     }
 }
 
-// --- [NOVA FUNÇÃO] Atualiza texto e Anima ---
 function updateValue(element, newValue) {
-    // 1. Se o valor for o mesmo que já está na tela, não faz nada (opcional)
     // Se quiser que pisque mesmo se o valor repetir, remova este if.
-    if (element.textContent === newValue) return;
+    // if (element.textContent === newValue) return;
 
-    // 2. Atualiza o texto
     element.textContent = newValue;
 
-    // 3. Reinicia a animação CSS
-    element.classList.remove('update-flash'); // Remove a classe
-    void element.offsetWidth; // Truque mágico: força o navegador a "notar" que removemos
-    element.classList.add('update-flash'); // Adiciona de volta para tocar a animação
+    element.classList.remove('update-flash');
+    void element.offsetWidth; 
+    element.classList.add('update-flash');
 }
 
 function listenToVitals(deviceId) {
@@ -70,9 +66,7 @@ function listenToVitals(deviceId) {
     onValue(vitalsRef, (snapshot) => {
         if (snapshot.exists()) {
             const data = snapshot.val();
-            
-            // Usamos a nova função updateValue para cada campo
-            
+                        
             const bpm = data.heartRate?.value || '--';
             updateValue(heartRateEl, bpm);
 
