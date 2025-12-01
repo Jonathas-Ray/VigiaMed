@@ -4,6 +4,7 @@
 #include "HeartRateSPO2.h"
 #include <Wire.h>
 #include <Adafruit_NeoPixel.h>
+#include "Protocentral_MAX30205.h"
 
 #define PINO_SDA 8
 #define PINO_SCL 9
@@ -19,6 +20,7 @@ Adafruit_NeoPixel strip(LED_COUNT, LEDRGB, NEO_GRB + NEO_KHZ800);
 WiFiHelper wifi(&strip);
 CapsulaFirebase firebase;
 HeartRateSPO2 hrSpO2(PINO_SDA, PINO_SCL);
+MAX30205 sensorDeTemperatura;
 
 String DEVICE_MAC_ADDRESS = "";
 bool loginFirebaseSucesso = false;
@@ -30,6 +32,7 @@ EstadoErro erroAtual = STATUS_OK;
 
 int BPMedia = 0;
 int spo2Value = 0;
+float temperatura = 0.0;
 
 void gerenciarLED() {
     const unsigned long DURACAO_ERRO_FIXO = 3000;
@@ -95,12 +98,25 @@ void setup() {
             gerenciarLED();
         }
     }
+
+    if(sensorDeTemperatura.scanAvailableSensors()){ 
+        sensorDeTemperatura.begin(); 
+        firebase.enviar("Log - Temperatura", String("Sensor Encontrado"));
+    } else { 
+        firebase.enviar("Log - Temperatura", String("Sensor Não Encontrado"));
+    }
+
 }
 
 void loop() {
     unsigned long agora = millis();
     
     hrSpO2.processarLeitura(BPMedia, spo2Value); 
+
+    if (agora - ultimoCicloLeitura >= 500) { 
+        ultimoCicloLeitura = agora; 
+        temperatura = sensorDeTemperatura.getTemperature(); 
+    }
 
     if (WiFi.status() == WL_CONNECTED) {
         if (!loginFirebaseSucesso) { 
@@ -114,19 +130,11 @@ void loop() {
             if ((BPMedia > 0 || spo2Value > 0) && agora - ultimoEnvioFB > INTERVALO_ENVIO_BPM_MS) {
                 ultimoEnvioFB = agora;
 
-                if (BPMedia > 0) {
-                    if (!firebase.enviar("heartRate", String(BPMedia))) { 
-                        erroAtual = ERRO_FIREBASE_ENVIO;
-                    }
-                }
+                firebase.enviar("heartRate", String(BPMedia));
                 
-                if (spo2Value > 0) {
-                    if (!firebase.enviar("spo2", String(spo2Value))) {
-                        erroAtual = ERRO_FIREBASE_ENVIO;
-                    }
-                } else {
-                    firebase.enviar("spo2", String(spo2Value));
-                }
+                firebase.enviar("spo2", String(spo2Value));
+
+                firebase.enviar("Temperature", String(temperatura, 2));
             }
         }
     } else {

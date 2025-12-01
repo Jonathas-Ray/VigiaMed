@@ -26,11 +26,8 @@ CalibracaoStatus HeartRateSPO2::iniciarSensor() {
         }
     } while (!sensorEncontrado);
 
-    if (!sensorEncontrado) {
-        return ERRO_SENSOR_NAO_ENCONTRADO;
-    }
-
-    sensor.setup(); 
+    // [ALTERAÇÃO 1]: Configuração explícita para 400Hz, 411us e 16384 ADC Range
+    sensor.setup(0xFF, 4, 2, 400, 411, 16384); 
     sensor.setPulseAmplitudeGreen(0);
 
     calibrarSensor();
@@ -61,7 +58,7 @@ void HeartRateSPO2::calibrarSensor() {
                 amostras++;
             }
             sensor.nextSample(); 
-            delay(5);
+            // [ALTERAÇÃO 2]: delay(5); removido para não interferir na taxa de amostragem
         }
 
         if (amostras > 0) {
@@ -142,7 +139,8 @@ void HeartRateSPO2::processarLeitura(int& bpmMedia, int& spo2Output) {
 
         BPM = 60 / (delta / 1000.0);
 
-        if (BPM < 255 && BPM > 20){ 
+        // [ALTERAÇÃO 3]: Filtro de BPM de 40 a 220 para eliminar leituras inconsistentes
+        if (BPM < 220 && BPM > 40){ 
             rates[rateSpot++] = (byte)BPM; 
             rateSpot %= RATE_SIZE; 
 
