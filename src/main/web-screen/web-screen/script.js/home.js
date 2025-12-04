@@ -12,7 +12,10 @@ const saturationEl = document.getElementById('saturation');
 const temperatureEl = document.getElementById('temperature');
 const deviceIdEl = document.getElementById('deviceID');
 
-const DEVICE_ID = "DCB4D905BF3C"; 
+const urlParams = new URLSearchParams(window.location.search);
+const urlID = urlParams.get('id');
+
+const DEVICE_ID = urlID || "DCB4D905BF3C"
 
 document.addEventListener('DOMContentLoaded', () => {
     onAuthStateChanged(auth, (user) => {
