@@ -4,6 +4,8 @@ import { auth, db, rtdb } from '../firebase-config.js';
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 import { ref, onValue } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
+import { enviarMedicaoCompleta } from './api.js'
+
 
 const userNameEl = document.getElementById('userName');
 const btnLogout = document.getElementById('btnLogout');
@@ -12,13 +14,52 @@ const saturationEl = document.getElementById('saturation');
 const temperatureEl = document.getElementById('temperature');
 const deviceIdEl = document.getElementById('deviceID');
 
-const DEVICE_ID = "DCB4D905BF3C"; 
+
+const DEVICE_ID = "DCB4D905BF3C";
+const API_CALL_INTERVAL_MS = 10 * 1000;
+
+
+function startApiScheduler(deviceId) {
+    
+    // Função que será executada a cada 10 segundos
+    const sendData = () => {
+        // 1. LÊ OS VALORES ATUAIS do display (eles foram atualizados pelo onValue)
+        const bpm = heartRateEl.textContent;
+        const spo2 = saturationEl.textContent;
+        const temp = temperatureEl.textContent;
+
+        // 2. Checa se há dados válidos
+        if (bpm !== '--' && spo2 !== '--' && temp !== '--') {
+            
+            const dadosParaAPI = {
+                heartRate: parseFloat(bpm),
+                saturation: parseFloat(spo2),
+                temperature: parseFloat(temp)
+            };
+            
+            const nextSendTime = API_CALL_INTERVAL_MS / 1000;
+
+            console.log(`⏱️ Enviando dados para API. Próximo envio em ${nextSendTime}s.`);
+
+            enviarMedicaoCompleta(deviceId, dadosParaAPI)
+                .catch(err => console.error("Falha ao salvar medição via API:", err));
+        } else {
+            console.warn("⚠️ Dados incompletos ou inválidos. Envio para API ignorado.");
+        }
+    };
+    
+    // Inicia a execução imediatamente e repete a cada 10 segundos
+    sendData(); // Roda a primeira vez imediatamente
+    setInterval(sendData, API_CALL_INTERVAL_MS);
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     onAuthStateChanged(auth, (user) => {
         if (user) {
             fetchUserInfo(user.uid);
             listenToVitals(DEVICE_ID);
+
+            startApiScheduler(DEVICE_ID); 
         } else {
             window.location.href = '../html/login.html';
         }
@@ -64,28 +105,27 @@ function updateValue(element, newValue) {
 
 function listenToVitals(deviceId) {
     const vitalsRef = ref(rtdb, 'vitals/' + deviceId);
-    
     deviceIdEl.textContent = `ID: ${deviceId}`;
 
     onValue(vitalsRef, (snapshot) => {
         if (snapshot.exists()) {
             const data = snapshot.val();
             
-            // Usamos a nova função updateValue para cada campo
-            
             const bpm = data.heartRate?.value || '--';
-            updateValue(heartRateEl, bpm);
-
             const spo2 = data.spo2?.value || '--';
-            updateValue(saturationEl, spo2);
-
             const temp = data.Temperature?.value || '--'; 
-            updateValue(temperatureEl, temp);
             
+            // Apenas atualiza o display com os dados mais recentes
+            updateValue(heartRateEl, bpm);
+            updateValue(saturationEl, spo2);
+            updateValue(temperatureEl, temp);
         } else {
             heartRateEl.textContent = '--';
             saturationEl.textContent = '--';
             temperatureEl.textContent = '--';
         }
     });
+
+
+
 }

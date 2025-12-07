@@ -29,8 +29,9 @@ public class MedicaoRepositoryJpa implements MedicaoRepository {
     }
 
     @Override
-    public void adicionar(MedicaoModel medicao) {
+    public MedicaoModel adicionar(MedicaoModel medicao) {
         this.medicaoModelRepositoryJpa.save(medicao);
+        return medicao;
     }
 
     @Override

@@ -3,6 +3,7 @@ package org.example.controllers;
 import org.example.entities.Medicao;
 import org.example.facades.MedicaoFacade;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/medicao")
+@CrossOrigin(origins = "*")
 public class MedicaoController {
 
     private final MedicaoFacade medicaoFacade;
@@ -35,8 +37,9 @@ public class MedicaoController {
     }
 
     @PostMapping
-    public void criarMedicao(@RequestBody Medicao medicao) {
-        medicaoFacade.adicionar(medicao);
+    public ResponseEntity<Medicao> criarMedicao(@RequestBody Medicao medicao) {
+        Medicao novaMedicao = medicaoFacade.adicionar(medicao);
+        return ResponseEntity.status(HttpStatus.CREATED).body(novaMedicao);
     }
 
     @PutMapping("/{id}")
