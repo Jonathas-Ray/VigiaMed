@@ -121,7 +121,7 @@ function listenToVitals(deviceId) {
 
 
 function iniciarMonitoramento() {
-    setInterval(verificarBatimentos, 2000);
+    setInterval(verificarBatimentos, 1000);
     
     verificarBatimentos();
 }
