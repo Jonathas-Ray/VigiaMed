@@ -7,7 +7,6 @@ const passwordInput = document.getElementById('password');
 const btnLogin = document.querySelector('button[type="submit"]');
 const btnGoogle = document.getElementById('google');
 
-// Login comumm
 btnLogin.addEventListener('click', (e) => {
     e.preventDefault(); 
 
@@ -54,7 +53,6 @@ btnLogin.addEventListener('click', (e) => {
         });
 });
 
-// Login com o Google
 btnGoogle.addEventListener('click', () => {
     signInWithPopup(auth, googleProvider)
         .then((result) => {
