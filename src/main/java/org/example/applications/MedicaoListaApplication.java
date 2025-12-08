@@ -82,7 +82,6 @@ public class MedicaoListaApplication {
         return verificarUltimaMedicao();
     }
 
-    // retornar resultado das validaçoes
     public static class ResultadoValidacao {
 
         private Double resultado;

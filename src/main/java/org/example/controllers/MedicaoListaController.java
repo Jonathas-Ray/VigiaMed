@@ -11,12 +11,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/medicao-lista")
-@CrossOrigin(origins = "*") // Permite acesso do front-end
+@CrossOrigin(origins = "*")
 public class MedicaoListaController {
 
     private final MedicaoListaFacade medicaoListaFacade;
 
-    // ✅ ADICIONE ESTA INJEÇÃO
     private final MedicaoListaApplication medicaoListaApplication;
 
     @Autowired

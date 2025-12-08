@@ -1,10 +1,7 @@
-/* Salve como: css/mainScreen.css */
-
-/* Variáveis de Cor (baseado na imagem) */
 :root {
-    --bg-dark-primary: #121212;  /* Fundo principal (quase preto) */
-    --bg-dark-secondary: #252525; /* Fundo do sidebar e cards */
-    --brand-green: #00B17F;      /* Verde principal (usei o da tela de login) */
+    --bg-dark-primary: #121212; 
+    --bg-dark-secondary: #252525; 
+    --brand-green: #00B17F;      
     --text-primary: #FFFFFF;
     --text-secondary: #adb5bd;
 }
@@ -12,10 +9,9 @@
 body {
     background-color: var(--bg-dark-primary);
     color: var(--text-primary);
-    overflow: hidden; /* Impede scroll da página inteira */
+    overflow: hidden; 
 }
 
-/* --- Sidebar --- */
 .sidebar {
     width: 280px;
     height: 100vh;
@@ -45,11 +41,10 @@ body {
     font-weight: bold;
 }
 
-/* --- Main Content --- */
 .main-content {
     background-color: var(--bg-dark-primary);
     height: 100vh;
-    overflow-y: auto; /* Permite scroll só no conteúdo */
+    overflow-y: auto; 
 }
 
 .top-tag {
@@ -61,11 +56,10 @@ body {
     font-size: 0.9rem;
 }
 
-/* --- Vital Cards --- */
 .vital-card {
     background-color: var(--bg-dark-secondary);
     padding: 1.5rem;
-    border-radius: 0.75rem; /* 12px */
+    border-radius: 0.75rem;
     border-top: 8px solid var(--brand-green);
     border-left: 8px solid var(--brand-green);
     border-bottom: 8px solid var(--bg-dark-secondary);
@@ -87,7 +81,7 @@ body {
 }
 
 .vital-card .card-value {
-    font-size: 4rem; /* 64px */
+    font-size: 4rem;
     font-weight: 700;
     color: var(--text-primary);
     line-height: 1.2;
@@ -97,16 +91,15 @@ body {
     margin-right: 0.25rem;
 }
 
-/* Animação de Atualização */
 @keyframes flash-green {
     0% {
         color: #fff;
         transform: scale(1);
     }
     50% {
-        color: #00B17F; /* Seu verde neon */
-        transform: scale(1.2); /* Aumenta 20% */
-        text-shadow: 0 0 10px rgba(0, 177, 127, 0.5); /* Brilho */
+        color: #00B17F; 
+        transform: scale(1.2); 
+        text-shadow: 0 0 10px rgba(0, 177, 127, 0.5); 
     }
     100% {
         color: #fff;
@@ -114,7 +107,144 @@ body {
     }
 }
 
-/* Classe que será injetada via JS */
 .update-flash {
     animation: flash-green 0.5s ease-out;
+}
+
+.swal-alert-fixed {
+    width: 380px !important;
+    padding: 1.5rem !important;
+    cursor: default !important;
+    background-color: var(--bg-dark-secondary) !important;
+    border-radius: 0.75rem !important;
+    border: 2px solid var(--brand-green) !important;
+    box-shadow: 0 4px 20px rgba(0, 177, 127, 0.3) !important;
+}
+
+.swal-alert-fixed .swal2-icon {
+    border-color: var(--brand-green) !important;
+    color: var(--brand-green) !important;
+}
+
+.swal-alert-fixed .swal2-icon.swal2-warning {
+    border-color: #ffc107 !important;
+    color: #ffc107 !important;
+}
+
+.swal-alert-fixed .swal2-icon.swal2-error {
+    border-color: #dc3545 !important;
+    color: #dc3545 !important;
+}
+
+.swal-alert-fixed .swal2-title {
+    color: var(--text-primary) !important;
+    font-weight: 700 !important;
+    font-size: 1.2rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.swal-alert-fixed .swal2-html-container {
+    color: var(--text-secondary) !important;
+    margin-top: 1rem !important;
+}
+
+.swal-alert-fixed .swal2-html-container p {
+    margin: 0.5rem 0 !important;
+}
+
+.swal-alert-fixed .swal2-close {
+    display: none !important;
+}
+
+.swal-alert-fixed * {
+    user-select: none !important;
+}
+
+.swal2-toast.swal2-show {
+    animation: slideInRight 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(120%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.swal2-toast.swal2-hide {
+    animation: slideOutRight 0.3s ease-in !important;
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(120%);
+        opacity: 0;
+    }
+}
+
+.swal2-container {
+    z-index: 9999 !important;
+}
+
+.swal2-container.swal2-bottom-end {
+    padding: 1rem !important;
+}
+
+.swal-alert-fixed:hover {
+    transform: none !important;
+}
+
+.swal-alert-fixed {
+    animation: pulse-border 2s infinite !important;
+}
+
+@keyframes pulse-border {
+    0%, 100% {
+        box-shadow: 0 4px 20px rgba(0, 177, 127, 0.3);
+    }
+    50% {
+        box-shadow: 0 4px 25px rgba(0, 177, 127, 0.6);
+    }
+}
+
+.swal-alert-fixed.swal-warning {
+    border-color: #ffc107 !important;
+}
+
+.swal-alert-fixed.swal-warning {
+    animation: pulse-border-warning 2s infinite !important;
+}
+
+@keyframes pulse-border-warning {
+    0%, 100% {
+        box-shadow: 0 4px 20px rgba(255, 193, 7, 0.3);
+    }
+    50% {
+        box-shadow: 0 4px 25px rgba(255, 193, 7, 0.6);
+    }
+}
+
+.swal-alert-fixed.swal-danger {
+    border-color: #dc3545 !important;
+}
+
+.swal-alert-fixed.swal-danger {
+    animation: pulse-border-danger 2s infinite !important;
+}
+
+@keyframes pulse-border-danger {
+    0%, 100% {
+        box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
+    }
+    50% {
+        box-shadow: 0 4px 25px rgba(220, 53, 69, 0.6);
+    }
 }
