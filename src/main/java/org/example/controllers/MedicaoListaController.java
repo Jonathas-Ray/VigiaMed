@@ -4,6 +4,7 @@ import org.example.applications.MedicaoListaApplication;
 import org.example.entities.MedicaoLista;
 import org.example.facades.MedicaoListaFacade;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,8 +42,12 @@ public class MedicaoListaController {
     }
 
     @PostMapping
-    public void criarMedicaoLista(@RequestBody MedicaoLista medicaoLista) {
-        medicaoListaFacade.adicionar(medicaoLista);
+    public ResponseEntity<MedicaoLista> criarMedicaoLista(@RequestBody MedicaoLista medicaoLista) {
+        // 1. Assumindo que medicaoListaFacade.adicionar() retorna o objeto salvo com o ID.
+        MedicaoLista novaMedicaoLista = medicaoListaFacade.adicionar(medicaoLista);
+
+        // 2. Retorna a resposta 201 Created com o objeto JSON no corpo.
+        return ResponseEntity.status(HttpStatus.CREATED).body(novaMedicaoLista);
     }
 
     @PutMapping("/{id}")
