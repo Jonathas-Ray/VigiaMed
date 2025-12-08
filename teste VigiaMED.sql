@@ -18,7 +18,7 @@ VALUES
 ('Tabela de Temperatura');
 
 -- usuario
-INSERT INTO usuario (nome, tipo, email, senha_hash, unidade_id)
+INSERT INTO usuario (nome, tipo, email, senha, unidade_id)
 VALUES (
   'Admin Geral',
   'ADMIN',

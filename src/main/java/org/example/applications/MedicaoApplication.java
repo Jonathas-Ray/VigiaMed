@@ -30,9 +30,15 @@ public class MedicaoApplication {
         return medicao;
     }
 
-    public void adicionar(Medicao medicao) {
+    public Medicao adicionar(Medicao medicao) {
         MedicaoModel medicaoModel = medicao.toModel();
-        this.medicaoRepository.adicionar(medicaoModel);
+        MedicaoModel savedModel = this.medicaoRepository.adicionar(medicaoModel);
+
+        // 2. Converta o modelo salvo de volta para a entidade
+        Medicao novaMedicao = new Medicao().fromModel(savedModel);
+
+        // 3. Retorne a entidade que AGORA possui o ID
+        return novaMedicao;
     }
 
     public void excluir(int id) {
