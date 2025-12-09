@@ -67,7 +67,8 @@ public class MedicaoListaApplication {
         // Validação usando apenas IF
         if (resultado >= 60 && resultado <= 100) {
             mensagem = "Batimentos normais: " + resultado + " bpm";
-        } else if (resultado < 60) {
+        }
+        if (resultado < 60) {
             mensagem = "Batimentos abaixo do normal: " + resultado + " bpm";
         } else {
             mensagem = "Batimentos acima do normal: " + resultado + " bpm";
@@ -82,7 +83,6 @@ public class MedicaoListaApplication {
         return verificarUltimaMedicao();
     }
 
-    // retornar resultado das validaçoes
     public static class ResultadoValidacao {
 
         private Double resultado;

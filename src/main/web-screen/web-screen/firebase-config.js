@@ -6,8 +6,6 @@ import { getAuth, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/
 import { getDatabase } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 
-// 2. Cole o NOVO objeto firebaseConfig aqui
-// (Este é o objeto do seu novo projeto "vigiamed")
 const firebaseConfig = {
   apiKey: "AIzaSyDfAb5ixYgDdOgGO8THkwV_kpLWVCOVyR0",
   authDomain: "vigiamed.firebaseapp.com",
@@ -19,7 +17,6 @@ const firebaseConfig = {
   databaseURL: "https://vigiamed-default-rtdb.firebaseio.com"
 };
 
-// 3. Mantenha toda a inicialização e exports do arquivo ANTIGO
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
