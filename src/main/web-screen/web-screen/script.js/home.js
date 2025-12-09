@@ -14,10 +14,7 @@ const saturationEl = document.getElementById('saturation');
 const temperatureEl = document.getElementById('temperature');
 const deviceIdEl = document.getElementById('deviceID');
 
-const urlParams = new URLSearchParams(window.location.search);
-const urlID = urlParams.get('id');
-
-const DEVICE_ID = urlID || "DCB4D905BF3C";
+const DEVICE_ID = "DCB4D905BF3C"; 
 const API_BASE_URL = "http://localhost:8080";
 
 let ultimoAlertaMostrado = null;
