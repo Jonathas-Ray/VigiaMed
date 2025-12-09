@@ -13,7 +13,8 @@ const firebaseConfig = {
   storageBucket: "vigiamed.firebasestorage.app",
   messagingSenderId: "846877057053",
   appId: "1:846877057053:web:355a06bd083845340666f4",
-  measurementId: "G-9YZ49DYS80"
+  measurementId: "G-9YZ49DYS80",
+  databaseURL: "https://vigiamed-default-rtdb.firebaseio.com"
 };
 
 const app = initializeApp(firebaseConfig);

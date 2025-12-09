@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - VigiaMed</title>
+    <title>Home - VgiaMed</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
@@ -42,15 +42,28 @@
         </nav>
 
         <main class="main-content flex-grow-1 p-4">
-
             
+            <div class="d-flex justify-content-between align-items-center mb-5">
+                <div>
+                    <h2 class="fw-bold text-white mb-1">Meus Dispositivos</h2>
+                    <p class="text-secondary m-0">Gerencie e selecione um dispositivo para monitorar</p>
+                </div>
+                <button class="btn btn-success rounded-pill px-4">
+                    <i class="bi bi-plus-lg me-2"></i> Adicionar Novo
+                </button>
+            </div>
+
+            <div id="devices-container" class="row g-4">
+                <div class="col-12 text-center mt-5">
+                    <div class="spinner-border text-success" style="width: 3rem; height: 3rem;" role="status"></div>
+                    <p class="text-secondary mt-3">Buscando dispositivos na rede...</p>
+                </div>
+            </div>
+
         </main>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <script type="module" src="../script.js/devices.js"></script>
-</body>
 
 </html>
