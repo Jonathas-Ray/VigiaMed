@@ -25,14 +25,11 @@ const API_CALL_INTERVAL_MS = 10 * 1000;
 
 function startApiScheduler(deviceId) {
     
-    // Função que será executada a cada 10 segundos
     const sendData = () => {
-        // 1. LÊ OS VALORES ATUAIS do display (eles foram atualizados pelo onValue)
         const bpm = heartRateEl.textContent;
         const spo2 = saturationEl.textContent;
         const temp = temperatureEl.textContent;
 
-        // 2. Checa se há dados válidos
         if (bpm !== '--' && spo2 !== '--' && temp !== '--') {
             
             const dadosParaAPI = {
@@ -43,17 +40,17 @@ function startApiScheduler(deviceId) {
             
             const nextSendTime = API_CALL_INTERVAL_MS / 1000;
 
-            console.log(`⏱️ Enviando dados para API. Próximo envio em ${nextSendTime}s.`);
+            console.log(`Enviando dados para API. Próximo envio em ${nextSendTime}s.`);
 
             enviarMedicaoCompleta(deviceId, dadosParaAPI)
                 .catch(err => console.error("Falha ao salvar medição via API:", err));
         } else {
-            console.warn("⚠️ Dados incompletos ou inválidos. Envio para API ignorado.");
+            console.warn("Dados incompletos ou inválidos. Envio para API ignorado.");
         }
     };
     
-    // Inicia a execução imediatamente e repete a cada 10 segundos
-    sendData(); // Roda a primeira vez imediatamente
+    
+    sendData(); 
     setInterval(sendData, API_CALL_INTERVAL_MS);
 }
 
@@ -111,7 +108,6 @@ function listenToVitals(deviceId) {
             const spo2 = data.spo2?.value || '--';
             const temp = data.Temperature?.value || '--'; 
             
-            // Apenas atualiza o display com os dados mais recentes
             updateValue(heartRateEl, bpm);
             updateValue(saturationEl, spo2);
             updateValue(temperatureEl, temp);
