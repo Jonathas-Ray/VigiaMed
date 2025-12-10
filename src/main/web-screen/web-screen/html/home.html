@@ -43,50 +43,49 @@
 
         <main class="main-content flex-grow-1 p-4">
 
-            <div id="emptyState" class="empty-state">
-                <i class="bi bi-person-plus"></i>
-                <p>Nenhum paciente cadastrado</p>
-                <p style="font-size: 0.9rem; opacity: 0.7;">Clique no botão + para adicionar um paciente</p>
+            <div class="top-bar d-flex gap-3 mb-4">
+                <span class="top-tag" id="deviceID">ID: 04CDF8</span>
+                <span class="top-tag" id="patientStatus">PACIENTE: NÃO CADASTRADO</span>
             </div>
 
-            <div id="patientsContainer"></div>
+            <div class="row g-4 align-items-center justify-content-center">
+                <div class="col-md-4">
+                    <div class="vital-card">
+                        <div class="card-title">Pulsação Cardíaca</div>
+                        <div class="card-value">
+                            <span id="heartRate">--</span> bpm
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="vital-card">
+                        <div class="card-title">Saturação de Oxigênio</div>
+                        <div class="card-value">
+                            <span id="saturation">--</span> SpO2%
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="vital-card">
+                        <div class="card-title">Temperatura</div>
+                        <div class="card-value">
+                            <span id="temperature">--</span> °C
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="col-md-4">
+                    <div class="vital-card placeholder">
+                        <div class="card-title">-</div>
+                        <div class="card-value">
+                            <span id="extraVital">0</span>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
         </main>
-    </div>
-
-    <button class="btn-add-patient" id="btnAddPatient">
-        <i class="bi bi-plus-lg"></i>
-    </button>
-
-    <div class="modal fade" id="modalAddPatient" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content" style="background: var(--card-bg); border: 1px solid var(--border-color);">
-                <div class="modal-header" style="border-bottom: 1px solid var(--border-color);">
-                    <h5 class="modal-title" style="color: var(--text-primary);">Adicionar Paciente</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" style="filter: invert(1);"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="formAddPatient">
-                        <div class="mb-3">
-                            <label for="patientName" class="form-label" style="color: var(--text-primary);">Nome do
-                                Paciente</label>
-                            <input type="text" class="form-control" id="patientName" required
-                                style="background: var(--bg-primary); color: var(--text-primary); border: 1px solid var(--border-color);">
-                        </div>
-                        <div class="mb-3">
-                            <label for="deviceId" class="form-label" style="color: var(--text-primary);">ID do
-                                Dispositivo</label>
-                            <input type="text" class="form-control" id="deviceId" required
-                                placeholder="Ex: DCB4D905BF3C"
-                                style="background: var(--bg-primary); color: var(--text-primary); border: 1px solid var(--border-color);">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer" style="border-top: 1px solid var(--border-color);">
-                    <button type="button" class="btn btn-secondary" id="btnSavaCancel" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" id="btnSavePatient">Adicionar</button>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

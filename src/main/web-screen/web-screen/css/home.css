@@ -3,10 +3,7 @@
     --bg-dark-secondary: #252525; 
     --brand-green: #00B17F;      
     --text-primary: #FFFFFF;
-    --white-color: #FFFFFF;
     --text-secondary: #adb5bd;
-    --red-color: #d62032;
-    --green-colorD: #135a46;
 }
 
 body {
@@ -96,7 +93,7 @@ body {
 
 @keyframes flash-green {
     0% {
-        color: var(--white-color);
+        color: #fff;
         transform: scale(1);
     }
     50% {
@@ -105,7 +102,7 @@ body {
         text-shadow: 0 0 10px var(--green-colorD)
     }
     100% {
-        color: var(--white-color);
+        color: #fff;
         transform: scale(1);
     }
 }

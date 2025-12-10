@@ -2,16 +2,10 @@
 
 import { auth, db, rtdb } from '../firebase-config.js';
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
-import { 
-    doc, 
-    getDoc, 
-    setDoc, 
-    collection, 
-    getDocs, 
-    deleteDoc 
-} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 import { ref, onValue } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
 import { enviarMedicaoCompleta } from './api.js'
+
 
 const userNameEl = document.getElementById('userName');
 const btnLogout = document.getElementById('btnLogout');
@@ -150,53 +144,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }).catch((error) => {
             console.error("Erro ao sair:", error);
         });
-    });
-
-    btnAddPatient.addEventListener('click', () => {
-        const modal = new bootstrap.Modal(document.getElementById('modalAddPatient'));
-        modal.show();
-    });
-
-    btnSavePatient.addEventListener('click', async () => {
-        const patientName = document.getElementById('patientName').value.trim();
-        const deviceId = document.getElementById('deviceId').value.trim().toUpperCase();
-
-        if (!patientName || !deviceId) {
-            showNotification('error', 'Campos obrigatórios', 'Preencha o nome do paciente e o ID do dispositivo.');
-            return;
-        }
-
-        try {
-            const vitalsRef = ref(rtdb, 'vitals/' + deviceId);
-            const snapshot = await new Promise((resolve, reject) => {
-                onValue(vitalsRef, resolve, reject, { onlyOnce: true });
-            });
-
-            if (!snapshot.exists()) {
-                showNotification('error', 'Dispositivo não encontrado', `O dispositivo ${deviceId} não existe no sistema.`);
-                return;
-            }
-
-            await setDoc(doc(db, "patients", deviceId), {
-                name: patientName,
-                deviceId: deviceId,
-                createdAt: new Date().toISOString()
-            });
-
-            document.getElementById('patientName').value = '';
-            document.getElementById('deviceId').value = '';
-
-            const modal = bootstrap.Modal.getInstance(document.getElementById('modalAddPatient'));
-            modal.hide();
-
-            loadPatients();
-
-            showNotification('success', 'Paciente adicionado!', `${patientName} foi vinculado ao dispositivo ${deviceId}`);
-
-        } catch (error) {
-            console.error("Erro ao adicionar paciente:", error);
-            showNotification('error', 'Erro', 'Não foi possível adicionar o paciente.');
-        }
     });
 });
 
@@ -370,17 +317,18 @@ function updateValue(element, newValue) {
     if (!element) return;
     element.textContent = newValue;
     element.classList.remove('update-flash');
-    void element.offsetWidth;
+    void element.offsetWidth; 
     element.classList.add('update-flash');
 }
 
-function listenToVitals(deviceId, patientName) {
+function listenToVitals(deviceId) {
     const vitalsRef = ref(rtdb, 'vitals/' + deviceId);
+    deviceIdEl.textContent = `ID: ${deviceId}`;
 
-    const unsubscribe = onValue(vitalsRef, (snapshot) => {
+    onValue(vitalsRef, (snapshot) => {
         if (snapshot.exists()) {
             const data = snapshot.val();
-
+                        
             const bpm = data.heartRate?.value || '--';
             const spo2 = data.spo2?.value || '--';
             const temp = data.Temperature?.value || '--';
@@ -393,111 +341,16 @@ function listenToVitals(deviceId, patientName) {
             updateValue(saturationEl, spo2);
             updateValue(temperatureEl, temp);
         } else {
-            const heartRateEl = document.getElementById(`heartRate-${deviceId}`);
-            const saturationEl = document.getElementById(`saturation-${deviceId}`);
-            const temperatureEl = document.getElementById(`temperature-${deviceId}`);
-
-            if (heartRateEl) heartRateEl.textContent = '--';
-            if (saturationEl) saturationEl.textContent = '--';
-            if (temperatureEl) temperatureEl.textContent = '--';
+            heartRateEl.textContent = '--';
+            saturationEl.textContent = '--';
+            temperatureEl.textContent = '--';
         }
     });
-
-    activeListeners.set(deviceId, unsubscribe);
 }
 
-function startApiScheduler(deviceId) {
-    const sendData = () => {
-        const heartRateEl = document.getElementById(`heartRate-${deviceId}`);
-        const saturationEl = document.getElementById(`saturation-${deviceId}`);
-        const temperatureEl = document.getElementById(`temperature-${deviceId}`);
 
-        if (!heartRateEl || !saturationEl || !temperatureEl) return;
-
-        const bpm = heartRateEl.textContent;
-        const spo2 = saturationEl.textContent;
-        const temp = temperatureEl.textContent;
-
-        if (bpm !== '--' && spo2 !== '--' && temp !== '--') {
-            const dadosParaAPI = {
-                heartRate: parseFloat(bpm),
-                saturation: parseFloat(spo2),
-                temperature: parseFloat(temp)
-            };
-
-            enviarMedicaoCompleta(deviceId, dadosParaAPI)
-                .catch(err => console.error(`Falha ao salvar medição via API (${deviceId}):`, err));
-        }
-    };
-
-    sendData();
-    const intervalId = setInterval(sendData, API_CALL_INTERVAL_MS);
-    patientSchedulers.set(deviceId, intervalId);
-}
-
-function iniciarMonitoramento(deviceId, patientName) {
-    const verificar = async () => {
-        try {
-            const response = await fetch(`${API_BASE_URL}/api/medicao-lista/monitorar`);
-
-            if (!response.ok) return;
-
-            const resultado = await response.json();
-
-            if (resultado.resultado === null) return;
-
-            const bpm = resultado.resultado;
-            const mensagem = resultado.mensagem;
-
-            if (!patientAlerts.has(deviceId)) {
-                patientAlerts.set(deviceId, { ultimoResultado: null, ultimoAlerta: null, notification: null });
-            }
-
-            const alertState = patientAlerts.get(deviceId);
-            const valorMudou = alertState.ultimoResultado !== bpm;
-
-            if (bpm < 60) {
-                if (valorMudou || alertState.ultimoAlerta !== 'baixo') {
-                    mostrarAlerta(deviceId, patientName, 'baixo', mensagem, bpm);
-                    alertState.ultimoAlerta = 'baixo';
-                }
-            } else if (bpm > 100) {
-                if (valorMudou || alertState.ultimoAlerta !== 'alto') {
-                    mostrarAlerta(deviceId, patientName, 'alto', mensagem, bpm);
-                    alertState.ultimoAlerta = 'alto';
-                }
-            } else {
-                if (alertState.ultimoAlerta !== null) {
-                    fecharAlerta(deviceId);
-                    alertState.ultimoAlerta = null;
-                }
-            }
-
-            alertState.ultimoResultado = bpm;
-
-        } catch (error) {
-            console.error(`Erro ao monitorar batimentos (${deviceId}):`, error);
-        }
-    };
-
-    verificar();
-    const intervalId = setInterval(verificar, 2000);
-    patientSchedulers.set(`monitor-${deviceId}`, intervalId);
-}
-
-function mostrarAlerta(deviceId, patientName, tipo, mensagem, bpm) {
-    const alertState = patientAlerts.get(deviceId);
-    
-    if (alertState.notification) {
-        const content = alertState.notification.querySelector('.notification-content');
-        content.querySelector('.notification-title').textContent = 
-            tipo === 'baixo' ? `⚠️ Bradicardia - ${patientName}` : `🚨 Taquicardia - ${patientName}`;
-        content.querySelector('.notification-message').innerHTML = 
-            `${mensagem}<br><small>ID: ${deviceId} | Batimentos ${tipo === 'baixo' ? 'abaixo' : 'acima'} do esperado</small>`;
-        return;
-    }
-
-    const container = document.getElementById('notificationContainer') || createNotificationContainer();
+function iniciarMonitoramento() {
+    setInterval(verificarBatimentos, 2000);
     
     const notification = document.createElement('div');
     notification.className = `custom-notification alert-persistent ${tipo === 'baixo' ? 'warning' : 'error'}`;
