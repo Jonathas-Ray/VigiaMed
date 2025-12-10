@@ -2,7 +2,6 @@ package org.example.repositories;
 
 import org.example.interfaces.MedicaoRepository;
 import org.example.models.MedicaoModel;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,11 +25,12 @@ public class MedicaoRepositoryImpl implements MedicaoRepository {
         return null;
     }
 
-    public void adicionar(MedicaoModel medicao) {
+    public MedicaoModel adicionar(MedicaoModel medicao) {
         if (medicao.getId() == 0) {
             medicao.setId(idCounter.getAndIncrement());
         }
         medicoes.add(medicao);
+        return medicao;
     }
 
     public void excluir(int id) {

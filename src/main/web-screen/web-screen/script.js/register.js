@@ -16,13 +16,11 @@ const emailError = document.getElementById('emailError');
 const senhaError = document.getElementById('senhaError');
 const confirmSenhaError = document.getElementById('confirmSenhaError');
 
-// Valida o e-mail
 function validateEmail(email) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 }
 
-// Limpa o campo que apresenta o erro
 function clearError(input, errorElement) {
   input.classList.remove('is-invalid');
   errorElement.textContent = '';
@@ -34,7 +32,6 @@ function showError(input, errorElement, message) {
   errorElement.textContent = message;
 }
 
-// Mensagem de erro
 function showSwalError(title, text) {
   Swal.fire({
     icon: 'error',
@@ -45,8 +42,6 @@ function showSwalError(title, text) {
   });
 }
 
-
-// Validação dos campos
 nomeInput.addEventListener('input', () => {
   if (nomeInput.value.trim().length < 3 && nomeInput.value.trim().length > 0) {
     showError(nomeInput, nomeError, 'Nome muito curto');
@@ -79,44 +74,38 @@ confirmPasswordInput.addEventListener('input', () => {
   }
 });
 
-
-// --- 5. SUBMISSÃO DO FORMULÁRIO (Mesclado com Firebase) ---
 cadastroForm.addEventListener('submit', (e) => {
   e.preventDefault();
   let isValid = true;
 
-  // Validar nome
   if (nomeInput.value.trim() === '' || nomeInput.value.trim().length < 3) {
     showError(nomeInput, nomeError, 'Por favor, insira seu nome completo');
     isValid = false;
   }
-  // Validar email
+
   if (emailInput.value.trim() === '' || !validateEmail(emailInput.value)) {
     showError(emailInput, emailError, 'Por favor, insira um email válido');
     isValid = false;
   }
-  // Validar senha
+
   if (passwordInput.value.length < 8) {
     showError(passwordInput, senhaError, 'A senha deve ter pelo menos 8 caracteres');
     isValid = false;
   }
-  // Validar confirmação de senha
+
   if (confirmPasswordInput.value !== passwordInput.value) {
     showError(confirmPasswordInput, confirmSenhaError, 'As senhas não coincidem');
     isValid = false;
   }
-  // Validar aceite dos termos
+
   if (!termosInput.checked) {
     isValid = false;
-    // Mostra o erro dos termos de forma mais visível
     showSwalError('Termos e Condições', 'Você deve aceitar os termos e condições para continuar.');
   }
 
   if (!isValid) {
-    return; // Para a execução se algo for inválido
+    return; 
   }
-
-  // --- Se a validação passar, TENTA O CADASTRO NO FIREBASE ---
 
   cadastroBtn.disabled = true;
   cadastroBtn.textContent = 'Cadastrando...';
@@ -127,10 +116,8 @@ cadastroForm.addEventListener('submit', (e) => {
 
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      // ETAPA 1: Usuário criado no Auth
       const user = userCredential.user;
 
-      // ETAPA 2: Salva os dados dele no Firestore
       return setDoc(doc(db, "users", user.uid), {
         nome: nome,
         email: email,
@@ -138,7 +125,6 @@ cadastroForm.addEventListener('submit', (e) => {
       });
     })
     .then(() => {
-      // ETAPA 3: Sucesso em tudo!
       Swal.fire({
         icon: 'success',
         title: 'Cadastro realizado!',
@@ -148,12 +134,10 @@ cadastroForm.addEventListener('submit', (e) => {
         background: '#343a40',
         color: '#f8f9fa'
       }).then(() => {
-        // Redireciona para o login (um nível acima)
         window.location.href = "../html/login.html";
       });
     })
     .catch((error) => {
-      // Trata erros do Firebase
       console.error("Erro no cadastro:", error.code);
       if (error.code === 'auth/email-already-in-use') {
         showSwalError('Falha no Cadastro', 'Este e-mail já está em uso.');
@@ -163,25 +147,21 @@ cadastroForm.addEventListener('submit', (e) => {
       }
     })
     .finally(() => {
-      // Re-abilita o botão, independentemente de sucesso ou falha
       cadastroBtn.disabled = false;
       cadastroBtn.textContent = 'Cadastrar';
     });
 });
 
-
-// --- 6. LOGIN COM GOOGLE ---
 btnGoogle.addEventListener('click', () => {
   signInWithPopup(auth, googleProvider)
     .then((result) => {
       const user = result.user;
 
-      // Salva/Atualiza os dados dele no Firestore
       return setDoc(doc(db, "users", user.uid), {
         nome: user.displayName,
         email: user.email,
         uid: user.uid
-      }, { merge: true }); // 'merge' impede sobrescrever dados
+      }, { merge: true }); 
     })
     .then(() => {
       Swal.fire({
@@ -193,7 +173,7 @@ btnGoogle.addEventListener('click', () => {
         background: '#343a40',
         color: '#f8f9fa'
       }).then(() => {
-        window.location.href = "../html/login.html"; // Redireciona para a tela principal
+        window.location.href = "../html/login.html";
       });
     })
     .catch((error) => {

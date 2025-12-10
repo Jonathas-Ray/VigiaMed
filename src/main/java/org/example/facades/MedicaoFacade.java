@@ -22,8 +22,8 @@ public class MedicaoFacade {
         return this.medicaoApplication.buscarPorId(id);
     }
 
-    public void adicionar(Medicao medicao) {
-        this.medicaoApplication.adicionar(medicao);
+    public Medicao adicionar(Medicao medicao) {
+        return this.medicaoApplication.adicionar(medicao);
     }
 
     public void excluir(int id) {
