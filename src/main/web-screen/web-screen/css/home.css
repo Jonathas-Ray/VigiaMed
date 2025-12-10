@@ -102,7 +102,7 @@ body {
     50% {
         color: #00B17F; 
         transform: scale(1.2); 
-        text-shadow: 0 0 10px var(--green-colorD)
+        text-shadow: 0 0 10px rgba(0, 177, 127, 0.5); 
     }
     100% {
         color: var(--white-color);
@@ -114,174 +114,6 @@ body {
     animation: flash-green 0.5s ease-out;
 }
 
-.btn-add-patient {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--brand-green), #00d4aa);
-    border: none;
-    box-shadow: 0 4px 15px var(--green-colorD);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    z-index: 1000;
-}
-
-.btn-add-patient:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 20px var(--green-colorD)
-}
-
-.btn-add-patient i {
-    font-size: 24px;
-    color: var(--white-color);
-}
-
-#patientsContainer {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 20px;
-    width: 100%;
-    max-width: 100%;
-}
-
-@media (min-width: 1600px) {
-    #patientsContainer {
-        grid-template-columns: repeat(4, 1fr);
-    }
-}
-
-.patient-group {
-    background: var(--bg-dark-secondary);
-    border-radius: 12px;
-    padding: 20px;
-    border: 2px solid #333;
-    transition: all 0.3s ease;
-}
-
-.patient-group:hover {
-    border-color: var(--brand-green);
-    box-shadow: 0 4px 15px var(--green-colorD)
-}
-
-.patient-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #333;
-}
-
-.patient-name {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: var(--brand-green);
-}
-
-.patient-id {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    margin-top: 5px;
-}
-
-.btn-remove-patient {
-    background: transparent;
-    border: none;
-    color: var(--red-color);
-    cursor: pointer;
-    padding: 5px;
-    transition: all 0.3s ease;
-    font-size: 1.2rem;
-}
-
-.btn-remove-patient:hover {
-    transform: scale(1.2);
-}
-
-.vital-mini-card {
-    background: rgba(0, 177, 127, 0.1);
-    border-radius: 8px;
-    padding: 12px;
-    margin-bottom: 10px;
-    border-left: 3px solid var(--brand-green);
-    transition: all 0.3s ease;
-}
-
-.vital-mini-card:hover {
-    background: rgba(0, 177, 127, 0.15);
-}
-
-.vital-mini-title {
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    margin-bottom: 5px;
-    letter-spacing: 0.5px;
-}
-
-.vital-mini-value {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--text-primary);
-}
-
-.empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 60vh;
-    color: var(--text-secondary);
-}
-
-.empty-state i {
-    font-size: 4rem;
-    margin-bottom: 20px;
-    opacity: 0.5;
-}
-
-.empty-state p {
-    font-size: 1.2rem;
-    margin: 5px 0;
-}
-
-#btnSavaCancel{
-    background: var(--text-secondary);
-    border: none;
-    color: var(--white-color);
-    padding: 10px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-}
-#btnSavaCancel:hover {
-    background-color: var(--red-color);
-    box-shadow: 0 4px 15px var(--red-color);
-}
-
-#btnSavePatient {
-    background: var(--brand-green);
-    border: none;
-    color: var(--white-color);
-    padding: 10px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-}
-#btnSavePatient:hover {
-    background: #00d4aa;
-    background-color: var(--green-colorD);
-    box-shadow: 0 4px 15px var(--green-colorD);
-}
-
 .swal-alert-fixed {
     width: 380px !important;
     padding: 1.5rem !important;
@@ -289,7 +121,7 @@ body {
     background-color: var(--bg-dark-secondary) !important;
     border-radius: 0.75rem !important;
     border: 2px solid var(--brand-green) !important;
-    box-shadow: 0 4px 20px var(--green-colorD) !important;
+    box-shadow: 0 4px 20px rgba(0, 177, 127, 0.3) !important;
 }
 
 .swal-alert-fixed .swal2-icon {
@@ -303,8 +135,8 @@ body {
 }
 
 .swal-alert-fixed .swal2-icon.swal2-error {
-    border-color:var(--red-color) !important;
-    color: var(--red-color) !important;
+    border-color: #dc3545 !important;
+    color: #dc3545 !important;
 }
 
 .swal-alert-fixed .swal2-title {
@@ -404,7 +236,7 @@ body {
 }
 
 .swal-alert-fixed.swal-danger {
-    border-color: var(--red-color) !important;
+    border-color: #dc3545 !important;
 }
 
 .swal-alert-fixed.swal-danger {
