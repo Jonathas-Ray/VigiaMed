@@ -1,5 +1,5 @@
 
-const API_BASE_URL = "http://localhost:8080/api";
+const API_BASE_URL = "jdbc:mysql://admin.ckutk4ri5e4o.us-east-1.rds.amazonaws.com/api";
 const PACIENTE_ID = 1;
 const DISPOSITIVO_ID = 1;
 

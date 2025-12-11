@@ -14,7 +14,7 @@ const btnSavePatient = document.getElementById('btnSavePatient');
 const patientsContainer = document.getElementById('patientsContainer');
 const emptyState = document.getElementById('emptyState');
 
-const API_BASE_URL = "http://localhost:8080";
+const API_BASE_URL = "jdbc:mysql://admin.ckutk4ri5e4o.us-east-1.rds.amazonaws.com";
 const API_CALL_INTERVAL_MS = 10 * 1000;
 
 const activeListeners = new Map();
