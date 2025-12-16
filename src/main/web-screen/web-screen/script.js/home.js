@@ -20,6 +20,10 @@ const btnSavePatient = document.getElementById('btnSavePatient');
 const patientsContainer = document.getElementById('patientsContainer');
 const emptyState = document.getElementById('emptyState');
 
+const urlParams = new URLSearchParams(window.location.search);
+const urlID = urlParams.get('id');
+
+const DEVICE_ID = urlID || "DCB4D905BF3C";
 const API_BASE_URL = "http://localhost:8080";
 const API_CALL_INTERVAL_MS = 10 * 1000;
 
@@ -312,6 +316,11 @@ function startApiScheduler(deviceId) {
         const saturationEl = document.getElementById(`saturation-${deviceId}`);
         const temperatureEl = document.getElementById(`temperature-${deviceId}`);
 
+function iniciarMonitoramento() {
+    setInterval(verificarBatimentos, 1000);
+    
+    verificarBatimentos();
+}
         if (!heartRateEl || !saturationEl || !temperatureEl) return;
 
         const bpm = heartRateEl.textContent;
