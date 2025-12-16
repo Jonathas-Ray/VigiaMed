@@ -60,8 +60,6 @@ public class MedicaoListaController {
         medicaoListaFacade.excluir(id);
     }
 
-    //verificaçã
-
     @GetMapping("/monitorar")
     public ResponseEntity<MedicaoListaApplication.ResultadoValidacao> monitorar() {
         MedicaoListaApplication.ResultadoValidacao resultado =
