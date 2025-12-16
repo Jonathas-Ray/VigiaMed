@@ -1,14 +1,12 @@
-// script.js/home.js
-
 import { auth, db, rtdb } from '../firebase-config.js';
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
-import { 
-    doc, 
-    getDoc, 
-    setDoc, 
-    collection, 
-    getDocs, 
-    deleteDoc 
+import {
+    doc,
+    getDoc,
+    setDoc,
+    collection,
+    getDocs,
+    deleteDoc
 } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 import { ref, onValue } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
 import { enviarMedicaoCompleta } from './api.js'
@@ -23,10 +21,10 @@ const emptyState = document.getElementById('emptyState');
 const API_BASE_URL = "http://localhost:8080";
 const API_CALL_INTERVAL_MS = 10 * 1000;
 
-// Armazena os listeners ativos e alertas por paciente
 const activeListeners = new Map();
 const patientAlerts = new Map();
 const patientSchedulers = new Map();
+const patientMonitors = new Map();
 
 document.addEventListener('DOMContentLoaded', () => {
     onAuthStateChanged(auth, (user) => {
@@ -46,13 +44,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Abrir modal ao clicar no botão +
     btnAddPatient.addEventListener('click', () => {
         const modal = new bootstrap.Modal(document.getElementById('modalAddPatient'));
         modal.show();
     });
 
-    // Salvar paciente
     btnSavePatient.addEventListener('click', async () => {
         const patientName = document.getElementById('patientName').value.trim();
         const deviceId = document.getElementById('deviceId').value.trim().toUpperCase();
@@ -68,7 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            // Verificar se o dispositivo existe no Realtime Database
             const vitalsRef = ref(rtdb, 'vitals/' + deviceId);
             const snapshot = await new Promise((resolve, reject) => {
                 onValue(vitalsRef, resolve, reject, { onlyOnce: true });
@@ -84,30 +79,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Salvar no Firestore
             await setDoc(doc(db, "patients", deviceId), {
                 name: patientName,
                 deviceId: deviceId,
                 createdAt: new Date().toISOString()
             });
 
-            // Limpar formulário
             document.getElementById('patientName').value = '';
             document.getElementById('deviceId').value = '';
 
-            // Fechar modal
             const modal = bootstrap.Modal.getInstance(document.getElementById('modalAddPatient'));
             modal.hide();
 
-            // Recarregar pacientes
             loadPatients();
 
-            Swal.fire({
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            Toast.fire({
                 icon: 'success',
                 title: 'Paciente adicionado!',
-                text: `${patientName} foi vinculado ao dispositivo ${deviceId}`,
-                confirmButtonColor: '#00d4aa',
-                timer: 2000
+                text: `O paciente foi vinculado ao dispositivo ${deviceId}`
             });
 
         } catch (error) {
@@ -141,13 +142,14 @@ async function loadPatients() {
         const patientsRef = collection(db, "patients");
         const querySnapshot = await getDocs(patientsRef);
 
-        // Limpar listeners anteriores
         activeListeners.forEach(unsubscribe => unsubscribe());
         activeListeners.clear();
 
-        // Limpar schedulers anteriores
         patientSchedulers.forEach(intervalId => clearInterval(intervalId));
         patientSchedulers.clear();
+
+        patientMonitors.forEach(intervalId => clearInterval(intervalId));
+        patientMonitors.clear();
 
         patientsContainer.innerHTML = '';
 
@@ -210,7 +212,7 @@ function createPatientCard(patientData) {
     patientsContainer.insertAdjacentHTML('beforeend', cardHTML);
 }
 
-window.removePatient = async function(deviceId, patientName) {
+window.removePatient = async function (deviceId, patientName) {
     const result = await Swal.fire({
         title: 'Remover paciente?',
         text: `Deseja remover ${patientName}?`,
@@ -222,25 +224,40 @@ window.removePatient = async function(deviceId, patientName) {
         cancelButtonText: 'Cancelar'
     });
 
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        }
+    });
+
     if (result.isConfirmed) {
         try {
             await deleteDoc(doc(db, "patients", deviceId));
-            
-            // Remover listener e scheduler
+
             if (activeListeners.has(deviceId)) {
                 activeListeners.get(deviceId)();
                 activeListeners.delete(deviceId);
             }
-            
+
             if (patientSchedulers.has(deviceId)) {
                 clearInterval(patientSchedulers.get(deviceId));
                 patientSchedulers.delete(deviceId);
             }
 
-            // Fechar alerta se existir
+            if (patientMonitors.has(deviceId)) {
+                clearInterval(patientMonitors.get(deviceId));
+                patientMonitors.delete(deviceId);
+            }
+
             if (patientAlerts.has(deviceId)) {
                 const alert = patientAlerts.get(deviceId);
-                if (alert && alert.isVisible()) {
+                if (alert && alert.alertInstance && alert.alertInstance.isVisible()) {
                     Swal.close();
                 }
                 patientAlerts.delete(deviceId);
@@ -248,19 +265,16 @@ window.removePatient = async function(deviceId, patientName) {
 
             loadPatients();
 
-            Swal.fire({
-                icon: 'success',
-                title: 'Paciente removido!',
-                confirmButtonColor: '#00d4aa',
-                timer: 2000
+            Toast.fire({
+                icon: "success",
+                title: "Signed in successfully"
             });
         } catch (error) {
             console.error("Erro ao remover paciente:", error);
-            Swal.fire({
+            Toast.fire({
                 icon: 'error',
                 title: 'Erro',
-                text: 'Não foi possível remover o paciente.',
-                confirmButtonColor: '#dc3545'
+                text: 'Não foi possível remover o paciente.'
             });
         }
     }
@@ -382,7 +396,7 @@ function iniciarMonitoramento(deviceId, patientName) {
 
     verificar();
     const intervalId = setInterval(verificar, 2000);
-    patientSchedulers.set(`monitor-${deviceId}`, intervalId);
+    patientMonitors.set(deviceId, intervalId);
 }
 
 function mostrarAlerta(deviceId, patientName, tipo, mensagem, bpm) {
