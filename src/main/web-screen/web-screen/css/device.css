@@ -1,0 +1,94 @@
+
+:root {
+    --bg-dark-primary: #121212;   
+    --bg-dark-secondary: #252525; 
+    --brand-green: #00B17F; 
+    --text-primary: #FFFFFF;
+    --text-secondary: #adb5bd;
+}
+
+
+.device-card {
+    background-color: var(--bg-dark-secondary);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    border: 1px solid #333;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    height: 100%; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+}
+
+.device-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--brand-green);
+    box-shadow: 0 12px 24px rgba(0, 177, 127, 0.15);
+}
+
+.device-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: var(--brand-green);
+    opacity: 0.8;
+}
+
+.device-id {
+    font-family: 'Courier New', Courier, monospace;
+    letter-spacing: 1px;
+    color: var(--text-primary);
+}
+
+.stat-box {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    text-align: center;
+}
+
+
+.icon-circle {
+    width: 48px;
+    height: 48px;
+    background-color: rgba(0, 177, 127, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-circle i {
+    font-size: 1.5rem;
+    color: var(--brand-green);
+}
+
+.btn-monitorar {
+    background-color: transparent;
+    border: 1px solid var(--brand-green);
+    color: var(--brand-green);
+    border-radius: 50px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+.btn-monitorar:hover {
+    background-color: var(--brand-green);
+    color: #fff; 
+    box-shadow: 0 0 15px rgba(0, 177, 127, 0.4); 
+}
+
+
+@media (max-width: 768px) {
+    .main-content {
+        padding: 1.5rem !important;
+    }
+}

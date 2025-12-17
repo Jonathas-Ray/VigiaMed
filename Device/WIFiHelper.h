@@ -14,12 +14,10 @@ public:
     void gerenciarLedConexao();
 
 private:
-    // REMOVIDO: void WifiReconectaAutomaticamente(WiFiEvent_t event, WiFiEventInfo_t info);
     
     Adafruit_NeoPixel* strip;
     bool ledLigado;
     
-    // CORREÇÃO: Membros faltantes adicionados
     unsigned long tempoUltimoPisca;
     uint32_t corPiscando;
 };
