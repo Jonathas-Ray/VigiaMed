@@ -350,116 +350,125 @@ function startApiScheduler(deviceId) {
 }
 
 function iniciarMonitoramento(deviceId, patientName) {
-    const verificar = async () => {
-        try {
-            const response = await fetch(`${API_BASE_URL}/api/medicao-lista/monitorar`);
+    const vitalsRef = ref(rtdb, 'vitals/' + deviceId);
 
-            if (!response.ok) return;
+    if (!patientAlerts.has(deviceId)) {
+        patientAlerts.set(deviceId, {
+            ultimoResultado: null,
+            ultimoAlerta: null,
+            alertElement: null
+        });
+    }
 
-            const resultado = await response.json();
+    const alertState = patientAlerts.get(deviceId);
 
-            if (resultado.resultado === null) return;
+    const unsubscribe = onValue(vitalsRef, (snapshot) => {
+        if (!snapshot.exists()) return;
 
-            const bpm = resultado.resultado;
-            const mensagem = resultado.mensagem;
+        const bpm = snapshot.val().heartRate?.value;
+        if (bpm == null) return;
 
-            if (!patientAlerts.has(deviceId)) {
-                patientAlerts.set(deviceId, { ultimoResultado: null, ultimoAlerta: null });
+        const valorMudou = alertState.ultimoResultado !== bpm;
+
+        if (bpm < 60) {
+            if (valorMudou || alertState.ultimoAlerta !== 'baixo') {
+                mostrarAlerta(deviceId, patientName, 'baixo', 'Batimentos abaixo do normal', bpm);
+                alertState.ultimoAlerta = 'baixo';
             }
-
-            const alertState = patientAlerts.get(deviceId);
-            const valorMudou = alertState.ultimoResultado !== bpm;
-
-            if (bpm < 60) {
-                if (valorMudou || alertState.ultimoAlerta !== 'baixo') {
-                    mostrarAlerta(deviceId, patientName, 'baixo', mensagem, bpm);
-                    alertState.ultimoAlerta = 'baixo';
-                }
-            } else if (bpm > 100) {
-                if (valorMudou || alertState.ultimoAlerta !== 'alto') {
-                    mostrarAlerta(deviceId, patientName, 'alto', mensagem, bpm);
-                    alertState.ultimoAlerta = 'alto';
-                }
-            } else {
-                if (alertState.ultimoAlerta !== null) {
-                    fecharAlerta(deviceId);
-                    alertState.ultimoAlerta = null;
-                }
-            }
-
-            alertState.ultimoResultado = bpm;
-
-        } catch (error) {
-            console.error(`Erro ao monitorar batimentos (${deviceId}):`, error);
         }
-    };
+        else if (bpm > 100) {
+            if (valorMudou || alertState.ultimoAlerta !== 'alto') {
+                mostrarAlerta(deviceId, patientName, 'alto', 'Batimentos acima do normal', bpm);
+                alertState.ultimoAlerta = 'alto';
+            }
+        }
+        else {
+            if (alertState.ultimoAlerta !== null) {
+                fecharAlerta(deviceId);
+                alertState.ultimoAlerta = null;
+            }
+        }
 
-    verificar();
-    const intervalId = setInterval(verificar, 2000);
-    patientMonitors.set(deviceId, intervalId);
+        alertState.ultimoResultado = bpm;
+    });
+
+    patientMonitors.set(deviceId, unsubscribe);
 }
 
+
+
 function mostrarAlerta(deviceId, patientName, tipo, mensagem, bpm) {
+    const alertState = patientAlerts.get(deviceId);
+
+    if (!alertState) return;
+
     const config = tipo === 'baixo' ? {
         icon: 'warning',
         title: `Bradicardia - ${patientName}`,
-        confirmButtonColor: '#ffc107',
-        customClass: {
-            popup: 'swal-alert-fixed swal-warning'
-        }
+        className: 'swal-warning'
     } : {
         icon: 'error',
         title: `Taquicardia - ${patientName}`,
-        confirmButtonColor: '#dc3545',
-        customClass: {
-            popup: 'swal-alert-fixed swal-danger'
-        }
+        className: 'swal-danger'
     };
 
     const htmlContent = `
-        <p style="font-size: 1.1rem; margin-bottom: 10px; color: var(--text-primary);">${mensagem}</p>
+        <p style="font-size: 1.1rem; margin-bottom: 10px; color: var(--text-primary);">
+            ${mensagem}
+        </p>
         <p style="font-size: 0.9rem; color: var(--text-secondary);">
             ID: ${deviceId}<br>
-            Batimentos cardíacos ${tipo === 'baixo' ? 'abaixo' : 'acima'} do esperado.
+            Batimentos cardíacos ${tipo === 'baixo' ? 'abaixo' : 'acima'} do esperado: <strong>${bpm}</strong> bpm
         </p>
     `;
 
-    const alertState = patientAlerts.get(deviceId);
+    if (alertState.alertElement) {
+        const popup = alertState.alertElement;
+        const titleEl = popup.querySelector('.swal2-title');
+        const contentEl = popup.querySelector('.swal2-html-container');
 
-    if (alertState.alertInstance && alertState.alertInstance.isVisible()) {
-        const popup = document.querySelector('.swal-alert-fixed');
-        if (popup) {
-            const titleEl = popup.querySelector('.swal2-title');
-            if (titleEl) titleEl.textContent = config.title;
+        if (titleEl) titleEl.textContent = config.title;
+        if (contentEl) contentEl.innerHTML = htmlContent;
 
-            const contentEl = popup.querySelector('.swal2-html-container');
-            if (contentEl) contentEl.innerHTML = htmlContent;
-
-            popup.className = 'swal2-popup swal2-toast swal2-show ' + config.customClass.popup;
-        }
         return;
     }
 
-    alertState.alertInstance = Swal.fire({
-        ...config,
+    Swal.fire({
+        icon: config.icon,
+        title: config.title,
         html: htmlContent,
-        position: 'bottom-end',
         toast: true,
+        position: 'bottom-end',
         showConfirmButton: false,
-        showCloseButton: false,
-        timer: null,
-        timerProgressBar: false,
         backdrop: false,
+        didOpen: (popup) => {
+            popup.classList.add('swal-alert-fixed', config.className);
+            alertState.alertElement = popup;
+        },
+        willClose: () => {
+            alertState.alertElement = null;
+        },
         allowOutsideClick: false,
         allowEscapeKey: false,
-        allowEnterKey: false
+        allowEnterKey: false,
+        showCloseButton: false,
+        timer: null,
+        timerProgressBar: false
     });
 }
 
+
 function fecharAlerta(deviceId) {
     const alertState = patientAlerts.get(deviceId);
-    if (alertState && alertState.alertInstance && alertState.alertInstance.isVisible()) {
-        Swal.close();
-        alertState.alertInstance = null;
-    }
+    if (!alertState?.alertElement) return;
+
+    const popup = alertState.alertElement;
+
+    popup.classList.remove('swal2-show');
+    popup.classList.add('swal2-hide');
+
+    setTimeout(() => {
+        popup.remove();
+        alertState.alertElement = null;
+    }, 200);
 }
