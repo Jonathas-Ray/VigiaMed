@@ -9,7 +9,7 @@ const char* FIREBASE_ROOT_PATH = "vitals";
 
 CapsulaFirebase::CapsulaFirebase() {
     cliente.setInsecure();
-    cliente.setTimeout(10000); // Timeout global do cliente WiFi (10 segundos)
+    cliente.setTimeout(10000);
 }
 
 void CapsulaFirebase::setDeviceID(const String& id) {
@@ -26,7 +26,7 @@ bool CapsulaFirebase::login() {
         + FIREBASE_API_KEY;
 
     http.begin(cliente, url);
-    http.setTimeout(10000); // Timeout específico do HTTP (10 segundos)
+    http.setTimeout(10000);
     http.addHeader("Content-Type", "application/json");
 
     StaticJsonDocument<256> doc;
@@ -40,9 +40,7 @@ bool CapsulaFirebase::login() {
     int code = http.POST(payload);
     
     if (code < 0) {
-        Serial.printf("ERRO HTTP: %d - %s\n", code, http.errorToString(code).c_str());
         http.end();
-        
         return false;
     }
     
@@ -51,23 +49,17 @@ bool CapsulaFirebase::login() {
     if (code == HTTP_CODE_OK) {
         StaticJsonDocument<512> docResp;
         deserializeJson(docResp, resposta);
-
         idToken = docResp["idToken"].as<String>();
-        
+
         http.end();
-        
         return true;
     }
-
-    Serial.printf("Login falhou - Código HTTP: %d\n", code);
     http.end();
-    
     return false;
 }
 
 bool CapsulaFirebase::enviar(const String &tipo, const String &valor) {
     if (WiFi.status() != WL_CONNECTED || idToken.length() == 0 || deviceID.length() == 0) {
-        Serial.println("ERRO: WiFi desconectado, Token ausente ou DeviceID ausente.");
         return false;
     }
 
@@ -76,7 +68,7 @@ bool CapsulaFirebase::enviar(const String &tipo, const String &valor) {
         ".json?auth=" + idToken;
     
     http.begin(cliente, url);
-    http.setTimeout(10000); // Timeout específico do HTTP (10 segundos)
+    http.setTimeout(10000);
     http.addHeader("Content-Type", "application/json");
 
     StaticJsonDocument<128> doc;
@@ -90,19 +82,13 @@ bool CapsulaFirebase::enviar(const String &tipo, const String &valor) {
     if (code > 0) {
         if (code == HTTP_CODE_OK) {
             http.end();
-            
             return true;
         } else {
-            Serial.printf("Falha ao enviar dados - Código HTTP: %d\n", code);
-            Serial.println(http.getString());
             http.end();
-            
             return false;
         }
     } else {
-        Serial.printf("ERRO HTTP durante envio: %d - %s\n", code, http.errorToString(code).c_str());
         http.end();
-        
         return false;
     }
 }

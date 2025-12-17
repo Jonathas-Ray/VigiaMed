@@ -7,7 +7,7 @@ WiFiHelper::WiFiHelper(Adafruit_NeoPixel* stripLed) {
     this->strip = stripLed;
     this->ledLigado = false;
     this->tempoUltimoPisca = 0;
-    this->corPiscando = stripLed->Color(128, 0, 128); // Roxo para conectar
+    this->corPiscando = stripLed->Color(128, 0, 128);
 }
 
 void WiFiHelper::begin() {
@@ -17,7 +17,7 @@ void WiFiHelper::begin() {
 
 void WiFiHelper::gerenciarLedConexao() {
     unsigned long agora = millis();
-    const unsigned long INTERVALO_PISCA = 300; // Pisca a cada 300ms
+    const unsigned long INTERVALO_PISCA = 300;
 
     if (agora - this->tempoUltimoPisca >= INTERVALO_PISCA) {
         this->tempoUltimoPisca = agora;
@@ -40,17 +40,14 @@ void WiFiHelper::conectarWifi() {
 
         unsigned long inicioWiFi = millis();
         
-        // Timeout de 5.5s para cada rede
         while (WiFi.status() != WL_CONNECTED && millis() - inicioWiFi < 5500) {
-            this->gerenciarLedConexao(); // Pisca o LED
+            this->gerenciarLedConexao();
             delay(50);
             Serial.print(".");
         }
 
         if (WiFi.status() == WL_CONNECTED) {
-            Serial.printf("\nWiFi conectado! IP: %s\n", WiFi.localIP().toString().c_str());
             
-            // Verde fixo 3s — "WiFi conectado"
             this->strip->setPixelColor(0, this->strip->Color(0, 255, 0));
             this->strip->show();
             delay(3000);
@@ -58,8 +55,6 @@ void WiFiHelper::conectarWifi() {
             this->strip->show();
             return;
         } else {
-            Serial.printf("\nFalha ao conectar com %s\n", WIFI_SSIDS[i]);
-            // Roxo fixo 3s — "Falha WiFi" antes de tentar a próxima
             this->strip->setPixelColor(0, this->strip->Color(128, 0, 128));
             this->strip->show();
             delay(3000);
@@ -68,8 +63,6 @@ void WiFiHelper::conectarWifi() {
         }
     }
 
-    Serial.println("Falha na conexão com todas as redes.");
-    // Vermelho fixo — Falha geral
     this->strip->setPixelColor(0, this->strip->Color(255, 0, 0));
     this->strip->show();
 }
