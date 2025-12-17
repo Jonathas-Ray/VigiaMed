@@ -1,11 +1,15 @@
-// script.js/home.js
-
 import { auth, db, rtdb } from '../firebase-config.js';
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+import {
+    doc,
+    getDoc,
+    setDoc,
+    collection,
+    getDocs,
+    deleteDoc
+} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 import { ref, onValue } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
 import { enviarMedicaoCompleta } from './api.js'
-
 
 const userNameEl = document.getElementById('userName');
 const btnLogout = document.getElementById('btnLogout');
@@ -20,113 +24,7 @@ const API_CALL_INTERVAL_MS = 10 * 1000;
 const activeListeners = new Map();
 const patientAlerts = new Map();
 const patientSchedulers = new Map();
-
-// ==================== SISTEMA DE NOTIFICAÇÕES ====================
-
-function createNotificationContainer() {
-    const container = document.createElement('div');
-    container.id = 'notificationContainer';
-    container.className = 'notification-container';
-    document.body.appendChild(container);
-    return container;
-}
-
-function showNotification(type, title, message, duration = 3000) {
-    const container = document.getElementById('notificationContainer') || createNotificationContainer();
-    
-    const notification = document.createElement('div');
-    notification.className = `custom-notification ${type}`;
-    
-    const iconMap = {
-        success: 'bi-check-circle-fill',
-        error: 'bi-x-circle-fill',
-        warning: 'bi-exclamation-triangle-fill',
-        info: 'bi-info-circle-fill'
-    };
-    
-    notification.innerHTML = `
-        <div class="notification-icon">
-            <i class="bi ${iconMap[type]}"></i>
-        </div>
-        <div class="notification-content">
-            <div class="notification-title">${title}</div>
-            ${message ? `<div class="notification-message">${message}</div>` : ''}
-        </div>
-        <button class="notification-close">
-            <i class="bi bi-x"></i>
-        </button>
-    `;
-    
-    const closeBtn = notification.querySelector('.notification-close');
-    closeBtn.addEventListener('click', () => notification.remove());
-    
-    container.appendChild(notification);
-    setTimeout(() => notification.classList.add('show'), 10);
-    
-    if (duration > 0) {
-        setTimeout(() => {
-            notification.classList.remove('show');
-            setTimeout(() => notification.remove(), 300);
-        }, duration);
-    }
-    
-    return notification;
-}
-
-function showConfirmDialog(title, message, confirmText = 'Confirmar', cancelText = 'Cancelar') {
-    return new Promise((resolve) => {
-        const overlay = document.createElement('div');
-        overlay.className = 'custom-modal-overlay';
-        
-        const modal = document.createElement('div');
-        modal.className = 'custom-modal';
-        modal.innerHTML = `
-            <div class="custom-modal-header">
-                <i class="bi bi-exclamation-triangle-fill" style="color: #ffc107;"></i>
-                <h3>${title}</h3>
-            </div>
-            <div class="custom-modal-body">
-                <p>${message}</p>
-            </div>
-            <div class="custom-modal-footer">
-                <button class="btn-modal-cancel">${cancelText}</button>
-                <button class="btn-modal-confirm">${confirmText}</button>
-            </div>
-        `;
-        
-        overlay.appendChild(modal);
-        document.body.appendChild(overlay);
-        
-        setTimeout(() => overlay.classList.add('show'), 10);
-        
-        const closeModal = (result) => {
-            overlay.classList.remove('show');
-            setTimeout(() => {
-                overlay.remove();
-                resolve(result);
-            }, 300);
-        };
-        
-        const cancelBtn = modal.querySelector('.btn-modal-cancel');
-        const confirmBtn = modal.querySelector('.btn-modal-confirm');
-        
-        cancelBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            closeModal(false);
-        });
-        
-        confirmBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            closeModal(true);
-        });
-        
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) closeModal(false);
-        });
-    });
-}
-
-// ==================== INICIALIZAÇÃO ====================
+const patientMonitors = new Map();
 
 document.addEventListener('DOMContentLoaded', () => {
     onAuthStateChanged(auth, (user) => {
@@ -145,9 +43,85 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error("Erro ao sair:", error);
         });
     });
-});
 
-// ==================== FUNÇÕES DE PACIENTES ====================
+    btnAddPatient.addEventListener('click', () => {
+        const modal = new bootstrap.Modal(document.getElementById('modalAddPatient'));
+        modal.show();
+    });
+
+    btnSavePatient.addEventListener('click', async () => {
+        const patientName = document.getElementById('patientName').value.trim();
+        const deviceId = document.getElementById('deviceId').value.trim().toUpperCase();
+
+        if (!patientName || !deviceId) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Campos obrigatórios',
+                text: 'Preencha o nome do paciente e o ID do dispositivo.',
+                confirmButtonColor: '#00d4aa'
+            });
+            return;
+        }
+
+        try {
+            const vitalsRef = ref(rtdb, 'vitals/' + deviceId);
+            const snapshot = await new Promise((resolve, reject) => {
+                onValue(vitalsRef, resolve, reject, { onlyOnce: true });
+            });
+
+            if (!snapshot.exists()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Dispositivo não encontrado',
+                    text: `O dispositivo ${deviceId} não existe no sistema. Verifique o ID e tente novamente.`,
+                    confirmButtonColor: '#dc3545'
+                });
+                return;
+            }
+
+            await setDoc(doc(db, "patients", deviceId), {
+                name: patientName,
+                deviceId: deviceId,
+                createdAt: new Date().toISOString()
+            });
+
+            document.getElementById('patientName').value = '';
+            document.getElementById('deviceId').value = '';
+
+            const modal = bootstrap.Modal.getInstance(document.getElementById('modalAddPatient'));
+            modal.hide();
+
+            loadPatients();
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: 'Paciente adicionado!',
+                text: `O paciente foi vinculado ao dispositivo ${deviceId}`
+            });
+
+        } catch (error) {
+            console.error("Erro ao adicionar paciente:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro',
+                text: 'Não foi possível adicionar o paciente. Tente novamente.',
+                confirmButtonColor: '#dc3545'
+            });
+        }
+    });
+});
 
 async function fetchUserInfo(uid) {
     const userDocRef = doc(db, "users", uid);
@@ -173,6 +147,9 @@ async function loadPatients() {
 
         patientSchedulers.forEach(intervalId => clearInterval(intervalId));
         patientSchedulers.clear();
+
+        patientMonitors.forEach(intervalId => clearInterval(intervalId));
+        patientMonitors.clear();
 
         patientsContainer.innerHTML = '';
 
@@ -204,7 +181,7 @@ function createPatientCard(patientData) {
                     <div class="patient-name">${patientData.name}</div>
                     <div class="patient-id">ID: ${patientData.deviceId}</div>
                 </div>
-                <button class="btn-remove-patient" data-device-id="${patientData.deviceId}" data-patient-name="${patientData.name}">
+                <button class="btn-remove-patient" onclick="removePatient('${patientData.deviceId}', '${patientData.name}')">
                     <i class="bi bi-trash-fill"></i>
                 </button>
             </div>
@@ -233,102 +210,91 @@ function createPatientCard(patientData) {
     `;
 
     patientsContainer.insertAdjacentHTML('beforeend', cardHTML);
-    
-    const removeBtn = document.querySelector(`[data-device-id="${patientData.deviceId}"]`);
-    if (removeBtn) {
-        removeBtn.addEventListener('click', async (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            await removePatient(patientData.deviceId, patientData.name);
-        });
-    }
 }
 
-async function removePatient(deviceId, patientName) {
-    try {
-        const confirmed = await showConfirmDialog(
-            'Remover paciente?',
-            `Deseja remover ${patientName}?`,
-            'Sim, remover',
-            'Cancelar'
-        );
+window.removePatient = async function (deviceId, patientName) {
+    const result = await Swal.fire({
+        title: 'Remover paciente?',
+        text: `Deseja remover ${patientName}?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sim, remover',
+        cancelButtonText: 'Cancelar'
+    });
 
-        if (!confirmed) return;
-
-        // Remover card da tela com animação
-        const patientCard = document.getElementById(`patient-${deviceId}`);
-        if (patientCard) {
-            patientCard.style.opacity = '0';
-            patientCard.style.transform = 'scale(0.8)';
-            setTimeout(() => patientCard.remove(), 300);
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
         }
+    });
 
-        // Deletar do Firestore
-        await deleteDoc(doc(db, "patients", deviceId));
-        
-        // Remover listener
-        if (activeListeners.has(deviceId)) {
-            activeListeners.get(deviceId)();
-            activeListeners.delete(deviceId);
-        }
-        
-        // Remover scheduler de API
-        if (patientSchedulers.has(deviceId)) {
-            clearInterval(patientSchedulers.get(deviceId));
-            patientSchedulers.delete(deviceId);
-        }
+    if (result.isConfirmed) {
+        try {
+            await deleteDoc(doc(db, "patients", deviceId));
 
-        // Remover scheduler de monitoramento
-        if (patientSchedulers.has(`monitor-${deviceId}`)) {
-            clearInterval(patientSchedulers.get(`monitor-${deviceId}`));
-            patientSchedulers.delete(`monitor-${deviceId}`);
-        }
-
-        // Fechar e remover alerta
-        if (patientAlerts.has(deviceId)) {
-            const alertState = patientAlerts.get(deviceId);
-            if (alertState.notification) {
-                alertState.notification.remove();
+            if (activeListeners.has(deviceId)) {
+                activeListeners.get(deviceId)();
+                activeListeners.delete(deviceId);
             }
-            patientAlerts.delete(deviceId);
-        }
 
-        // Verificar se ainda há pacientes
-        setTimeout(() => {
-            const remainingPatients = document.querySelectorAll('.patient-group');
-            if (remainingPatients.length === 0) {
-                emptyState.style.display = 'flex';
-                patientsContainer.style.display = 'none';
+            if (patientSchedulers.has(deviceId)) {
+                clearInterval(patientSchedulers.get(deviceId));
+                patientSchedulers.delete(deviceId);
             }
-        }, 350);
-        
-        showNotification('success', 'Paciente removido!', '', 2000);
 
-    } catch (error) {
-        console.error("Erro ao remover paciente:", error);
-        showNotification('error', 'Erro', 'Não foi possível remover o paciente.');
-        loadPatients();
+            if (patientMonitors.has(deviceId)) {
+                clearInterval(patientMonitors.get(deviceId));
+                patientMonitors.delete(deviceId);
+            }
+
+            if (patientAlerts.has(deviceId)) {
+                const alert = patientAlerts.get(deviceId);
+                if (alert && alert.alertInstance && alert.alertInstance.isVisible()) {
+                    Swal.close();
+                }
+                patientAlerts.delete(deviceId);
+            }
+
+            loadPatients();
+
+            Toast.fire({
+                icon: "success",
+                title: "Signed in successfully"
+            });
+        } catch (error) {
+            console.error("Erro ao remover paciente:", error);
+            Toast.fire({
+                icon: 'error',
+                title: 'Erro',
+                text: 'Não foi possível remover o paciente.'
+            });
+        }
     }
 }
-
-// ==================== FUNÇÕES DE MONITORAMENTO ====================
 
 function updateValue(element, newValue) {
     if (!element) return;
     element.textContent = newValue;
     element.classList.remove('update-flash');
-    void element.offsetWidth; 
+    void element.offsetWidth;
     element.classList.add('update-flash');
 }
 
-function listenToVitals(deviceId) {
+function listenToVitals(deviceId, patientName) {
     const vitalsRef = ref(rtdb, 'vitals/' + deviceId);
-    deviceIdEl.textContent = `ID: ${deviceId}`;
 
-    onValue(vitalsRef, (snapshot) => {
+    const unsubscribe = onValue(vitalsRef, (snapshot) => {
         if (snapshot.exists()) {
             const data = snapshot.val();
-                        
+
             const bpm = data.heartRate?.value || '--';
             const spo2 = data.spo2?.value || '--';
             const temp = data.Temperature?.value || '--';
@@ -341,44 +307,168 @@ function listenToVitals(deviceId) {
             updateValue(saturationEl, spo2);
             updateValue(temperatureEl, temp);
         } else {
-            heartRateEl.textContent = '--';
-            saturationEl.textContent = '--';
-            temperatureEl.textContent = '--';
+            const heartRateEl = document.getElementById(`heartRate-${deviceId}`);
+            const saturationEl = document.getElementById(`saturation-${deviceId}`);
+            const temperatureEl = document.getElementById(`temperature-${deviceId}`);
+
+            if (heartRateEl) heartRateEl.textContent = '--';
+            if (saturationEl) saturationEl.textContent = '--';
+            if (temperatureEl) temperatureEl.textContent = '--';
         }
+    });
+
+    activeListeners.set(deviceId, unsubscribe);
+}
+
+function startApiScheduler(deviceId) {
+    const sendData = () => {
+        const heartRateEl = document.getElementById(`heartRate-${deviceId}`);
+        const saturationEl = document.getElementById(`saturation-${deviceId}`);
+        const temperatureEl = document.getElementById(`temperature-${deviceId}`);
+
+        if (!heartRateEl || !saturationEl || !temperatureEl) return;
+
+        const bpm = heartRateEl.textContent;
+        const spo2 = saturationEl.textContent;
+        const temp = temperatureEl.textContent;
+
+        if (bpm !== '--' && spo2 !== '--' && temp !== '--') {
+            const dadosParaAPI = {
+                heartRate: parseFloat(bpm),
+                saturation: parseFloat(spo2),
+                temperature: parseFloat(temp)
+            };
+
+            enviarMedicaoCompleta(deviceId, dadosParaAPI)
+                .catch(err => console.error(`Falha ao salvar medição via API (${deviceId}):`, err));
+        }
+    };
+
+    sendData();
+    const intervalId = setInterval(sendData, API_CALL_INTERVAL_MS);
+    patientSchedulers.set(deviceId, intervalId);
+}
+
+function iniciarMonitoramento(deviceId, patientName) {
+    const vitalsRef = ref(rtdb, 'vitals/' + deviceId);
+
+    if (!patientAlerts.has(deviceId)) {
+        patientAlerts.set(deviceId, {
+            ultimoResultado: null,
+            ultimoAlerta: null,
+            alertElement: null
+        });
+    }
+
+    const alertState = patientAlerts.get(deviceId);
+
+    const unsubscribe = onValue(vitalsRef, (snapshot) => {
+        if (!snapshot.exists()) return;
+
+        const bpm = snapshot.val().heartRate?.value;
+        if (bpm == null) return;
+
+        const valorMudou = alertState.ultimoResultado !== bpm;
+
+        if (bpm < 60) {
+            if (valorMudou || alertState.ultimoAlerta !== 'baixo') {
+                mostrarAlerta(deviceId, patientName, 'baixo', 'Batimentos abaixo do normal', bpm);
+                alertState.ultimoAlerta = 'baixo';
+            }
+        }
+        else if (bpm > 100) {
+            if (valorMudou || alertState.ultimoAlerta !== 'alto') {
+                mostrarAlerta(deviceId, patientName, 'alto', 'Batimentos acima do normal', bpm);
+                alertState.ultimoAlerta = 'alto';
+            }
+        }
+        else {
+            if (alertState.ultimoAlerta !== null) {
+                fecharAlerta(deviceId);
+                alertState.ultimoAlerta = null;
+            }
+        }
+
+        alertState.ultimoResultado = bpm;
+    });
+
+    patientMonitors.set(deviceId, unsubscribe);
+}
+
+
+
+function mostrarAlerta(deviceId, patientName, tipo, mensagem, bpm) {
+    const alertState = patientAlerts.get(deviceId);
+
+    if (!alertState) return;
+
+    const config = tipo === 'baixo' ? {
+        icon: 'warning',
+        title: `Bradicardia - ${patientName}`,
+        className: 'swal-warning'
+    } : {
+        icon: 'error',
+        title: `Taquicardia - ${patientName}`,
+        className: 'swal-danger'
+    };
+
+    const htmlContent = `
+        <p style="font-size: 1.1rem; margin-bottom: 10px; color: var(--text-primary);">
+            ${mensagem}
+        </p>
+        <p style="font-size: 0.9rem; color: var(--text-secondary);">
+            ID: ${deviceId}<br>
+            Batimentos cardíacos ${tipo === 'baixo' ? 'abaixo' : 'acima'} do esperado: <strong>${bpm}</strong> bpm
+        </p>
+    `;
+
+    if (alertState.alertElement) {
+        const popup = alertState.alertElement;
+        const titleEl = popup.querySelector('.swal2-title');
+        const contentEl = popup.querySelector('.swal2-html-container');
+
+        if (titleEl) titleEl.textContent = config.title;
+        if (contentEl) contentEl.innerHTML = htmlContent;
+
+        return;
+    }
+
+    Swal.fire({
+        icon: config.icon,
+        title: config.title,
+        html: htmlContent,
+        toast: true,
+        position: 'bottom-end',
+        showConfirmButton: false,
+        backdrop: false,
+        didOpen: (popup) => {
+            popup.classList.add('swal-alert-fixed', config.className);
+            alertState.alertElement = popup;
+        },
+        willClose: () => {
+            alertState.alertElement = null;
+        },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        allowEnterKey: false,
+        showCloseButton: false,
+        timer: null,
+        timerProgressBar: false
     });
 }
 
 
-function iniciarMonitoramento() {
-    setInterval(verificarBatimentos, 2000);
-    
-    const notification = document.createElement('div');
-    notification.className = `custom-notification alert-persistent ${tipo === 'baixo' ? 'warning' : 'error'}`;
-    
-    notification.innerHTML = `
-        <div class="notification-icon">
-            <i class="bi ${tipo === 'baixo' ? 'bi-exclamation-triangle-fill' : 'bi-heart-pulse-fill'}"></i>
-        </div>
-        <div class="notification-content">
-            <div class="notification-title">${tipo === 'baixo' ? '⚠️ Bradicardia' : '🚨 Taquicardia'} - ${patientName}</div>
-            <div class="notification-message">${mensagem}<br><small>ID: ${deviceId} | Batimentos ${tipo === 'baixo' ? 'abaixo' : 'acima'} do esperado</small></div>
-        </div>
-        <div class="notification-pulse"></div>
-    `;
-    
-    container.appendChild(notification);
-    setTimeout(() => notification.classList.add('show'), 10);
-    
-    alertState.notification = notification;
-}
-
 function fecharAlerta(deviceId) {
     const alertState = patientAlerts.get(deviceId);
-    if (alertState && alertState.notification) {
-        alertState.notification.classList.remove('show');
-        setTimeout(() => {
-            alertState.notification.remove();
-            alertState.notification = null;
-        }, 300);
-    }
+    if (!alertState?.alertElement) return;
+
+    const popup = alertState.alertElement;
+
+    popup.classList.remove('swal2-show');
+    popup.classList.add('swal2-hide');
+
+    setTimeout(() => {
+        popup.remove();
+        alertState.alertElement = null;
+    }, 200);
 }
