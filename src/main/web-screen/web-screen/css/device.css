@@ -1,27 +1,19 @@
-/* Arquivo: web-screen/css/device.css */
 
-/* Recapitulando as variáveis globais (caso mainScreen.css falhe ou não carregue).
-   Isso garante a consistência visual.
-*/
 :root {
-    --bg-dark-primary: #121212;   /* Fundo da página */
-    --bg-dark-secondary: #252525; /* Fundo dos cards */
-    --brand-green: #00B17F;       /* Verde VigiaMed */
+    --bg-dark-primary: #121212;   
+    --bg-dark-secondary: #252525; 
+    --brand-green: #00B17F; 
     --text-primary: #FFFFFF;
     --text-secondary: #adb5bd;
 }
 
-/* --- ESTILO DO CARD DO DISPOSITIVO --- */
+
 .device-card {
     background-color: var(--bg-dark-secondary);
-    border-radius: 1rem; /* 16px - Mesma curva dos cards de vitais */
+    border-radius: 1rem;
     padding: 1.5rem;
-    border: 1px solid #333; /* Borda sutil desligada */
-    
-    /* Suaviza a animação de hover */
+    border: 1px solid #333;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    
-    /* Garante que o conteúdo fique organizado verticalmente */
     height: 100%; 
     display: flex;
     flex-direction: column;
@@ -30,14 +22,12 @@
     overflow: hidden;
 }
 
-/* Efeito ao passar o mouse (Hover) */
 .device-card:hover {
-    transform: translateY(-8px); /* Levanta o card */
-    border-color: var(--brand-green); /* Acende a borda */
-    box-shadow: 0 12px 24px rgba(0, 177, 127, 0.15); /* Sombra verde neon */
+    transform: translateY(-8px);
+    border-color: var(--brand-green);
+    box-shadow: 0 12px 24px rgba(0, 177, 127, 0.15);
 }
 
-/* Barra verde decorativa no topo do card (Identidade Visual) */
 .device-card::before {
     content: '';
     position: absolute;
@@ -49,31 +39,24 @@
     opacity: 0.8;
 }
 
-/* --- TIPOGRAFIA --- */
-
-/* ID do dispositivo com fonte técnica (monoespaçada) */
 .device-id {
     font-family: 'Courier New', Courier, monospace;
     letter-spacing: 1px;
     color: var(--text-primary);
 }
 
-/* --- ELEMENTOS INTERNOS --- */
-
-/* Caixinhas de dados (BPM/SpO2) */
 .stat-box {
-    background-color: rgba(0, 0, 0, 0.2); /* Fundo mais escuro que o card */
-    border: 1px solid #444;
+    background-color: rgba(0, 0, 0, 0.2);
     border-radius: 0.5rem;
     padding: 0.5rem;
     text-align: center;
 }
 
-/* Ícones */
+
 .icon-circle {
     width: 48px;
     height: 48px;
-    background-color: rgba(0, 177, 127, 0.1); /* Verde bem transparente */
+    background-color: rgba(0, 177, 127, 0.1);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -85,12 +68,11 @@
     color: var(--brand-green);
 }
 
-/* --- BOTÃO MONITORAR --- */
 .btn-monitorar {
     background-color: transparent;
     border: 1px solid var(--brand-green);
     color: var(--brand-green);
-    border-radius: 50px; /* Botão em formato de pílula */
+    border-radius: 50px;
     font-weight: 600;
     text-transform: uppercase;
     font-size: 0.85rem;
@@ -100,13 +82,13 @@
 
 .btn-monitorar:hover {
     background-color: var(--brand-green);
-    color: #fff; /* Texto branco no hover */
-    box-shadow: 0 0 15px rgba(0, 177, 127, 0.4); /* Brilho no botão */
+    color: #fff; 
+    box-shadow: 0 0 15px rgba(0, 177, 127, 0.4); 
 }
 
-/* Ajuste para telas pequenas */
+
 @media (max-width: 768px) {
     .main-content {
-        padding: 1.5rem !important; /* Menos espaçamento no celular */
+        padding: 1.5rem !important;
     }
 }
