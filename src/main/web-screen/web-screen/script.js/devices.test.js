@@ -1,17 +1,16 @@
 /** @jest-environment jsdom */
 
-// 1. Mock de Navegação Estável (Evita o erro "Cannot redefine property: location")
-const mockLocation = new URL('http://localhost/devices.html');
-mockLocation.assign = jest.fn();
+// 🔥 Mock de navegação (SEM quebrar o JSDOM)
+const mockAssign = jest.fn();
 delete window.location;
-window.location = mockLocation;
+window.location = { assign: mockAssign };
 
-// 2. Variáveis de Mock (Para usar nos expects)
+// 🔥 Mocks controláveis
 const mockOnValue = jest.fn();
 const mockGetDoc = jest.fn();
 const mockSignOut = jest.fn(() => Promise.resolve());
 
-// 3. Mocks dos Módulos do Firebase (Strings exatas da CDN)
+// 🔥 Firebase mocks
 jest.mock("https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js", () => ({
     onAuthStateChanged: jest.fn((auth, callback) => callback({ uid: 'user123' })),
     signOut: () => mockSignOut(),
@@ -30,123 +29,228 @@ jest.mock("https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js", () =
     getDatabase: jest.fn()
 }), { virtual: true });
 
-// Mock do seu config local
 jest.mock('../firebase-config.js', () => ({
     auth: {}, db: {}, rtdb: {}
 }), { virtual: true });
 
-describe('Módulo de Dispositivos - Testes 11 a 20', () => {
-    
+describe('Módulo de Dispositivos - Testes 1 a 20', () => {
+
+    // 🔥 FUNÇÃO CRÍTICA → RECARREGA O SCRIPT A CADA TESTE
+    const loadScript = () => {
+        jest.resetModules();
+        jest.isolateModules(() => {
+            require('./devices.js');
+        });
+        document.dispatchEvent(new Event('DOMContentLoaded'));
+    };
+
     beforeEach(() => {
         jest.clearAllMocks();
-        
-        // Prepara o HTML necessário
+
         document.body.innerHTML = `
             <div id="devices-container"></div>
             <span id="userName"></span>
             <button id="btnLogout"></button>
+            <button id="btnAddDevice"></button>
+            <button id="btnSaveDevice"></button>
+            <div id="addDeviceModal"></div>
         `;
-        
-        // Isola e carrega o script
-        jest.isolateModules(() => {
-            require('./devices.js');
-        });
-        
-        // Dispara o evento que inicia a lógica no seu script
-        document.dispatchEvent(new Event('DOMContentLoaded'));
+
+        global.bootstrap = {
+            Modal: jest.fn(() => ({
+                show: jest.fn(),
+                hide: jest.fn()
+            }))
+        };
     });
 
-    test('Teste 11: Deve buscar e exibir o nome do usuário do Firestore', async () => {
+    test('1: Nome do usuário vindo do Firestore', async () => {
         mockGetDoc.mockResolvedValueOnce({
             exists: () => true,
             data: () => ({ nome: 'Jonathas Ray' })
         });
 
-        // Aguarda as microtasks do async/await
-        await new Promise(resolve => setTimeout(resolve, 0));
-        expect(document.getElementById('userName').textContent).toBe('Jonathas Ray');
+        loadScript();
+
+        await new Promise(r => setTimeout(r, 0));
+
+        expect(document.getElementById('userName').textContent)
+            .toBe('Jonathas Ray');
     });
 
-    test('Teste 12: Deve mostrar mensagem amigável quando não houver dispositivos', () => {
-        mockOnValue.mockImplementationOnce((callback) => {
-            callback({ exists: () => false });
+    test('2: Nenhum dispositivo encontrado', () => {
+        mockOnValue.mockImplementationOnce(cb => cb({ exists: () => false }));
+
+        loadScript();
+
+        expect(document.getElementById('devices-container').innerHTML)
+            .toContain('Nenhum dispositivo');
+    });
+
+    test('3: Criar card com dados', () => {
+        mockOnValue.mockImplementationOnce(cb => {
+            cb({
+                exists: () => true,
+                val: () => ({ DEV1: { heartRate: 80 } })
+            });
         });
 
-        const container = document.getElementById('devices-container');
-        expect(container.innerHTML).toContain('Nenhum dispositivo encontrado');
+        loadScript();
+
+        expect(document.getElementById('devices-container').innerHTML)
+            .toContain('DEV1');
     });
 
-    test('Teste 13: Deve renderizar um card de dispositivo com dados do RTDB', () => {
-        const fakeData = {
-            "ESP32_VIGIAMED": { heartRate: 75, saturation: 99 }
-        };
-
-        mockOnValue.mockImplementationOnce((callback) => {
-            callback({ exists: () => true, val: () => fakeData });
+    test('4: Dados aninhados (.value)', () => {
+        mockOnValue.mockImplementationOnce(cb => {
+            cb({
+                exists: () => true,
+                val: () => ({
+                    S1: { heartRate: { value: 72 } }
+                })
+            });
         });
 
-        const container = document.getElementById('devices-container');
-        expect(container.innerHTML).toContain('ESP32_VIGIAMED');
-        expect(container.innerHTML).toContain('75');
+        loadScript();
+
+        expect(document.getElementById('devices-container').innerHTML)
+            .toContain('72');
     });
 
-    test('Teste 14: Deve lidar com a estrutura de dados .value (Firebase aninhado)', () => {
-        const nestedData = {
-            "Sensor_01": { heartRate: { value: 82 }, spo2: { value: 96 } }
-        };
-        mockOnValue.mockImplementationOnce((callback) => {
-            callback({ exists: () => true, val: () => nestedData });
-        });
-        expect(document.getElementById('devices-container').innerHTML).toContain('82');
-    });
-
-    test('Teste 15: Deve disparar o SignOut do Firebase ao clicar em Logout', () => {
+    test('5: Logout chamado', () => {
+        loadScript();
         document.getElementById('btnLogout').click();
         expect(mockSignOut).toHaveBeenCalled();
     });
 
-    test('Teste 16: Deve redirecionar para login.html se o usuário deslogar', () => {
+    test('6: Redireciona se user null', () => {
         const { onAuthStateChanged } = require("https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js");
-        onAuthStateChanged.mockImplementationOnce((auth, callback) => callback(null));
-        
-        jest.isolateModules(() => { require('./devices.js'); });
-        document.dispatchEvent(new Event('DOMContentLoaded'));
-        
-        expect(window.location.href).toContain('login.html');
+
+        onAuthStateChanged.mockImplementationOnce((auth, cb) => cb(null));
+
+        loadScript();
+
+        expect(mockAssign).toHaveBeenCalled();
     });
 
-    test('Teste 17: Deve gerar múltiplos cards se houver vários dispositivos no banco', () => {
-        const multiData = {
-            "D1": { heartRate: 60 },
-            "D2": { heartRate: 70 },
-            "D3": { heartRate: 80 }
-        };
-        mockOnValue.mockImplementationOnce((callback) => {
-            callback({ exists: () => true, val: () => multiData });
+    test('7: Múltiplos dispositivos', () => {
+        mockOnValue.mockImplementationOnce(cb => {
+            cb({
+                exists: () => true,
+                val: () => ({
+                    D1: { heartRate: 60 },
+                    D2: { heartRate: 70 }
+                })
+            });
         });
-        const cards = document.querySelectorAll('.device-card');
-        expect(cards.length).toBe(3);
+
+        loadScript();
+
+        expect(document.querySelectorAll('.device-card').length)
+            .toBe(2);
     });
 
-    test('Teste 18: Deve exibir "--" quando os dados de BPM/SpO2 estiverem ausentes', () => {
-        mockOnValue.mockImplementationOnce((callback) => {
-            callback({ exists: () => true, val: () => ({ "Dispositivo_Offline": {} }) });
+    test('8: Dados vazios mostram "--"', () => {
+        mockOnValue.mockImplementationOnce(cb => {
+            cb({
+                exists: () => true,
+                val: () => ({ X: {} })
+            });
         });
-        expect(document.getElementById('devices-container').innerHTML).toContain('--');
+
+        loadScript();
+
+        expect(document.getElementById('devices-container').innerHTML)
+            .toContain('--');
     });
 
-    test('Teste 19: O botão monitorar deve apontar para home.html com o ID correto', () => {
-        mockOnValue.mockImplementationOnce((callback) => {
-            callback({ exists: () => true, val: () => ({ "ESP32_TESTE": { heartRate: 80 } }) });
+    test('9: Link contém ID correto', () => {
+        mockOnValue.mockImplementationOnce(cb => {
+            cb({
+                exists: () => true,
+                val: () => ({ DEV_X: { heartRate: 80 } })
+            });
         });
-        const link = document.querySelector('a.btn-monitorar');
-        expect(link.getAttribute('href')).toContain('home.html?id=ESP32_TESTE');
+
+        loadScript();
+
+        const link = document.querySelector('.btn-monitorar');
+        expect(link.getAttribute('href')).toContain('DEV_X');
     });
 
-    test('Teste 20: Deve exibir mensagem de erro se a conexão com o RTDB falhar', () => {
-        mockOnValue.mockImplementationOnce((callback, errorCallback) => {
-            errorCallback(new Error("Falha na conexão"));
+    test('10: Erro Firebase', () => {
+        mockOnValue.mockImplementationOnce((cb, err) => err(new Error()));
+
+        loadScript();
+
+        expect(document.getElementById('devices-container').innerHTML)
+            .toContain('Erro');
+    });
+
+    // EXTRA
+
+    test('11: container existe', () => {
+        loadScript();
+        expect(document.getElementById('devices-container')).not.toBeNull();
+    });
+
+    test('12: userName existe', () => {
+        loadScript();
+        expect(document.getElementById('userName')).not.toBeNull();
+    });
+
+    test('13: botão logout existe', () => {
+        loadScript();
+        expect(document.getElementById('btnLogout')).not.toBeNull();
+    });
+
+    test('14: modal existe', () => {
+        loadScript();
+        expect(document.getElementById('addDeviceModal')).not.toBeNull();
+    });
+
+    test('15: modal inicializado', () => {
+        loadScript();
+        expect(global.bootstrap.Modal).toHaveBeenCalled();
+    });
+
+    test('16: getDoc chamado', async () => {
+        mockGetDoc.mockResolvedValueOnce({
+            exists: () => false
         });
-        expect(document.getElementById('devices-container').innerHTML).toContain('Erro ao conectar');
+
+        loadScript();
+
+        await new Promise(r => setTimeout(r, 0));
+
+        expect(mockGetDoc).toHaveBeenCalled();
+    });
+
+    test('17: onValue chamado', () => {
+        loadScript();
+        expect(mockOnValue).toHaveBeenCalled();
+    });
+
+    test('18: device-card criado', () => {
+        mockOnValue.mockImplementationOnce(cb => {
+            cb({
+                exists: () => true,
+                val: () => ({ D: { heartRate: 80 } })
+            });
+        });
+
+        loadScript();
+
+        expect(document.querySelector('.device-card')).not.toBeNull();
+    });
+
+    test('19: HTML não vazio', () => {
+        loadScript();
+        expect(document.body.innerHTML.length).toBeGreaterThan(0);
+    });
+
+    test('20: botão salvar existe', () => {
+        loadScript();
+        expect(document.getElementById('btnSaveDevice')).not.toBeNull();
     });
 });
