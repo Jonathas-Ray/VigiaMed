@@ -10,7 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.util.List;
 
 @DataJpaTest
-class MedicaoListaModelRepositoryJpaTest {
+class MedicaoListaRepositoryJpaTest {
 
     @Autowired
     private MedicaoListaModelRepositoryJpa repository;

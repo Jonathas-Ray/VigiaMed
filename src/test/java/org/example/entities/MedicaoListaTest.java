@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.example.models.MedicaoListaModel;
 import org.junit.jupiter.api.Test;
 
-class MedicaoListaMappingTest {
+class MedicaoListaTest {
 
     @Test
     void deveConverterEntidadeParaModel() {
