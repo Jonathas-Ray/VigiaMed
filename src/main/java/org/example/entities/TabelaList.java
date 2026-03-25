@@ -2,7 +2,6 @@ package org.example.entities;
 
 import org.example.models.LogModel;
 import org.example.models.TabelaListModel;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,36 +18,20 @@ public class TabelaList {
         this.log = logs;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    //apagaria o getLog para parar o loop
-    public List<LogModel> getLog() {
-        return log;
-    }
-
-    public void setLog(List<LogModel> log) {
-        this.log = log;
-    }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
+    public List<LogModel> getLog() { return log; }
+    public void setLog(List<LogModel> log) { this.log = log; }
 
     public TabelaListModel toModel() {
-        return new TabelaListModel(
+        TabelaListModel model = new TabelaListModel(
                 this.getNome(),
                 this.getLog()
         );
+        model.setId(this.id); // Correção: seta o ID no model
+        return model;
     }
 
     public static TabelaList fromModel(TabelaListModel model) {

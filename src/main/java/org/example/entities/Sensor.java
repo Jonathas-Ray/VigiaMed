@@ -2,7 +2,6 @@ package org.example.entities;
 
 import org.example.models.MedicaoListaModel;
 import org.example.models.SensorModel;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +9,7 @@ public class Sensor {
     private int id;
     private String nome;
     private String unidadeMedida;
-    private List<MedicaoListaModel> medicoes;
+    private List<MedicaoListaModel> medicoes = new ArrayList<>();
 
     public Sensor(){}
 
@@ -18,47 +17,26 @@ public class Sensor {
         this.id = id;
         this.nome = nome;
         this.unidadeMedida = unidadeMedida;
-        medicoes = new ArrayList<>();
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getUnidadeMedida() {
-        return unidadeMedida;
-    }
-
-    public void setUnidadeMedida(String unidadeMedida) {
-        this.unidadeMedida = unidadeMedida;
-    }
-
-    public List<MedicaoListaModel> getMedicoes() {
-        return medicoes;
-    }
-
-    public void setMedicoes(List<MedicaoListaModel> medicoes) {
         this.medicoes = medicoes;
     }
 
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
+    public String getUnidadeMedida() { return unidadeMedida; }
+    public void setUnidadeMedida(String unidadeMedida) { this.unidadeMedida = unidadeMedida; }
+    public List<MedicaoListaModel> getMedicoes() { return medicoes; }
+    public void setMedicoes(List<MedicaoListaModel> medicoes) { this.medicoes = medicoes; }
+
     public SensorModel toModel() {
-        return new SensorModel(
+        SensorModel model = new SensorModel(
                 this.getNome(),
                 this.getUnidadeMedida(),
-                this.medicoes
+                this.getMedicoes()
         );
+        model.setId(this.id); // Correção: seta o ID no model
+        return model;
     }
 
     public static Sensor fromModel(SensorModel model) {
