@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-//
 public class StatusDispositivoImpl implements StatusDispositivoRepository {
     private final List<StatusDispositivoModel> statusDispositivoList = new ArrayList<>();
     private final AtomicInteger idCounter = new AtomicInteger(1);
@@ -18,9 +17,9 @@ public class StatusDispositivoImpl implements StatusDispositivoRepository {
 
     public StatusDispositivoModel buscarPorId(int id) {
         for(StatusDispositivoModel statusDispositivoModel : statusDispositivoList){
-           if(statusDispositivoModel.getId() == id){
-               return statusDispositivoModel;
-           }
+            if(statusDispositivoModel.getId() == id){
+                return statusDispositivoModel;
+            }
         }
         return null;
     }
@@ -33,16 +32,13 @@ public class StatusDispositivoImpl implements StatusDispositivoRepository {
     }
 
     public void excluir(int id) {
-        for(StatusDispositivoModel statusDispositivoModel : statusDispositivoList){
-            if (statusDispositivoModel.getId() == id){
-                statusDispositivoList.remove(statusDispositivoModel);
-            }
-        }
+        statusDispositivoList.removeIf(status -> status.getId() == id);
     }
 
     public void atualizar(int id, StatusDispositivoModel statusDispositivoModel) {
         StatusDispositivoModel statuInMemory = buscarPorId(id);
-
-        statuInMemory.setEstado(statusDispositivoModel.getEstado());
+        if (statuInMemory != null) {
+            statuInMemory.setEstado(statusDispositivoModel.getEstado());
+        }
     }
 }
