@@ -3,7 +3,6 @@ package org.example.entities;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.example.models.DispositivoModel;
 import org.example.models.MedicaoModel;
 import org.example.models.StatusDispositivoModel;
@@ -18,7 +17,7 @@ public class Dispositivo {
     private UnidadeModel unidade;
     private int statusDispositivoId;
     private StatusDispositivoModel statusDispositivo;
-    private List<MedicaoModel> medicoes = new ArrayList<>();;
+    private List<MedicaoModel> medicoes = new ArrayList<>();
 
     public Dispositivo(){}
 
@@ -31,66 +30,26 @@ public class Dispositivo {
         this.unidade = unidade;
         this.statusDispositivoId = statusDispositivoId;
         this.statusDispositivo = statusDispositivo;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getModelo() {
-        return modelo;
-    }
-
-    public void setModelo(String modelo) {
-        this.modelo = modelo;
-    }
-
-    public String getNumeroSerie() {
-        return numeroSerie;
-    }
-
-    public void setNumeroSerie(String numeroSerie) {
-        this.numeroSerie = numeroSerie;
-    }
-
-    public Date getDataAquisicao() {
-        return dataAquisicao;
-    }
-
-    public void setDataAquisicao(Date dataAquisicao) {
-        this.dataAquisicao = dataAquisicao;
-    }
-
-    public int getUnidadeId() {
-        return unidadeId;
-    }
-
-    public void setUnidadeId(int unidadeId) {
-        this.unidadeId = unidadeId;
-    }
-
-    public int getStatusDispositivoId() {
-        return statusDispositivoId;
-    }
-
-    public void setStatusDispositivoId(int statusDispositivoId) {
-        this.statusDispositivoId = statusDispositivoId;
-    }
-
-    public List<MedicaoModel> getMedicoes() {
-        return medicoes;
-    }
-
-    public void setMedicoes(List<MedicaoModel> medicoes) {
         this.medicoes = medicoes;
     }
 
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    public String getModelo() { return modelo; }
+    public void setModelo(String modelo) { this.modelo = modelo; }
+    public String getNumeroSerie() { return numeroSerie; }
+    public void setNumeroSerie(String numeroSerie) { this.numeroSerie = numeroSerie; }
+    public Date getDataAquisicao() { return dataAquisicao; }
+    public void setDataAquisicao(Date dataAquisicao) { this.dataAquisicao = dataAquisicao; }
+    public int getUnidadeId() { return unidadeId; }
+    public void setUnidadeId(int unidadeId) { this.unidadeId = unidadeId; }
+    public int getStatusDispositivoId() { return statusDispositivoId; }
+    public void setStatusDispositivoId(int statusDispositivoId) { this.statusDispositivoId = statusDispositivoId; }
+    public List<MedicaoModel> getMedicoes() { return medicoes; }
+    public void setMedicoes(List<MedicaoModel> medicoes) { this.medicoes = medicoes; }
+
     public DispositivoModel toModel() {
-        return new DispositivoModel(
+        DispositivoModel model = new DispositivoModel(
                 this.getModelo(),
                 this.getNumeroSerie(),
                 this.getDataAquisicao(),
@@ -100,6 +59,8 @@ public class Dispositivo {
                 null,
                 this.medicoes
         );
+        model.setId(this.id); // Correção: seta o ID no model
+        return model;
     }
 
     public static Dispositivo fromModel(DispositivoModel model) {

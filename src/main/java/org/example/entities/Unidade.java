@@ -3,7 +3,6 @@ package org.example.entities;
 import org.example.models.DispositivoModel;
 import org.example.models.UnidadeModel;
 import org.example.models.UsuarioModel;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,65 +27,24 @@ public class Unidade {
         this.dispositivo = dispositivos;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public List<UsuarioModel> getUsuarios() {
-        return usuarios;
-    }
-
-    public void setUsuarios(List<UsuarioModel> usuarios) {
-        this.usuarios = usuarios;
-    }
-
-    public List<DispositivoModel> getDispositivos() {
-        return dispositivo;
-    }
-
-        public void setDispositivos(List<DispositivoModel> dispositivos) {
-        this.dispositivo = dispositivos;
-    }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
+    public String getEndereco() { return endereco; }
+    public void setEndereco(String endereco) { this.endereco = endereco; }
+    public String getTelefone() { return telefone; }
+    public void setTelefone(String telefone) { this.telefone = telefone; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    public List<UsuarioModel> getUsuarios() { return usuarios; }
+    public void setUsuarios(List<UsuarioModel> usuarios) { this.usuarios = usuarios; }
+    public List<DispositivoModel> getDispositivos() { return dispositivo; }
+    public void setDispositivos(List<DispositivoModel> dispositivos) { this.dispositivo = dispositivos; }
 
     public UnidadeModel toModel() {
         return new UnidadeModel(
-                this.getId(),
+                this.getId(), // ID já enviado no construtor
                 this.getNome(),
                 this.getEndereco(),
                 this.getTelefone(),

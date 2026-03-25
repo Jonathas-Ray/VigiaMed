@@ -27,10 +27,22 @@ const patientSchedulers = new Map();
 const patientMonitors = new Map();
 
 document.addEventListener('DOMContentLoaded', () => {
-    onAuthStateChanged(auth, (user) => {
+
+    onAuthStateChanged(auth, async (user) => {
+
         if (user) {
+
             fetchUserInfo(user.uid);
             loadPatients();
+
+            // NOVO: detectar dispositivo vindo da página devices
+            const params = new URLSearchParams(window.location.search);
+            const deviceFromUrl = params.get("id");
+
+            if (deviceFromUrl) {
+                await monitorarDispositivoDireto(deviceFromUrl);
+            }
+
         } else {
             window.location.href = '../html/login.html';
         }
@@ -50,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     btnSavePatient.addEventListener('click', async () => {
+
         const patientName = document.getElementById('patientName').value.trim();
         const deviceId = document.getElementById('deviceId').value.trim().toUpperCase();
 
@@ -64,7 +77,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
+
             const vitalsRef = ref(rtdb, 'vitals/' + deviceId);
+
             const snapshot = await new Promise((resolve, reject) => {
                 onValue(vitalsRef, resolve, reject, { onlyOnce: true });
             });
@@ -73,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Dispositivo não encontrado',
-                    text: `O dispositivo ${deviceId} não existe no sistema. Verifique o ID e tente novamente.`,
+                    text: `O dispositivo ${deviceId} não existe no sistema.`,
                     confirmButtonColor: '#dc3545'
                 });
                 return;
@@ -93,52 +108,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
             loadPatients();
 
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.onmouseenter = Swal.stopTimer;
-                    toast.onmouseleave = Swal.resumeTimer;
-                }
-            });
-
-            Toast.fire({
-                icon: 'success',
-                title: 'Paciente adicionado!',
-                text: `O paciente foi vinculado ao dispositivo ${deviceId}`
-            });
-
         } catch (error) {
             console.error("Erro ao adicionar paciente:", error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Erro',
-                text: 'Não foi possível adicionar o paciente. Tente novamente.',
-                confirmButtonColor: '#dc3545'
-            });
         }
     });
+
 });
 
 async function fetchUserInfo(uid) {
+
     const userDocRef = doc(db, "users", uid);
+
     try {
+
         const docSnap = await getDoc(userDocRef);
+
         if (docSnap.exists()) {
             userNameEl.textContent = docSnap.data().nome;
         } else {
             userNameEl.textContent = "Usuário";
         }
+
     } catch (error) {
         console.error("Erro ao buscar usuário:", error);
     }
+
 }
 
 async function loadPatients() {
+
     try {
+
         const patientsRef = collection(db, "patients");
         const querySnapshot = await getDocs(patientsRef);
 
@@ -154,26 +154,36 @@ async function loadPatients() {
         patientsContainer.innerHTML = '';
 
         if (querySnapshot.empty) {
+
             emptyState.style.display = 'flex';
             patientsContainer.style.display = 'none';
+
         } else {
+
             emptyState.style.display = 'none';
             patientsContainer.style.display = 'grid';
 
             querySnapshot.forEach((doc) => {
+
                 const patientData = doc.data();
+
                 createPatientCard(patientData);
                 listenToVitals(patientData.deviceId, patientData.name);
                 startApiScheduler(patientData.deviceId);
                 iniciarMonitoramento(patientData.deviceId, patientData.name);
+
             });
+
         }
+
     } catch (error) {
         console.error("Erro ao carregar pacientes:", error);
     }
+
 }
 
 function createPatientCard(patientData) {
+
     const cardHTML = `
         <div class="patient-group" id="patient-${patientData.deviceId}">
             <div class="patient-header">
@@ -181,11 +191,12 @@ function createPatientCard(patientData) {
                     <div class="patient-name">${patientData.name}</div>
                     <div class="patient-id">ID: ${patientData.deviceId}</div>
                 </div>
+
                 <button class="btn-remove-patient" onclick="removePatient('${patientData.deviceId}', '${patientData.name}')">
                     <i class="bi bi-trash-fill"></i>
                 </button>
             </div>
-            
+
             <div class="vital-mini-card">
                 <div class="vital-mini-title">Pulsação Cardíaca</div>
                 <div class="vital-mini-value">
@@ -194,7 +205,7 @@ function createPatientCard(patientData) {
             </div>
 
             <div class="vital-mini-card">
-                <div class="vital-mini-title">Saturação de Oxigênio</div>
+                <div class="vital-mini-title">Saturação</div>
                 <div class="vital-mini-value">
                     <span id="saturation-${patientData.deviceId}">--</span> SpO2%
                 </div>
@@ -210,89 +221,17 @@ function createPatientCard(patientData) {
     `;
 
     patientsContainer.insertAdjacentHTML('beforeend', cardHTML);
-}
 
-window.removePatient = async function (deviceId, patientName) {
-    const result = await Swal.fire({
-        title: 'Remover paciente?',
-        text: `Deseja remover ${patientName}?`,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#dc3545',
-        cancelButtonColor: '#6c757d',
-        confirmButtonText: 'Sim, remover',
-        cancelButtonText: 'Cancelar'
-    });
-
-    const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-        }
-    });
-
-    if (result.isConfirmed) {
-        try {
-            await deleteDoc(doc(db, "patients", deviceId));
-
-            if (activeListeners.has(deviceId)) {
-                activeListeners.get(deviceId)();
-                activeListeners.delete(deviceId);
-            }
-
-            if (patientSchedulers.has(deviceId)) {
-                clearInterval(patientSchedulers.get(deviceId));
-                patientSchedulers.delete(deviceId);
-            }
-
-            if (patientMonitors.has(deviceId)) {
-                clearInterval(patientMonitors.get(deviceId));
-                patientMonitors.delete(deviceId);
-            }
-
-            if (patientAlerts.has(deviceId)) {
-                const alert = patientAlerts.get(deviceId);
-                if (alert && alert.alertInstance && alert.alertInstance.isVisible()) {
-                    Swal.close();
-                }
-                patientAlerts.delete(deviceId);
-            }
-
-            loadPatients();
-
-            Toast.fire({
-                icon: "success",
-                title: "Signed in successfully"
-            });
-        } catch (error) {
-            console.error("Erro ao remover paciente:", error);
-            Toast.fire({
-                icon: 'error',
-                title: 'Erro',
-                text: 'Não foi possível remover o paciente.'
-            });
-        }
-    }
-}
-
-function updateValue(element, newValue) {
-    if (!element) return;
-    element.textContent = newValue;
-    element.classList.remove('update-flash');
-    void element.offsetWidth;
-    element.classList.add('update-flash');
 }
 
 function listenToVitals(deviceId, patientName) {
+
     const vitalsRef = ref(rtdb, 'vitals/' + deviceId);
 
     const unsubscribe = onValue(vitalsRef, (snapshot) => {
+
         if (snapshot.exists()) {
+
             const data = snapshot.val();
 
             const bpm = data.heartRate?.value || '--';
@@ -303,25 +242,22 @@ function listenToVitals(deviceId, patientName) {
             const saturationEl = document.getElementById(`saturation-${deviceId}`);
             const temperatureEl = document.getElementById(`temperature-${deviceId}`);
 
-            updateValue(heartRateEl, bpm);
-            updateValue(saturationEl, spo2);
-            updateValue(temperatureEl, temp);
-        } else {
-            const heartRateEl = document.getElementById(`heartRate-${deviceId}`);
-            const saturationEl = document.getElementById(`saturation-${deviceId}`);
-            const temperatureEl = document.getElementById(`temperature-${deviceId}`);
+            if (heartRateEl) heartRateEl.textContent = bpm;
+            if (saturationEl) saturationEl.textContent = spo2;
+            if (temperatureEl) temperatureEl.textContent = temp;
 
-            if (heartRateEl) heartRateEl.textContent = '--';
-            if (saturationEl) saturationEl.textContent = '--';
-            if (temperatureEl) temperatureEl.textContent = '--';
         }
+
     });
 
     activeListeners.set(deviceId, unsubscribe);
+
 }
 
 function startApiScheduler(deviceId) {
+
     const sendData = () => {
+
         const heartRateEl = document.getElementById(`heartRate-${deviceId}`);
         const saturationEl = document.getElementById(`saturation-${deviceId}`);
         const temperatureEl = document.getElementById(`temperature-${deviceId}`);
@@ -332,143 +268,84 @@ function startApiScheduler(deviceId) {
         const spo2 = saturationEl.textContent;
         const temp = temperatureEl.textContent;
 
-        if (bpm !== '--' && spo2 !== '--' && temp !== '--') {
-            const dadosParaAPI = {
+        if (bpm !== '--') {
+
+            enviarMedicaoCompleta(deviceId, {
                 heartRate: parseFloat(bpm),
                 saturation: parseFloat(spo2),
                 temperature: parseFloat(temp)
-            };
+            });
 
-            enviarMedicaoCompleta(deviceId, dadosParaAPI)
-                .catch(err => console.error(`Falha ao salvar medição via API (${deviceId}):`, err));
         }
+
     };
 
     sendData();
+
     const intervalId = setInterval(sendData, API_CALL_INTERVAL_MS);
+
     patientSchedulers.set(deviceId, intervalId);
+
 }
 
 function iniciarMonitoramento(deviceId, patientName) {
+
     const vitalsRef = ref(rtdb, 'vitals/' + deviceId);
 
-    if (!patientAlerts.has(deviceId)) {
-        patientAlerts.set(deviceId, {
-            ultimoResultado: null,
-            ultimoAlerta: null,
-            alertElement: null
-        });
-    }
-
-    const alertState = patientAlerts.get(deviceId);
-
     const unsubscribe = onValue(vitalsRef, (snapshot) => {
+
         if (!snapshot.exists()) return;
 
         const bpm = snapshot.val().heartRate?.value;
-        if (bpm == null) return;
 
-        const valorMudou = alertState.ultimoResultado !== bpm;
+        if (!bpm) return;
 
         if (bpm < 60) {
-            if (valorMudou || alertState.ultimoAlerta !== 'baixo') {
-                mostrarAlerta(deviceId, patientName, 'baixo', 'Batimentos abaixo do normal', bpm);
-                alertState.ultimoAlerta = 'baixo';
-            }
-        }
-        else if (bpm > 100) {
-            if (valorMudou || alertState.ultimoAlerta !== 'alto') {
-                mostrarAlerta(deviceId, patientName, 'alto', 'Batimentos acima do normal', bpm);
-                alertState.ultimoAlerta = 'alto';
-            }
-        }
-        else {
-            if (alertState.ultimoAlerta !== null) {
-                fecharAlerta(deviceId);
-                alertState.ultimoAlerta = null;
-            }
+            Swal.fire({
+                icon: 'warning',
+                title: `Bradicardia - ${patientName}`,
+                text: `Batimentos: ${bpm} bpm`
+            });
         }
 
-        alertState.ultimoResultado = bpm;
+        if (bpm > 100) {
+            Swal.fire({
+                icon: 'error',
+                title: `Taquicardia - ${patientName}`,
+                text: `Batimentos: ${bpm} bpm`
+            });
+        }
+
     });
 
     patientMonitors.set(deviceId, unsubscribe);
+
 }
 
+async function monitorarDispositivoDireto(deviceId) {
 
+    const vitalsRef = ref(rtdb, 'vitals/' + deviceId);
 
-function mostrarAlerta(deviceId, patientName, tipo, mensagem, bpm) {
-    const alertState = patientAlerts.get(deviceId);
+    const snapshot = await new Promise((resolve, reject) => {
+        onValue(vitalsRef, resolve, reject, { onlyOnce: true });
+    });
 
-    if (!alertState) return;
-
-    const config = tipo === 'baixo' ? {
-        icon: 'warning',
-        title: `Bradicardia - ${patientName}`,
-        className: 'swal-warning'
-    } : {
-        icon: 'error',
-        title: `Taquicardia - ${patientName}`,
-        className: 'swal-danger'
-    };
-
-    const htmlContent = `
-        <p style="font-size: 1.1rem; margin-bottom: 10px; color: var(--text-primary);">
-            ${mensagem}
-        </p>
-        <p style="font-size: 0.9rem; color: var(--text-secondary);">
-            ID: ${deviceId}<br>
-            Batimentos cardíacos ${tipo === 'baixo' ? 'abaixo' : 'acima'} do esperado: <strong>${bpm}</strong> bpm
-        </p>
-    `;
-
-    if (alertState.alertElement) {
-        const popup = alertState.alertElement;
-        const titleEl = popup.querySelector('.swal2-title');
-        const contentEl = popup.querySelector('.swal2-html-container');
-
-        if (titleEl) titleEl.textContent = config.title;
-        if (contentEl) contentEl.innerHTML = htmlContent;
-
+    if (!snapshot.exists()) {
+        console.error("Dispositivo não encontrado:", deviceId);
         return;
     }
 
-    Swal.fire({
-        icon: config.icon,
-        title: config.title,
-        html: htmlContent,
-        toast: true,
-        position: 'bottom-end',
-        showConfirmButton: false,
-        backdrop: false,
-        didOpen: (popup) => {
-            popup.classList.add('swal-alert-fixed', config.className);
-            alertState.alertElement = popup;
-        },
-        willClose: () => {
-            alertState.alertElement = null;
-        },
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        allowEnterKey: false,
-        showCloseButton: false,
-        timer: null,
-        timerProgressBar: false
-    });
-}
+    const patientData = {
+        name: "Dispositivo Monitorado",
+        deviceId: deviceId
+    };
 
+    createPatientCard(patientData);
+    listenToVitals(deviceId, patientData.name);
+    startApiScheduler(deviceId);
+    iniciarMonitoramento(deviceId, patientData.name);
 
-function fecharAlerta(deviceId) {
-    const alertState = patientAlerts.get(deviceId);
-    if (!alertState?.alertElement) return;
+    emptyState.style.display = 'none';
+    patientsContainer.style.display = 'grid';
 
-    const popup = alertState.alertElement;
-
-    popup.classList.remove('swal2-show');
-    popup.classList.add('swal2-hide');
-
-    setTimeout(() => {
-        popup.remove();
-        alertState.alertElement = null;
-    }, 200);
 }

@@ -13,26 +13,17 @@ public class StatusDispositivo {
         this.estado = estado;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    public String getEstado() { return estado; }
+    public void setEstado(String estado) { this.estado = estado; }
 
     public StatusDispositivoModel toModel() {
-        return new StatusDispositivoModel(
+        StatusDispositivoModel model = new StatusDispositivoModel(
                 this.getEstado()
         );
+        model.setId(this.id); // Correção: seta o ID no model
+        return model;
     }
 
     public static StatusDispositivo fromModel(StatusDispositivoModel model) {

@@ -8,18 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-//
 public class DispositivoRepositoryImpl implements DispositivoRepository {
     private List<DispositivoModel> dispositivos = new ArrayList<>();
     private final AtomicInteger idCounter = new AtomicInteger(1);
-
 
     public List<DispositivoModel> buscarTodos() {
         return dispositivos;
     }
 
     public DispositivoModel buscarPorId(int id) {
-        for(DispositivoModel dispositivoModel: dispositivos){
+        for(DispositivoModel dispositivoModel : dispositivos){
             if(dispositivoModel.getId() == id){
                 return dispositivoModel;
             }
@@ -35,11 +33,7 @@ public class DispositivoRepositoryImpl implements DispositivoRepository {
     }
 
     public void excluir(int id) {
-        for(DispositivoModel dispositivoModel : dispositivos){
-            if (dispositivoModel.getId() == id){
-                dispositivos.remove(dispositivoModel);
-            }
-        }
+        dispositivos.removeIf(dispositivo -> dispositivo.getId() == id);
     }
 
     @Override
