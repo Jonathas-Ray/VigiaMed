@@ -9,54 +9,34 @@ public class Paciente {
     private int id;
     private String nome;
     private String referencia;
-    private List<MedicaoModel> medicoes = new ArrayList<>();;
+    private List<MedicaoModel> medicoes = new ArrayList<>();
 
     public Paciente(){}
 
-    public Paciente( int id, String nome, String referencia, List<MedicaoModel> medicoes) {
-        this.nome = nome;
-        this.referencia = referencia;
-        this.medicoes = medicoes;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
+    public Paciente(int id, String nome, String referencia, List<MedicaoModel> medicoes) {
         this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getReferencia() {
-        return referencia;
-    }
-
-    public void setReferencia(String referencia) {
         this.referencia = referencia;
-    }
-
-    public List<MedicaoModel> getMedicoes() {
-        return medicoes;
-    }
-
-    public void setMedicoes(List<MedicaoModel> medicoes) {
         this.medicoes = medicoes;
     }
+
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
+    public String getReferencia() { return referencia; }
+    public void setReferencia(String referencia) { this.referencia = referencia; }
+    public List<MedicaoModel> getMedicoes() { return medicoes; }
+    public void setMedicoes(List<MedicaoModel> medicoes) { this.medicoes = medicoes; }
 
     public PacienteModel toModel() {
-        return new PacienteModel(
+        PacienteModel model = new PacienteModel(
                 this.getNome(),
                 this.getReferencia(),
-                this.medicoes
+                this.getMedicoes()
         );
+        model.setId(this.id); // Correção: seta o ID no model
+        return model;
     }
 
     public static Paciente fromModel(PacienteModel model) {

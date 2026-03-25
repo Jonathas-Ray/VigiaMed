@@ -27,56 +27,21 @@ public class MedicaoLista {
         this.sensor = sensor;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public double getResultado() {
-        return resultado;
-    }
-
-    public void setResultado(double resultado) {
-        this.resultado = resultado;
-    }
-
-    public String getTipoMedicao() {
-        return tipoMedicao;
-    }
-
-    public void setTipoMedicao(String tipoMedicao) {
-        this.tipoMedicao = tipoMedicao;
-    }
-
-    public String getDataHora() {
-        return dataHora;
-    }
-
-    public void setDataHora(String dataHora) {
-        this.dataHora = dataHora;
-    }
-
-    public int getMedicaoId() {
-        return medicaoId;
-    }
-
-    public void setMedicaoId(int medicaoId) {
-        this.medicaoId = medicaoId;
-    }
-
-    public int getSensorId() {
-        return sensorId;
-    }
-
-    public void setSensorId(int sensorId) {
-        this.sensorId = sensorId;
-    }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    public double getResultado() { return resultado; }
+    public void setResultado(double resultado) { this.resultado = resultado; }
+    public String getTipoMedicao() { return tipoMedicao; }
+    public void setTipoMedicao(String tipoMedicao) { this.tipoMedicao = tipoMedicao; }
+    public String getDataHora() { return dataHora; }
+    public void setDataHora(String dataHora) { this.dataHora = dataHora; }
+    public int getMedicaoId() { return medicaoId; }
+    public void setMedicaoId(int medicaoId) { this.medicaoId = medicaoId; }
+    public int getSensorId() { return sensorId; }
+    public void setSensorId(int sensorId) { this.sensorId = sensorId; }
 
     public MedicaoListaModel toModel() {
-        return new MedicaoListaModel(
+        MedicaoListaModel model = new MedicaoListaModel(
                 this.getResultado(),
                 this.getTipoMedicao(),
                 this.getDataHora(),
@@ -85,6 +50,8 @@ public class MedicaoLista {
                 this.sensorId,
                 null
         );
+        model.setId(this.id); // Correção: seta o ID no model
+        return model;
     }
 
     public static MedicaoLista fromModel(MedicaoListaModel model) {

@@ -89,3 +89,8 @@ btnGoogle.addEventListener('click', () => {
             });
         });
 });
+
+// No final do arquivo login.js
+if (typeof module !== 'undefined') {
+    module.exports = { /* aqui exportaremos funções se você as isolar */ };
+}

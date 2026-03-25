@@ -10,6 +10,5 @@ public interface MedicaoListaRepository {
     void excluir(int id);
     void atualizar(int id, MedicaoListaModel listaMedicao);
 
-    // ✅ Novos métodos para tempo real
     Double findUltimoResultado();
 }
