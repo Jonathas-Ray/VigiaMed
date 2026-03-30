@@ -1,4 +1,4 @@
-package org.example.logTestes;
+package logTestes;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
