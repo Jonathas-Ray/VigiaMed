@@ -1,18 +1,19 @@
 /** @jest-environment jsdom */
 
-// 1. Mock de Navegação
+// 1. Mocks de Navegação e Ações
 const mockAssign = jest.fn();
+const mockSignOut = jest.fn(() => Promise.resolve()); // <-- DEFINIDO AQUI
 delete window.location;
 window.location = { href: '', assign: mockAssign };
 
-// 2. Variáveis para controlar os Mocks
+// 2. Variáveis para controlar os Mocks do banco
 let firebaseCallback;
 let firebaseErrorCallback;
 
 // 3. Mocks do Firebase
 jest.mock("https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js", () => ({
     onAuthStateChanged: jest.fn((auth, callback) => callback({ uid: 'user123' })),
-    signOut: jest.fn(() => Promise.resolve()),
+    signOut: mockSignOut, // <-- USANDO A VARIÁVEL AQUI
     getAuth: jest.fn()
 }), { virtual: true });
 
@@ -36,6 +37,8 @@ jest.mock('../firebase-config.js', () => ({ auth: {}, db: {}, rtdb: {} }), { vir
 describe('Módulo de Dispositivos - Testes 1 a 10', () => {
     beforeEach(() => {
         jest.clearAllMocks();
+        mockSignOut.mockClear(); // Garante que o contador de chamadas comece em zero
+        
         document.body.innerHTML = `
             <div id="devices-container"></div>
             <span id="userName"></span>
@@ -80,22 +83,18 @@ describe('Módulo de Dispositivos - Testes 1 a 10', () => {
         // Clica no botão de logout
         document.getElementById('btnLogout').click();
         
-        // Verifica se a nossa variável mockSignOut (definida no topo) foi chamada
+        // Agora o mockSignOut será reconhecido corretamente
         expect(mockSignOut).toHaveBeenCalled();
     });
 
     test('6: Redireciona se user null', () => {
-        // Pegamos a função de mock do onAuthStateChanged
         const { onAuthStateChanged } = require("https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js");
         
-        // Simulamos o Firebase respondendo com usuário NULL
         onAuthStateChanged.mockImplementationOnce((auth, callback) => callback(null));
         
-        // Recarregamos o código para ele ler o estado nulo
         jest.isolateModules(() => { require('./devices.js'); });
         document.dispatchEvent(new Event('DOMContentLoaded'));
         
-        // Verifica se tentou mudar de página
         expect(mockAssign).toHaveBeenCalled();
     });
 
