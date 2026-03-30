@@ -1,4 +1,4 @@
-package org.example.dispositivosTestes;
+package dispositivosTestes;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
