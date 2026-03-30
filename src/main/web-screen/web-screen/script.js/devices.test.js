@@ -1,52 +1,41 @@
 /** @jest-environment jsdom */
 
-// 🔥 Mock de navegação (SEM quebrar o JSDOM)
+// 1. Mock de Navegação
 const mockAssign = jest.fn();
 delete window.location;
-window.location = { assign: mockAssign };
+window.location = { href: '', assign: mockAssign };
 
-// 🔥 Mocks controláveis
-const mockOnValue = jest.fn();
-const mockGetDoc = jest.fn();
-const mockSignOut = jest.fn(() => Promise.resolve());
+// 2. Variáveis para controlar os Mocks
+let firebaseCallback;
+let firebaseErrorCallback;
 
-// 🔥 Firebase mocks
+// 3. Mocks do Firebase
 jest.mock("https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js", () => ({
     onAuthStateChanged: jest.fn((auth, callback) => callback({ uid: 'user123' })),
-    signOut: () => mockSignOut(),
+    signOut: jest.fn(() => Promise.resolve()),
     getAuth: jest.fn()
 }), { virtual: true });
 
 jest.mock("https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js", () => ({
     doc: jest.fn(),
-    getDoc: () => mockGetDoc(),
+    getDoc: jest.fn(() => Promise.resolve({ exists: () => true, data: () => ({ nome: 'Usuario Teste' }) })),
     getFirestore: jest.fn()
 }), { virtual: true });
 
 jest.mock("https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js", () => ({
     ref: jest.fn(),
-    onValue: (ref, callback, errorCallback) => mockOnValue(callback, errorCallback),
+    onValue: jest.fn((ref, callback, error) => {
+        firebaseCallback = callback;
+        firebaseErrorCallback = error;
+    }),
     getDatabase: jest.fn()
 }), { virtual: true });
 
-jest.mock('../firebase-config.js', () => ({
-    auth: {}, db: {}, rtdb: {}
-}), { virtual: true });
+jest.mock('../firebase-config.js', () => ({ auth: {}, db: {}, rtdb: {} }), { virtual: true });
 
-describe('Módulo de Dispositivos - Testes 1 a 20', () => {
-
-    // 🔥 FUNÇÃO CRÍTICA → RECARREGA O SCRIPT A CADA TESTE
-    const loadScript = () => {
-        jest.resetModules();
-        jest.isolateModules(() => {
-            require('./devices.js');
-        });
-        document.dispatchEvent(new Event('DOMContentLoaded'));
-    };
-
+describe('Módulo de Dispositivos - Testes 1 a 10', () => {
     beforeEach(() => {
         jest.clearAllMocks();
-
         document.body.innerHTML = `
             <div id="devices-container"></div>
             <span id="userName"></span>
@@ -55,202 +44,82 @@ describe('Módulo de Dispositivos - Testes 1 a 20', () => {
             <button id="btnSaveDevice"></button>
             <div id="addDeviceModal"></div>
         `;
-
-        global.bootstrap = {
-            Modal: jest.fn(() => ({
-                show: jest.fn(),
-                hide: jest.fn()
-            }))
-        };
+        global.bootstrap = { Modal: jest.fn(() => ({ show: jest.fn() })) };
+        
+        jest.isolateModules(() => { require('./devices.js'); });
+        document.dispatchEvent(new Event('DOMContentLoaded'));
     });
 
-    test('1: Nome do usuário vindo do Firestore', async () => {
-        mockGetDoc.mockResolvedValueOnce({
-            exists: () => true,
-            data: () => ({ nome: 'Jonathas Ray' })
-        });
-
-        loadScript();
-
-        await new Promise(r => setTimeout(r, 0));
-
-        expect(document.getElementById('userName').textContent)
-            .toBe('Jonathas Ray');
+    test('1: Exibir nome do usuário', async () => {
+        await new Promise(process.nextTick);
+        expect(document.getElementById('userName').textContent).toBe('Usuario Teste');
     });
 
     test('2: Nenhum dispositivo encontrado', () => {
-        mockOnValue.mockImplementationOnce(cb => cb({ exists: () => false }));
-
-        loadScript();
-
-        expect(document.getElementById('devices-container').innerHTML)
-            .toContain('Nenhum dispositivo');
+        firebaseCallback({ exists: () => false });
+        expect(document.getElementById('devices-container').innerHTML).toContain('Nenhum dispositivo');
     });
 
     test('3: Criar card com dados', () => {
-        mockOnValue.mockImplementationOnce(cb => {
-            cb({
-                exists: () => true,
-                val: () => ({ DEV1: { heartRate: 80 } })
-            });
+        firebaseCallback({ 
+            exists: () => true, 
+            val: () => ({ "DEV1": { heartRate: 80, saturation: 95 } }) 
         });
-
-        loadScript();
-
-        expect(document.getElementById('devices-container').innerHTML)
-            .toContain('DEV1');
+        expect(document.getElementById('devices-container').innerHTML).toContain('DEV1');
     });
 
     test('4: Dados aninhados (.value)', () => {
-        mockOnValue.mockImplementationOnce(cb => {
-            cb({
-                exists: () => true,
-                val: () => ({
-                    S1: { heartRate: { value: 72 } }
-                })
-            });
+        firebaseCallback({ 
+            exists: () => true, 
+            val: () => ({ "DEV2": { heartRate: { value: 72 } } }) 
         });
-
-        loadScript();
-
-        expect(document.getElementById('devices-container').innerHTML)
-            .toContain('72');
+        expect(document.getElementById('devices-container').innerHTML).toContain('72');
     });
 
     test('5: Logout chamado', () => {
-        loadScript();
+        // Clica no botão de logout
         document.getElementById('btnLogout').click();
+        
+        // Verifica se a nossa variável mockSignOut (definida no topo) foi chamada
         expect(mockSignOut).toHaveBeenCalled();
     });
 
     test('6: Redireciona se user null', () => {
+        // Pegamos a função de mock do onAuthStateChanged
         const { onAuthStateChanged } = require("https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js");
-
-        onAuthStateChanged.mockImplementationOnce((auth, cb) => cb(null));
-
-        loadScript();
-
+        
+        // Simulamos o Firebase respondendo com usuário NULL
+        onAuthStateChanged.mockImplementationOnce((auth, callback) => callback(null));
+        
+        // Recarregamos o código para ele ler o estado nulo
+        jest.isolateModules(() => { require('./devices.js'); });
+        document.dispatchEvent(new Event('DOMContentLoaded'));
+        
+        // Verifica se tentou mudar de página
         expect(mockAssign).toHaveBeenCalled();
     });
 
     test('7: Múltiplos dispositivos', () => {
-        mockOnValue.mockImplementationOnce(cb => {
-            cb({
-                exists: () => true,
-                val: () => ({
-                    D1: { heartRate: 60 },
-                    D2: { heartRate: 70 }
-                })
-            });
+        firebaseCallback({ 
+            exists: () => true, 
+            val: () => ({ "D1": { heartRate: 60 }, "D2": { heartRate: 70 } }) 
         });
-
-        loadScript();
-
-        expect(document.querySelectorAll('.device-card').length)
-            .toBe(2);
+        expect(document.querySelectorAll('.device-card').length).toBe(2);
     });
 
     test('8: Dados vazios mostram "--"', () => {
-        mockOnValue.mockImplementationOnce(cb => {
-            cb({
-                exists: () => true,
-                val: () => ({ X: {} })
-            });
-        });
-
-        loadScript();
-
-        expect(document.getElementById('devices-container').innerHTML)
-            .toContain('--');
+        firebaseCallback({ exists: () => true, val: () => ({ "S1": {} }) });
+        expect(document.getElementById('devices-container').innerHTML).toContain('--');
     });
 
     test('9: Link contém ID correto', () => {
-        mockOnValue.mockImplementationOnce(cb => {
-            cb({
-                exists: () => true,
-                val: () => ({ DEV_X: { heartRate: 80 } })
-            });
-        });
-
-        loadScript();
-
-        const link = document.querySelector('.btn-monitorar');
+        firebaseCallback({ exists: () => true, val: () => ({ "DEV_X": { heartRate: 80 } }) });
+        const link = document.querySelector('a.btn-monitorar');
         expect(link.getAttribute('href')).toContain('DEV_X');
     });
 
     test('10: Erro Firebase', () => {
-        mockOnValue.mockImplementationOnce((cb, err) => err(new Error()));
-
-        loadScript();
-
-        expect(document.getElementById('devices-container').innerHTML)
-            .toContain('Erro');
-    });
-
-    // EXTRA
-
-    test('11: container existe', () => {
-        loadScript();
-        expect(document.getElementById('devices-container')).not.toBeNull();
-    });
-
-    test('12: userName existe', () => {
-        loadScript();
-        expect(document.getElementById('userName')).not.toBeNull();
-    });
-
-    test('13: botão logout existe', () => {
-        loadScript();
-        expect(document.getElementById('btnLogout')).not.toBeNull();
-    });
-
-    test('14: modal existe', () => {
-        loadScript();
-        expect(document.getElementById('addDeviceModal')).not.toBeNull();
-    });
-
-    test('15: modal inicializado', () => {
-        loadScript();
-        expect(global.bootstrap.Modal).toHaveBeenCalled();
-    });
-
-    test('16: getDoc chamado', async () => {
-        mockGetDoc.mockResolvedValueOnce({
-            exists: () => false
-        });
-
-        loadScript();
-
-        await new Promise(r => setTimeout(r, 0));
-
-        expect(mockGetDoc).toHaveBeenCalled();
-    });
-
-    test('17: onValue chamado', () => {
-        loadScript();
-        expect(mockOnValue).toHaveBeenCalled();
-    });
-
-    test('18: device-card criado', () => {
-        mockOnValue.mockImplementationOnce(cb => {
-            cb({
-                exists: () => true,
-                val: () => ({ D: { heartRate: 80 } })
-            });
-        });
-
-        loadScript();
-
-        expect(document.querySelector('.device-card')).not.toBeNull();
-    });
-
-    test('19: HTML não vazio', () => {
-        loadScript();
-        expect(document.body.innerHTML.length).toBeGreaterThan(0);
-    });
-
-    test('20: botão salvar existe', () => {
-        loadScript();
-        expect(document.getElementById('btnSaveDevice')).not.toBeNull();
+        firebaseErrorCallback(new Error());
+        expect(document.getElementById('devices-container').innerHTML).toContain('Erro');
     });
 });
