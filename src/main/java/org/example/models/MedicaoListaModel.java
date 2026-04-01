@@ -12,7 +12,7 @@ public class MedicaoListaModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private double resultado;
+    private Double resultado;
     private String tipoMedicao;
     private String data_hora;
 
@@ -54,7 +54,7 @@ public class MedicaoListaModel {
         return resultado;
     }
 
-    public void setResultado(double resultado) {
+    public void setResultado(Double resultado) {
         this.resultado = resultado;
     }
 
