@@ -41,8 +41,10 @@ public class DispositivoRepositoryImpl implements DispositivoRepository {
         DispositivoModel dispositivoExiste = buscarPorId(id);
         if(dispositivoExiste != null){
             dispositivoExiste.setModelo(dispositivoModel.getModelo());
-            dispositivoExiste.setDataAquisicao(dispositivoModel.getDataAquisicao());
             dispositivoExiste.setNumeroSerie(dispositivoModel.getNumeroSerie());
+            dispositivoExiste.setDataAquisicao(dispositivoModel.getDataAquisicao());
+            dispositivoExiste.setUnidadeId(dispositivoModel.getUnidadeId());
+            dispositivoExiste.setStatusDispositivoId(dispositivoModel.getStatusDispositivoId());
         }
     }
 }

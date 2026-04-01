@@ -47,6 +47,8 @@ public class MedicaoListaApplication {
 
     // verificação em real time
 
+    // verificação em real time
+
     public ResultadoValidacao verificarUltimaMedicao() {
         List<MedicaoListaModel> modelList = this.medicaoListaRepository.buscarTodos();
 
@@ -64,11 +66,10 @@ public class MedicaoListaApplication {
         String mensagem;
         boolean acimaDaNormal = false;
 
-        // Validação usando apenas IF
+        // Validação corrigida com if-else if-else
         if (resultado >= 60 && resultado <= 100) {
             mensagem = "Batimentos normais: " + resultado + " bpm";
-        }
-        if (resultado < 60) {
+        } else if (resultado < 60) {
             mensagem = "Batimentos abaixo do normal: " + resultado + " bpm";
         } else {
             mensagem = "Batimentos acima do normal: " + resultado + " bpm";
@@ -77,7 +78,6 @@ public class MedicaoListaApplication {
 
         return new ResultadoValidacao(resultado, acimaDaNormal, mensagem);
     }
-
 
     public ResultadoValidacao verificarUltimoResultado() {
         return verificarUltimaMedicao();
